@@ -4,57 +4,201 @@
     <table class="achieveLists_box">
       <thead>
         <tr>
-          <th>标题</th>
+          <th>类别</th>
           <th>时间 </th>
           <th>操作</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>主要成就</td>
-          <td>2016/8---2017/8</td>
+        <tr v-for='(list,index) in resDataLists' :key='index' :data-id="list.id" @click="choiceId(list.Id)">
+          <td>{{list.Type}}</td>
+          <td>{{list.Date | formatDate}}</td>
           <td>
-            <button type=button>删除</button>
+            <button type="button" @click.stop="delAchieve(list.Id)">删除</button>
           </td>
         </tr>
       </tbody>
     </table>
     <div class="achieveList_box">
       <div class="ac_title">
-        <p class="ac_name">标&nbsp;&nbsp;&nbsp;&nbsp;题&nbsp;:</p>
+        <p class="ac_name">类&nbsp;&nbsp;&nbsp;&nbsp;别&nbsp;:</p>
         <div class="main_name_box">
-          <p class="main_name">主要成就(包括成果、专利情况)<i class="el-icon-caret-bottom"></i></p>
+          <select name="" id="" class="main_name" v-model="resData.Type">
+            <option v-for="(option,index) in options" :value="option.value" :key="index">{{option.value}}</option>
+          </select>
         </div>
       </div>
       <div class="ac_title ac_a2">
         <p class="ac_name">内&nbsp;&nbsp;&nbsp;&nbsp;容&nbsp;:</p>
-        <textarea name="achieveInfo" id="achieveInfo" cols="30" rows="10"></textarea>
+        <textarea name="achieveInfo" id="achieveInfo" cols="30" rows="10" v-model='resData.Description'></textarea>
       </div>
-      <div class="ac_title">
+      <div class="ac_title ac_only">
         <p class="ac_name">时&nbsp;&nbsp;&nbsp;&nbsp;间&nbsp;:</p>
         <div class="ch_time">
-          <span class="y">1999</span>
-          <i>年</i>
-          <span class="m">5</span>
-          <i>月</i>
-          <i>至</i>
-          <span class="y">1999</span>
-          <i>年</i>
-          <span class="m">5</span>
-          <i>月</i>
+          <el-date-picker
+            v-model="resData.Date"
+            type="date"
+            value-format='timestamp'>
+          </el-date-picker>
         </div>
       </div>
     </div>
     <div class="ac_save_box">
-      <button type=button class='save_1'>保存并新增个人成就</button>
-      <button type=button class='save_2'>保存</button>
+      <button type=button class='save_1' @click='addDate()'>保存并新增个人成就</button>
+      <button type=button class='save_2' @click="saveDate()">保存</button>
       <button type=button class='btn_toEN'>英译中</button>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-
+  import {formatDate} from '../../assets/js/date.js';
+  export default {
+    name:"Achieve",
+    data: function () {
+      return {
+        options:[
+          {value:'主要成就（包括成果、专利情况）'},
+          {value:'获奖情况'},
+          {value:'参与社会组织情况'},
+        ],
+        resDataLists:[],
+        resData:{
+          Id:'',
+          Type:'',
+          Date:'',
+          Description:'',
+        },
+      }
+    },
+    filters: {
+      formatDate: function (time) { //时间戳转日期
+        let date = new Date(time * 1000);
+        return formatDate(date, 'yyyy-MM-dd');
+      }
+    },
+    mounted: function () {
+      this.getNewData();
+    },
+    methods:{
+      //新增并保存个人成就信息
+      addDate: function () {
+        let vm = this;
+        var userid = sessionStorage.getItem("userId");
+        if(!userid || userid ==0) {
+          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
+          return false;
+        }else {
+          let data = JSON.parse(JSON.stringify(vm.resData));
+          data.Date = data.Date/1000;
+          data.UserId = userid;
+          data.Id = 0;
+          vm.$axios({
+            method:'post',
+            url:vm.$api +'/setachievement?operate=1&id=0',
+            data:JSON.stringify(data)
+          })
+            .then(function(res){
+              if(res.data.code == 0){
+                vm.$message.success('保存成功!');
+                vm.getNewData();
+              }else {
+                vm.$message.error(res.data.message);
+              }
+            })
+            .catch(function(err){});
+        }
+      },
+      //保存上传个人成就数据
+      saveDate: function () {
+        let vm = this;
+        var userid = sessionStorage.getItem("userId");
+        if(!userid || userid ==0) {
+          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
+          return false;
+        }else {
+          let data = JSON.parse(JSON.stringify(vm.resData));
+          data.Date = data.Date/1000;
+          vm.$axios({
+              method:'post',
+              url:vm.$api +'/setachievement?operate=2&id='+data.Id,
+              data:JSON.stringify(data)
+          })
+              .then(function(res){
+                if(res.data.code == 0){
+                  vm.$message.success('保存成功!');
+                  vm.getNewData();
+                }else {
+                  if(res.data.message == 'error:缺少必要字段'){
+                    vm.$message.warning('请先选择要修改的项');
+                  }
+                }
+              })
+              .catch(function(err){});
+        }
+      },
+      //点击查看获奖详情
+      choiceId: function (id) {
+        let vm = this;
+        vm.$axios({
+            method:'post',
+            url:vm.$api + '/achievement?id=' + id,
+        })
+           .then(function(res){
+             var res = res.data;
+             if(res.code == 0){
+               vm.resData = res.result;
+               vm.resData.Date = vm.resData.Date * 1000;
+               vm.resData.Id = id;
+             }else {
+               vm.$message.error(res.message);
+             }
+           })
+           .catch(function(err){
+             alert(err);
+           });
+      },
+      //删除个人成绩
+      delAchieve: function (id) {
+        let vm = this;
+        vm.$axios({
+            method:'post',
+            url:vm.$api+'/deleteachivement?id='+id,
+        })
+           .then(function(res){
+             var res = res.data;
+             if(res.code == 0 ){
+               vm.$message.success('删除成功!');
+               vm.getNewData();
+             }else {
+               vm.$message.error(res.message);
+             }
+           })
+           .catch(function(err){
+             alert(err);
+           });
+      },
+      //获取数据
+      getNewData: function () {
+        let vm = this;
+        var userid = sessionStorage.getItem('userId');
+        if(!userid || userid == 0) return false;
+        vm.$axios({
+          method:'post',
+          url:vm.$api + "/achievements?userid=" + userid,
+        })
+          .then(function (res) {
+            var res = res.data;
+            if(res.code ==0){
+              vm.resDataLists = res.result;
+            }
+          })
+          .catch(function (err) {
+            alert(err);
+          })
+      }
+    }
+  }
 </script>
 
 <style lang="scss" type="text/scss" scoped>
@@ -79,9 +223,18 @@
       height: 32px;
       line-height: 32px;
       font-size: 14px;
+      tr{
+        cursor: pointer;
+        &:hover{
+          background-color: #f1f1f1;
+        }
+      }
       button{
+        display: block;
+        width: 100%;
+        height: 100%;
         color: #169bd8;
-        background-color: #fff;
+        background-color: transparent;
       }
     }
   }
@@ -100,21 +253,16 @@
       .main_name_box{
         width: 310px;
         height: 22px;
-        border: solid 1px #53b1dc;
         float: left;
         .main_name{
           width: 100%;
           height: 100%;
+          border: solid 1px #53b1dc;
           padding-left: 5px;
           font-size: 14px;
           color: #29a9f5;
           letter-spacing: 1px;
           line-height: 20px;
-        }
-        i{
-          line-height: 20px;
-          float: right;
-          margin-right: 30px;
         }
       }
       .ch_time{
@@ -122,23 +270,13 @@
         height: 22px;
         float: left;
         color: #454545;
-        span{
-          display: inline-block;
-          height: 22px;
-          border: solid 1px #53b1dc;
-          line-height: 20px;
-          text-align: center;
-          cursor: pointer;
-        }
-        .y{
-          width: 56px;
-        }
-        .m{
-          width: 48px;
-        }
-        i{
-          margin: 0px 3px;
-        }
+      }
+    }
+    .ac_only{
+      height: 40px;
+      .el-input__inner{
+        border: 1px solid #53b1dc !important;
+        border-radius: 0px !important;
       }
     }
     .ac_a2{

@@ -4,110 +4,120 @@
     <div class="resumeInfo_box">
       <div class="op">
         <p class='name'>性别:</p>
-        <!--<label for="man" style='margin-right: 10px;'><input type="radio" name='sex' class='man' id='man'>男</label>-->
-        <!--<label for="woman"><input type="radio" name='sex' class='man' id='woman'>女</label>-->
         <div class="val">
-          <!--<el-radio v-model="radio" label="1">男</el-radio>-->
-          <!--<el-radio v-model="radio" label="2">女</el-radio>-->
-          <el-radio-group v-model="radios.radio1">
+          <el-radio-group v-model="allData.IsMale">
             <el-radio :label="1">男</el-radio>
             <el-radio :label="0">女</el-radio>
           </el-radio-group>
         </div>
       </div>
 
-      <div class="op">
+      <div class="op timebox">
         <p class="name">出生日期:</p>
-        <div class="val"></div>
+        <div class="val">
+          <el-date-picker
+            type="date"
+            v-model='allData.Birthday'
+            class="time_box"
+            value-format='timestamp'>
+          </el-date-picker>
+        </div>
       </div>
 
       <div class="op">
         <p class="name">国籍:</p>
         <div class="val">
-          <p class="s1">中国大陆<i class="el-icon-caret-bottom"></i></p>
+          <!--<p class="s1">中国大陆<i class="el-icon-caret-bottom"></i></p>-->
+          <select name="" id="" class="s1" v-model="allData.Nationality">
+            <option v-for="(option ,index ) in options1" :value="option.value" :key="index">{{option.value}}</option>
+          </select>
         </div>
       </div>
 
       <div class="op">
         <p class="name">出生地:</p>
         <div class="val">
-          <p class="s2">广东省<i class="el-icon-caret-right"></i></p>
-          <p class="s3">深圳市<i class="el-icon-caret-right"></i></p>
+          <select name="" id="" class="s2" v-model='Birthplace1'>
+            <option v-for="(option ,index ) in options2" :value="option.value" :key="index">{{option.value}}</option>
+          </select>
+          <select name="" id="" class="s3" v-model='Birthplace2'>
+            <option v-for="(option ,index ) in options3" :value="option.value" :key="index">{{option.value}}</option>
+          </select>
         </div>
       </div>
 
       <div class="op">
         <p class="name">现居地址:</p>
         <div class="val">
-          <input type="text" placeholder="请输入现居住地址">
+          <input type="text" placeholder="请输入现居住地址" v-model='allData.Residence' maxlength='20'>
         </div>
       </div>
 
       <div class="op">
         <p class="name">留学国家:</p>
         <div class="val">
-          <p class="s1">美国<i class="el-icon-caret-bottom"></i></p>
+          <select name="" id="" class="s1" v-model='allData.StudyRegion'>
+            <option v-for="(option ,index ) in options4" :value="option.value" :key="index">{{option.value}}</option>
+          </select>
         </div>
       </div>
 
       <div class="op">
         <p class="name">毕业院校:</p>
         <div class="val">
-          <input type="text" placeholder="请输入毕业院校">
+          <input type="text" placeholder="请输入毕业院校" v-model="allData.GraduateSchool" maxlength='30'>
         </div>
       </div>
 
       <div class="op">
         <p class="name">最高学历:</p>
         <div class="val">
-          <p class="s1">本科<i class="el-icon-caret-bottom"></i></p>
+          <select name="" id="" class="s1" v-model='allData.HighestDegree'>
+            <option v-for="(option ,index ) in options5" :value="option.text" :key="index">{{option.text}}</option>
+          </select>
         </div>
       </div>
 
       <div class="op">
         <p class="name">现工作单位:</p>
         <div class="val">
-          <input type="text" placeholder="请输入现工作单位">
+          <input type="text" placeholder="请输入现工作单位" v-model='allData.WorkUnit' maxlength='30'>
         </div>
       </div>
 
       <div class="op">
         <p class="name">职务:</p>
         <div class="val">
-          <input type="text" placeholder="请输入职务">
+          <input type="text" placeholder="请输入职务" v-model='allData.Position' maxlength='20'>
         </div>
       </div>
 
       <div class="op">
         <p class="name">通讯地址:</p>
         <div class="val">
-          <input type="text" placeholder="请输入地址">
+          <input type="text" placeholder="请输入地址" v-model='allData.Address' maxlength='30'>
         </div>
       </div>
 
       <div class="op">
         <p class="name">邮政编码:</p>
         <div class="val">
-          <input type="text" placeholder="请输入邮政编码">
+          <input type="text" placeholder="请输入邮政编码" v-model='allData.Postcode' maxlength='10'>
         </div>
       </div>
 
       <div class="op">
         <p class="name">联系电话:</p>
         <div class="val">
-          <input type="text" placeholder="请输入联系电话">
+          <input type="text" placeholder="请输入联系电话" v-model='allData.Phone' maxlength='20'>
         </div>
       </div>
 
       <div class="op ex">
         <p class="name">海外工作经验:</p>
         <div class="val">
-          <el-radio-group v-model="radios.radio2" class='ex'>
-            <el-radio :label="3" class='mb'>刚毕业</el-radio>
-            <br>
-            <el-radio :label="6" class='mb'>在海外工作1-5年(不含求学阶段)</el-radio>
-            <br>
-            <el-radio :label="9" class='mb'>在海外工作5年以上(不含求学阶段)</el-radio>
+          <el-radio-group v-model="allData.AbroadWorkExp" class='ex'>
+            <el-radio v-for="(option,index) in options6" :label="option.value" class='mb' :key='index'>{{option.value}}</el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -115,12 +125,8 @@
       <div class="op ex">
         <p class="name">是否已经回国工作:</p>
         <div class="val">
-          <el-radio-group v-model="radios.radio3" class='ex'>
-            <el-radio :label="3" class='mb'>长期在国外</el-radio>
-            <br>
-            <el-radio :label="6" class='mb'>两地往返</el-radio>
-            <br>
-            <el-radio :label="9" class='mb'>长期在中国</el-radio>
+          <el-radio-group v-model="allData.WorkHomeStat" class='ex'>
+            <el-radio v-for="(option,index) in options7" :label="option.value" class='mb' :key='index'>{{option.value}}</el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -128,20 +134,18 @@
       <div class="op">
         <p class="name">是否海外创业经历:</p>
         <div class="val">
-          <el-radio-group v-model="radios.radio4">
+          <el-radio-group v-model="allData.EverStarupAbroad">
             <el-radio :label="1">是</el-radio>
-            <el-radio :label="2">否</el-radio>
+            <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </div>
       </div>
-
       <div class="op ex">
         <p class="name">专长优势:</p>
         <div class="val ex">
-          <textarea type="text" placeholder='请输入专长优势' class='good'></textarea>
+          <textarea type="text" placeholder='请输入专长优势' class='good'  v-model='allData.Advantage'></textarea>
         </div>
       </div>
-
       <div class="op te">
         <p class="name">学位证书:</p>
         <div class="val">
@@ -216,7 +220,7 @@
       </div>
 
       <div class="submit_box">
-        <button class="btn_save">保存</button>
+        <button class="btn_save" @click="subData()">保存</button>
         <button class="toEn">英译中</button>
       </div>
 
@@ -229,17 +233,46 @@
     name: 'Resume',
     data: function () {
       return {
-        radios:{
-          radio1: 1,
-          radio2: 3,
-          radio3: 3,
-          radio4: 1,
-        },
-        options: [
-          {
-            value: '选项1',
-            label: '黄金糕'
-          },
+        options1: [
+          {value: '中国',},
+          {value: '美国',},
+          {value: '日本',},
+          {value: '俄罗斯',},
+        ],
+        options2: [
+          {value: '广东省',},
+          {value: '福建省',},
+          {value: '湖南省',},
+          {value: '黑龙江省',},
+        ],
+        options3: [
+          {value: '深圳市',},
+          {value: '漳州市',},
+          {value: '长沙市',},
+          {value: '哈尔滨市',},
+        ],
+        options4: [
+          {value: '中国',},
+          {value: '美国',},
+          {value: '日本',},
+          {value: '俄罗斯',},
+        ],
+        options5: [
+          {value: '1',text:'本科'},
+          {value: '2',text:'大专'},
+          {value: '3',text:'硕士'},
+          {value: '4',text:'博士'},
+          {value: '5',text:'研究生'},
+        ],
+        options6: [
+          {value: '刚毕业'},
+          {value: '在海外工作1-5年(不含求学阶段)'},
+          {value: '在海外工作5年以上(不含求学阶段)'},
+        ],
+        options7: [
+          {value: '长期在国外'},
+          {value: '两地往返'},
+          {value: '长期在中国'},
         ],
         value: '',
         upFile:{
@@ -253,11 +286,58 @@
           }, {
             name:"只能上传jpg/png文件"
           }
-        ]
+        ],
+        Birthplace1:'',
+        Birthplace2:'',
+        allData:{
+          IsMale: '',
+          Birthday:'',
+          Nationality:'',
+          Birthplace: '',
+          Residence:'',
+          StudyRegion:'',
+          GraduateSchool:'',
+          HighestDegree:'',
+          WorkUnit:'',
+          Position:'',
+          Address:'',
+          Postcode:'',
+          Phone:'',
+          AbroadWorkExp:'',
+          WorkHomeStat:'',
+          EverStarupAbroad:'',
+          Advantage:'',
+        },
       }
     },
+    mounted: function () {
+      let vm = this;
+      var userid = sessionStorage.getItem('userId');
+      if(!userid || userid == 0) return false;
+      vm.$axios({
+        method:'post',
+        url:vm.$api + "/resume",
+        data:"userid="+userid
+      })
+        .then(function (res) {
+          var res = res.data
+          if(res.code == 0){
+            vm.allData = res.result;
+            vm.allData.Birthday = vm.allData.Birthday * 1000;
+            var bpl = vm.allData.Birthplace.split("省")
+            vm.Birthplace1 = bpl[0].toString()+"省";
+            vm.Birthplace2 = bpl[1].toString();
+          }else {
+            vm.$message.error(res.message)
+          }
+        })
+        .catch(function (err) {
+          alert(err);
+        })
+    },
+    //方法
     methods: {
-      beforeAvatarUpload: function (file) {//限制上传文件类型
+      beforeAvatarUpload: function (file) {
         var testmsg=file.name.substring(file.name.lastIndexOf('.')+1)
         const extension = testmsg === 'xls'
         const extension2 = testmsg === 'xlsx'
@@ -275,28 +355,54 @@
           });
         }
         return extension || extension2 && isLt2M
-      },
-      handleRemove:function (file, fileList) {
-        console.log(file, fileList);
+      },//限制上传文件类型
+      handleRemove:function (file, fileList) {//限制上传类型
         this.fileName[0].name =  "只能上传jpg/png文件";
       },
-      handleExceed:function (files, fileList) {//限制上传文件数
+      handleExceed:function (files, fileList) {
         this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
-      getfilename1: function (file,fileList,) {//获取上传文件名称
-        console.log(file.raw.type);
+      },//限制上传文件数
+      getfilename1: function (file,fileList,) {
         if(file.raw.type != "image/jpeg"){
-          console.log(file.raw.type);
           this.$message.warning("只能上传jpg/png文件")
           return false
         }
         this.fileName[0].name =  file.name;
-      },
-      getfilename2: function (file,fileList,) {//获取上传文件名称
+      },//获取上传文件名称
+      getfilename2: function (file,fileList,) {
         this.fileName[1].name =  file.name;
-      },
-      getfilename3: function (file,fileList,) {//获取上传文件名称
+      },//获取上传文件名称
+      getfilename3: function (file,fileList,) {
         this.fileName[2].name =  file.name;
+      },
+      //保存上传简历数据
+      subData: function () {
+        let vm = this;
+        var userid = sessionStorage.getItem("userId");
+        if(!userid || userid == 0) {
+          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
+          return false;
+        }
+        let data = JSON.parse(JSON.stringify(vm.allData));
+        data.Birthplace = vm.Birthplace1 + vm.Birthplace2;
+        data.Birthday = data.Birthday/1000;
+        data.UserId = userid;
+        vm.$axios({
+          method:'post',
+          url:vm.$api + "/setresume?userid=" + userid,
+          data:JSON.stringify(data)
+        })
+          .then(function (res) {
+            var res = res.data;
+            if(res.code == 0){
+              vm.$message.success('保存成功!');
+            }else {
+              vm.$message.error(res.message);
+            }
+          })
+          .catch(function (err) {
+            alert(err);
+          })
       }
     }
   }
@@ -320,16 +426,11 @@
         width: 310px;
         font-size: 14px;
         float: left;
-        p {
+        select {
           border: solid 1px #53b1dc;
           color: #29a9f5;
           height: 22px;
           line-height: 20px;
-          i {
-            line-height: 20px;
-            float: right;
-            margin-right: 10px;
-          }
         }
         input {
           width: 310px;
@@ -358,6 +459,13 @@
         }
       }
     }
+    div.timebox{
+      height: 40px;
+        .el-input__inner{
+          border: 1px solid #53b1dc !important;
+          border-radius: 0px !important;
+        }
+    }
   }
 
   .ex {
@@ -365,8 +473,9 @@
   }
 
   .mb {
-    margin-bottom: 5px;
-    padding-top: 5px;
+    display: block;
+    margin: 0;
+    margin-bottom: 8px;
   }
   .te{
     margin-bottom: 40px !important;

@@ -6,10 +6,14 @@
         <p class="name">落户城市&nbsp;:</p>
         <div class="job_main_r_box">
           <div class="sheng_box">
-            <p class="sheng">广东省<i class="el-icon-caret-right"></i></p>
+              <select name="" id="" class="sheng" v-model="sheng">
+                <option v-for="(option,index) in options1" :value="option.value" :key="index">{{option.value}}</option>
+              </select>
           </div>
           <div class="shi_box">
-            <p class="shi">深圳市<i class="el-icon-caret-right"></i></p>
+            <select name="" id="" class="sheng" v-model="shi">
+              <option v-for="(option,index) in options2" :value="option.value" :key="index">{{option.value}}</option>
+            </select>
           </div>
         </div>
       </div>
@@ -17,27 +21,23 @@
         <p class="name">求职行业&nbsp;:</p>
         <div class="job_main_r_box">
           <div class="profession">
-            <p class="choice_name">选择/修改<i class="el-icon-caret-right"></i></p>
+            <select name="" id="" class="industry" v-model="Datas.IntentIndustry">
+              <option v-for="(option,index) in options3" :value="option.value" :key="index">{{option.value}}</option>
+            </select>
           </div>
         </div>
       </div>
       <div class="job_main">
         <p class="name">就职岗位&nbsp;:</p>
         <div class="job_main_r_box">
-          <input type="text" placeholder="请输入就职岗位" class="jobTo">
+          <input type="text" placeholder="请输入就职岗位" class="jobTo" v-model="Datas.IntentPosition">
         </div>
       </div>
       <div class="job_main workTime">
         <p class="name">可在中国工作时间&nbsp;:</p>
         <div class="job_main_r_box">
-          <el-radio-group v-model="radio">
-            <el-radio :label="1">全职回国</el-radio>
-            <br>
-            <el-radio :label="2">每年不少于6个月</el-radio>
-            <br>
-            <el-radio :label="3">每年不少于3个月</el-radio>
-            <br>
-            <el-radio :label="4">备选项</el-radio>
+          <el-radio-group v-model="Datas.TimeWorkHome">
+            <el-radio v-for="(list,index) in options4" :label="list.value" :key="index">{{list.value}}</el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -45,25 +45,28 @@
         <p class="name">渴望年薪&nbsp;:</p>
         <div class="job_main_r_box">
           <div class="profession">
-            <p class="choice_name">面议<i class="el-icon-caret-right"></i></p>
+            <select name="" id="" class="industry" v-model="Datas.ExpectedSalary">
+              <option v-for="(option,index) in options5" :value="option.value" :key="index">{{option.value}}</option>
+            </select>
           </div>
         </div>
       </div>
       <div class="job_main">
         <p class="name">期望福利&nbsp;:</p>
         <div class="job_main_r_box">
-          <input type="text" placeholder="请输入期望福利" class="jobTo">
+          <input type="text" placeholder="请输入期望福利" class="jobTo" v-model="Datas.ExpectedWelfare">
         </div>
       </div>
       <div class="job_main more">
         <p class="name">更多资料&nbsp;:</p>
         <div class="job_main_r_box">
-          <textarea name="more" id="more" cols="30" rows="10" placeholder="请输入回国工作设想、其他要求"></textarea>
+          <textarea name="more" id="more" cols="30" rows="10" placeholder="请输入回国工作设想、其他要求" v-model="Datas.Info"></textarea>
         </div>
       </div>
     </div>
     <div class="submit_box">
-      <button class="btn_save">保存</button>
+      <button class="btn_save" @click="saveJobInfo()">保存</button>
+      <button class="del" @click="delJobInfo()">删除</button>
       <button class="toEn">英译中</button>
     </div>
   </div>
@@ -74,8 +77,131 @@
     name:"JobIntention",
     data () {
       return {
-        radio:1
+        options1:[
+          {value:"广东省"},
+          {value:"福建省"},
+          {value:"海南省"}
+        ],
+        options2:[
+          {value:"深圳市"},
+          {value:"广州市"},
+          {value:"汕头市"}
+        ],
+        options3:[
+          {value:"金融业"},
+          {value:"IT行业"},
+          {value:"证券投资"}
+        ],
+        options4:[
+          {value:"全职回国"},
+          {value:"每年不少于6个月"},
+          {value:"每年不少于3个月"},
+          {value:"短期兼职"}
+        ],
+        options5:[
+          {value:"面议"},
+          {value:"6-10万"},
+          {value:"10-15万"},
+          {value:"15-20万"},
+          {value:"20-30万"},
+          {value:"30万以上"},
+        ],
+        sheng:'',
+        shi:'',
+        Datas:{
+          IntentArea:'',
+          IntentIndustry:'',
+          IntentPosition:'',
+          TimeWorkHome:'',
+          ExpectedSalary:'',
+          ExpectedWelfare:'',
+          Info:'',
+        }
       };
+    },
+    mounted: function () {
+      this.getNewData();
+    },
+    methods:{
+      //获取初始化数据
+      getNewData: function () {
+        let vm = this;
+        let userid = sessionStorage.getItem("userId");
+        if(!userid || userid == 0) return false;
+        vm.$axios({
+          method:'post',
+          url:vm.$api + '/jobapply?userid=' + userid,
+        })
+          .then(function(res){
+            var res = res.data;
+            if(res.code == 0){
+              if(!res.result) return false;
+              vm.Datas = res.result;
+              var arr = vm.Datas.IntentArea.split('省');
+              vm.sheng = arr[0]+"省";
+              vm.shi = arr[1];
+            }else {
+              vm.$message.error(res.message);
+            }
+          })
+          .catch(function(err){
+            alert(err);
+          });
+      },
+      //保存求职意向
+      saveJobInfo: function () {
+        let vm = this;
+        var userid = sessionStorage.getItem("userId");
+        if (!userid || userid == 0) {
+          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
+          return false;
+        };
+        let data = JSON.parse(JSON.stringify(vm.Datas));
+        data.IntentArea = vm.sheng + vm.shi;
+        data.UserId = userid;
+        vm.$axios({
+          method:'post',
+          url:vm.$api + '/setjobapply?userid='+ userid,
+          data:JSON.stringify(data)
+        })
+          .then(function(res){
+            var res = res.data;
+            if(res.code == 0){
+              vm.$message.success("修改并保存求职意向成功!");
+              vm.getNewData();
+            }else {
+              vm.$message.error(res.message);
+            }
+          })
+          .catch(function(err){
+            alert(err);
+          });
+      },
+      //删除求职意向
+      delJobInfo: function () {
+        let vm = this;
+        var userid = sessionStorage.getItem("userId");
+        if (!userid || userid == 0) {
+          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
+          return false;
+        };
+        vm.$axios({
+          method:'post',
+          url:vm.$api+'/deletejobapply?userid='+userid,
+        })
+          .then(function(res){
+            var res = res.data;
+            if(res.code == 0 ){
+              vm.$message.success('删除成功!');
+              vm.getNewData();
+            }else {
+              vm.$message.error(res.message);
+            }
+          })
+          .catch(function(err){
+            alert(err);
+          });
+      }
     }
   }
 </script>
@@ -101,14 +227,13 @@
         .sheng_box,.shi_box{
           width: 82px;
           height: 22px;
-          border: solid 1px #53b1dc;
-          padding-left: 6px;
-          color: #29a9f5;
-          line-height: 20px;
-          i{
-            float: right;
+          .sheng{
+            width: 100%;
+            height: 100%;
+            border: solid 1px #53b1dc;
+            color: #29a9f5;
             line-height: 20px;
-            margin-right: 10px;
+            padding-left: 6px;
           }
         }
         .sheng_box{
@@ -121,13 +246,12 @@
         .profession{
           width: 148px;
           height: 22px;
-          border: solid 1px #53b1dc;
-          color: #29a9f5;
-          text-align: center;
-          i{
-            float: right;
-            line-height: 20px;
-            margin-right: 22px;
+          .industry{
+            width: 100%;
+            height: 100%;
+            border: solid 1px #53b1dc;
+            color: #29a9f5;
+            padding-left: 6px;
           }
         }
         .jobTo{
@@ -137,7 +261,9 @@
           padding-left: 6px;
         }
         label{
+          display: block;
           margin-bottom: 8px;
+          margin-left: 0px;
         }
         #more{
           width: 378px;
@@ -155,12 +281,12 @@
     }
   }
   .submit_box{
-    width: 140px;
+    width: 300px;
     height: 24px;
     margin: 0 auto;
     margin-top: 50px;
     margin-bottom: 60px;
-    .btn_save{
+    .btn_save,.del{
       width: 50px;
       height: 24px;
       background-color: #169bd8;
@@ -170,6 +296,9 @@
       color: #fff;
       float: left;
     }
+    .del{
+      margin-left: 30px;
+    }
     .toEn{
       width: 66px;
       height: 24px;
@@ -178,7 +307,8 @@
       color: #545454;
       line-height: 24px;
       background-color: #fff;
-      float: right;
+      float: left;
+      margin-left: 30px;
     }
   }
 }

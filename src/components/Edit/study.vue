@@ -12,13 +12,13 @@
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <td>国内</td>
-        <td>罗格斯暨新泽西州立大学</td>
-        <td>2015/9---2018/6</td>
-        <td>本科</td>
+      <tr v-for="(list,index) in DataLists" :key="index" @click="getInfo(list.Id)">
+        <td>{{list.IsHome | ifHome}}</td>
+        <td>{{list.BeginDate | formatDate}}--{{list.EndDate | formatDate}}</td>
+        <td>{{list.College}}</td>
+        <td>{{list.Degree}}</td>
         <td>
-          <button type=button>删除</button>
+          <button type=button @click.stop="delStudy(list.Id)">删除</button>
         </td>
       </tr>
       </tbody>
@@ -28,52 +28,53 @@
       <div class="study_main">
         <p class="name">国内/国外&nbsp;:</p>
         <div class="st_content_box">
-          <el-radio-group v-model="radio">
-            <el-radio :label="0">国内</el-radio>
-            <el-radio :label="1">国外</el-radio>
+          <el-radio-group v-model="viewData.IsHome">
+            <el-radio :label="1">国内</el-radio>
+            <el-radio :label="0">国外</el-radio>
           </el-radio-group>
         </div>
       </div>
 
       <div class="study_main">
         <p class="name">时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;间&nbsp;:</p>
-        <div class="st_content_box st_time">
-          <span class="y">1999</span>
-          <i>年</i>
-          <span class="m">5</span>
-          <i>月</i>
-          <i>至</i>
-          <span class="y">1999</span>
-          <i>年</i>
-          <span class="m">5</span>
-          <i>月</i>
+        <div class="st_content_box">
+          <el-date-picker
+            type="daterange"
+            v-model='time'
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="timestamp">
+          </el-date-picker>
         </div>
       </div>
 
       <div class="study_main">
         <p class="name">学校名称&nbsp;:</p>
         <div class="st_content_box">
-          <input type="text" class="st_schoolName" placeholder="请输入学校名称">
+          <input type="text" class="st_schoolName" v-model="viewData.College" maxlength='30'>
         </div>
       </div>
 
       <div class="study_main">
         <p class="name">专&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;业&nbsp;:</p>
         <div class="st_content_box st_faculty_box">
-          <p class="st_faculty">计算机系<i class="el-icon-caret-right"></i></p>
+          <select name="" id="" class="st_faculty" v-model="viewData.Major">
+            <option v-for="(option,index) in options1" :value="option.value" :key="index">{{option.value}}</option>
+          </select>
         </div>
       </div>
 
       <div class="study_main">
         <p class="name">学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;历&nbsp;:</p>
         <div class="st_content_box st_faculty_box">
-          <p class="st_faculty">计算机系<i class="el-icon-caret-bottom"></i></p>
+          <select name="" id="" class="st_faculty" v-model="viewData.Degree">
+            <option v-for="(option,index) in options2" :value="option.value" :key="index">{{option.value}}</option>
+          </select>
         </div>
       </div>
-
       <div class="btn_box">
-        <button class="save_add" type='button'>保存并新增学习经历</button>
-        <button class="save" type='button'>保存</button>
+        <button class="save_add" type='button' @click="addNewStudy()">新增并保存学习经历</button>
+        <button class="save" type='button' @click="saveStudy()">保存</button>
       </div>
 
     </div>
@@ -81,17 +82,178 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {formatDate} from '../../assets/js/date.js';
+
   export default {
     name:"Study",
     data () {
       return {
-        radio: 0
+        options1:[
+          {value:"计算机系"},
+          {value:"外语系"},
+          {value:"艺术系"},
+          {value:"热作系系"},
+        ],
+        options2:[
+          {value:"博士"},
+          {value:"硕士"},
+          {value:"学士"},
+          {value:"其他"},
+        ],
+        time:[],
+        DataLists:[],
+        viewData:{
+          Id:'',
+          IsHome:'',
+          BeginDate:'',
+          EndDate:'',
+          College:'',
+          Major:'',
+          Degree:'',
+        },
       };
+    },
+    filters: {
+      formatDate: function (time) { //时间戳转日期
+        let date = new Date(time * 1000);
+        return formatDate(date, 'yyyy-MM-dd');
+      },
+      ifHome: function (value) {
+        return value==1? "国内":"国外";
+      }
+    },
+    mounted: function () {
+      this.getNewData();
+    },
+    methods:{
+      //获取数据列表
+      getNewData: function () {
+        let vm = this;
+        let userid = sessionStorage.getItem("userId");
+        if(!userid || userid == 0) return false;
+        vm.$axios({
+            method:'post',
+            url:vm.$api + '/educations?userid=' + userid,
+        })
+           .then(function(res){
+             var res = res.data;
+             if(res.code == 0){
+               vm.DataLists = res.result;
+             }else {
+               vm.$message.error(res.message);
+             }
+           })
+           .catch(function(err){
+             alert(err);
+           });
+      },
+      //保存并新增学习经历
+      addNewStudy: function () {
+        let vm = this;
+        var userid = sessionStorage.getItem("userId");
+        if(!userid || userid ==0) {
+          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
+          return false;
+        }
+        let data = JSON.parse(JSON.stringify(vm.viewData));
+        data.BeginDate = vm.time[0]/1000;
+        data.EndDate = vm.time[1]/1000;
+        data.Id = "0";
+        data.UserId = userid;
+        vm.$axios({
+            method:'post',
+            url:vm.$api + '/seteducation?operate=1&id=0',
+            data:JSON.stringify(data)
+        })
+           .then(function(res){
+             var res = res.data;
+             if(res.code == 0){
+               vm.$message.success("新增并保存学习经历成功!");
+               vm.getNewData();
+             }else {
+                vm.$message.error(res.message);
+             }
+           })
+           .catch(function(err){
+             alert(err);
+           });
+      },
+      //保存修改学习经历
+      saveStudy: function () {
+        let vm = this;
+        var userid = sessionStorage.getItem("userId");
+        if (!userid || userid == 0) {
+          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
+          return false;
+        };
+        let data = JSON.parse(JSON.stringify(vm.viewData));
+        data.BeginDate = vm.time[0]/1000;
+        data.EndDate = vm.time[1]/1000;
+        vm.$axios({
+          method:'post',
+          url:vm.$api + '/seteducation?operate=2&id='+ data.Id,
+          data:JSON.stringify(data)
+        })
+          .then(function(res){
+            var res = res.data;
+            if(res.code == 0){
+              vm.$message.success("修改并保存学习经历成功!");
+              vm.getNewData();
+            }else {
+              vm.$message.error(res.message);
+            }
+          })
+          .catch(function(err){
+            alert(err);
+          });
+      },
+      //获取单项详情
+      getInfo: function (id) {
+        let vm = this;
+        console.log(id);
+        vm.$axios({
+            method:'post',
+            url:vm.$api + '/education?id=' + id,
+        })
+           .then(function(res){
+             var res = res.data;
+             if(res.code == 0){
+               vm.viewData = res.result;
+               vm.viewData.Id = id;
+               vm.time = [vm.viewData.BeginDate*1000,vm.viewData.EndDate*1000];
+             }else {
+               vm.$message.error(res.message);
+             }
+           })
+           .catch(function(err){
+             alert(err);
+           });
+      },
+      //删除学习经历
+      delStudy: function (id) {
+        let vm = this;
+        vm.$axios({
+          method:'post',
+          url:vm.$api+'/deleteeducation?id='+id,
+        })
+          .then(function(res){
+            var res = res.data;
+            if(res.code == 0 ){
+              vm.$message.success('删除成功!');
+              vm.getNewData();
+            }else {
+              vm.$message.error(res.message);
+            }
+          })
+          .catch(function(err){
+            alert(err);
+          });
+      }
     }
   }
 </script>
 
-<style lang="scss" type="text/scss" scoped>
+<style lang="scss" type="text/scss">
   #study{
     table,table tr th, table tr td {
       border:1px solid #cccccc;
@@ -121,6 +283,10 @@
         height: 32px;
         line-height: 32px;
         font-size: 14px;
+        cursor: pointer;
+        &:hover{
+          background-color: #f1f1f1;
+        }
         button{
           color: #169bd8;
           background-color: #fff;
@@ -141,26 +307,21 @@
           margin-right: 8px;
         }
         .st_content_box{
+          height: 22px;
           float: left;
-        }
-        .st_time{
-          color: #454545;
-          span{
-            display: inline-block;
+          .el-input__inner{
             height: 22px;
-            border: solid 1px #53b1dc;
             line-height: 20px;
-            text-align: center;
-            cursor: pointer;
-          }
-          .y{
-            width: 56px;
-          }
-          .m{
-            width: 48px;
-          }
-          i{
-            margin: 0px 3px;
+            border: solid 1px #53b1dc;
+            border-radius: 0px;
+            .el-input__icon{
+              height: 22px;
+              line-height: 20px;
+            }
+            .el-range-separator{
+              height: 22px;
+              line-height: 20px;
+            }
           }
         }
         .st_schoolName{
@@ -173,19 +334,14 @@
         .st_faculty_box{
           width: 148px;
           height: 22px;
-          border: solid 1px #53b1dc;
           .st_faculty{
             width: 100%;
-            height: 20px;
-            line-height: 20px;
+            height: 22px;
+            line-height: 22px;
             padding-left: 6px;
             color: #29a9f5;
             font-size: 14px;
-            i{
-              float: right;
-              line-height: 20px;
-              margin-right: 20px;
-            }
+            border: solid 1px #53b1dc;
           }
         }
       }

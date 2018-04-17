@@ -55,7 +55,7 @@ export default {
       ],
       changeNb:-1,
       fg1:1,
-      fg2:false,
+      fg2:true,
     }
   },
   methods:{

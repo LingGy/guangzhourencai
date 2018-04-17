@@ -9,7 +9,10 @@ import axios from 'axios';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/common.css';
-
+import * as filters from './assets/js/date.js'
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
 
 
 Vue.prototype.$api ='http://192.168.1.130:9801';

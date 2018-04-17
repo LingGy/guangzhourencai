@@ -40,14 +40,14 @@
       }
     },
     mounted: function () {
-      this.$axios.post("http://192.168.1.130:9700" + '/crawlerlist')
+      let vm = this;
+      vm.$axios.post("http://192.168.1.130:9700" + '/crawlerlist')
         .then((response) => {
           console.log(response);
-          this.lists = response.data;
+          vm.lists = response.data;
         })
         .catch(function (err) {
-          alert(err)
-          console.log(err);
+          alert(err);
         })
     },
     methods:{

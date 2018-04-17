@@ -29,11 +29,11 @@
           <th>{{result.ChineseName}}</th>
           <th>{{result.EnglishName}}</th>
           <th>{{result.Email}}</th>
-          <th>{{result.RegisterDate | formatDate}}</th>
+          <th>{{result.RegisterDate | formatDate()}}</th>
           <th>{{result.Level | getLevel}}</th>
           <th>{{result.Type | getType}}</th>
           <th>
-            <button type='button' class='toInfo'>详情</button>
+            <button type='button' class='toInfo' @click="btnToInfo(result.UserId)">详情</button>
           </th>
         </tr>
         </tbody>
@@ -43,8 +43,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import {formatDate} from '../../assets/js/formatDate.js';
   import {formatDate} from '../../assets/js/date.js';
+  import Bus from '../../assets/js/bus.js';
 
   export default {
     name: 'personnelLists',
@@ -56,48 +56,52 @@
         results: [],
       }
     },
-    filters:{
+    filters: {
       formatDate: function (time) { //时间戳转日期
-        let date = new Date(time*1000);
-        return formatDate(date,'yyyy-MM-dd');
+        let date = new Date(time * 1000);
+        return formatDate(date, 'yyyy-MM-dd');
       },
       getLevel: function (level) {//判断等级
-        if(level==1){
+        if (level == 1) {
           return "高级";
-        }else{
+        } else {
           return "基本";
         }
       },
       getType: function (type) {//判断类型
-        if(type==1){
+        if (type == 1) {
           return "海外人士";
-        }else{
+        } else {
           return "机构";
         }
       }
     },
-    mounted: function () {
+    mounted: function () {//获取人才列表
       let vm = this;
       vm.$axios({
         method: 'post',
         url: vm.$api + "/talents",
         data: "name=" + vm.name + "&page=" + vm.page + "&count=" + vm.count
-      }).then((response) => {
-        console.log(response.data);
-        let data = response.data;
-        if (data.code == 0) {
-          vm.results = data.result;
-        } else {
-          alert(data.message);
-        }
       })
+        .then((response) => {
+          let data = response.data;
+          if (data.code == 0) {
+            vm.results = data.result;
+          } else {
+            vm.$message.error(data.message);
+          }
+        })
         .catch(function (err) {
-          console.log(err);
+          alert(err);
         })
     },
-    computed: {
-
-    },
+    computed: {},
+    methods: {
+      btnToInfo: function (userid) {//获取点击对应人才的userid并传值给中间件
+        sessionStorage.setItem("userId", userid);
+        this.$router.push('/Edit/personnelInfo');
+      }
+    }
   }
 </script>
 
