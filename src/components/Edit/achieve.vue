@@ -71,24 +71,15 @@
         },
       }
     },
-    filters: {
-      formatDate: function (time) { //时间戳转日期
-        let date = new Date(time * 1000);
-        return formatDate(date, 'yyyy-MM-dd');
-      }
-    },
-    mounted: function () {
-      this.getNewData();
+    created: function () {
+        this.getNewData();
     },
     methods:{
       //新增并保存个人成就信息
       addDate: function () {
         let vm = this;
-        var userid = sessionStorage.getItem("userId");
-        if(!userid || userid ==0) {
-          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
-          return false;
-        }else {
+        let userid = sessionStorage.getItem("userId");
+        if(userid && userid !=0) {
           let data = JSON.parse(JSON.stringify(vm.resData));
           data.Date = data.Date/1000;
           data.UserId = userid;
@@ -107,34 +98,35 @@
               }
             })
             .catch(function(err){});
+        }else {
+          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
         }
       },
       //保存上传个人成就数据
       saveDate: function () {
         let vm = this;
-        var userid = sessionStorage.getItem("userId");
-        if(!userid || userid ==0) {
-          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
-          return false;
-        }else {
+        let userid = sessionStorage.getItem("userId");
+        if(userid && userid !=0) {
           let data = JSON.parse(JSON.stringify(vm.resData));
           data.Date = data.Date/1000;
           vm.$axios({
-              method:'post',
-              url:vm.$api +'/setachievement?operate=2&id='+data.Id,
-              data:JSON.stringify(data)
+            method:'post',
+            url:vm.$api +'/setachievement?operate=2&id='+data.Id,
+            data:JSON.stringify(data)
           })
-              .then(function(res){
-                if(res.data.code == 0){
-                  vm.$message.success('保存成功!');
-                  vm.getNewData();
-                }else {
-                  if(res.data.message == 'error:缺少必要字段'){
-                    vm.$message.warning('请先选择要修改的项');
-                  }
+            .then(function(res){
+              if(res.data.code == 0){
+                vm.$message.success('保存成功!');
+                vm.getNewData();
+              }else {
+                if(res.data.message == 'error:缺少必要字段'){
+                  vm.$message.warning('请先选择要修改的项');
                 }
-              })
-              .catch(function(err){});
+              }
+            })
+            .catch(function(err){});
+        }else {
+          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
         }
       },
       //点击查看获奖详情
@@ -145,17 +137,17 @@
             url:vm.$api + '/achievement?id=' + id,
         })
            .then(function(res){
-             var res = res.data;
-             if(res.code == 0){
-               vm.resData = res.result;
+             let resDatas = res.data;
+             if(resDatas.code == 0){
+               vm.resData = resDatas.result;
                vm.resData.Date = vm.resData.Date * 1000;
                vm.resData.Id = id;
              }else {
-               vm.$message.error(res.message);
+               vm.$message.error(resDatas.message);
              }
            })
            .catch(function(err){
-             alert(err);
+             console.log(err);
            });
       },
       //删除个人成绩
@@ -166,36 +158,37 @@
             url:vm.$api+'/deleteachivement?id='+id,
         })
            .then(function(res){
-             var res = res.data;
-             if(res.code == 0 ){
+             let resDatas = res.data;
+             if(resDatas.code == 0 ){
                vm.$message.success('删除成功!');
                vm.getNewData();
              }else {
-               vm.$message.error(res.message);
+               vm.$message.error(resDatas.message);
              }
            })
            .catch(function(err){
-             alert(err);
+             console.log(err);
            });
       },
       //获取数据
       getNewData: function () {
         let vm = this;
-        var userid = sessionStorage.getItem('userId');
-        if(!userid || userid == 0) return false;
-        vm.$axios({
-          method:'post',
-          url:vm.$api + "/achievements?userid=" + userid,
-        })
-          .then(function (res) {
-            var res = res.data;
-            if(res.code ==0){
-              vm.resDataLists = res.result;
-            }
+        let userid = sessionStorage.getItem('userId');
+        if(userid && userid != 0) {
+          vm.$axios({
+            method:'post',
+            url:vm.$api + "/achievements?userid=" + userid,
           })
-          .catch(function (err) {
-            alert(err);
-          })
+            .then(function (res) {
+              let resDatas = res.data;
+              if(resDatas.code ==0){
+                vm.resDataLists = resDatas.result;
+              }
+            })
+            .catch(function (err) {
+              console.log(err);
+            })
+        };
       }
     }
   }
@@ -206,7 +199,7 @@
     border:1px solid #cccccc;
   }
   .achieveLists_box{
-    width: 846px;
+    min-width: 846px;
     border-collapse:collapse;
     text-align: center;
     color: #454545;

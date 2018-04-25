@@ -75,7 +75,7 @@
 <script type="text/ecmascript-6">
   export default {
     name:"JobIntention",
-    data () {
+    data:function () {
       return {
         options1:[
           {value:"广东省"},
@@ -119,88 +119,90 @@
         }
       };
     },
-    mounted: function () {
-      this.getNewData();
+    created: function () {
+        this.getNewData();
     },
     methods:{
       //获取初始化数据
       getNewData: function () {
         let vm = this;
         let userid = sessionStorage.getItem("userId");
-        if(!userid || userid == 0) return false;
-        vm.$axios({
-          method:'post',
-          url:vm.$api + '/jobapply?userid=' + userid,
-        })
-          .then(function(res){
-            var res = res.data;
-            if(res.code == 0){
-              if(!res.result) return false;
-              vm.Datas = res.result;
-              var arr = vm.Datas.IntentArea.split('省');
-              vm.sheng = arr[0]+"省";
-              vm.shi = arr[1];
-            }else {
-              vm.$message.error(res.message);
-            }
+        if(userid && userid != 0) {
+          vm.$axios({
+            method:'post',
+            url:vm.$api + '/jobapply?userid=' + userid,
           })
-          .catch(function(err){
-            alert(err);
-          });
+            .then(function(res){
+              let resDates = res.data;
+              if(resDates.code == 0){
+                if(!resDates.result) return false;
+                vm.Datas = resDates.result;
+                let arr = vm.Datas.IntentArea.split('省');
+                vm.sheng = arr[0]+"省";
+                vm.shi = arr[1];
+              }else {
+                vm.$message.error(resDates.message);
+              }
+            })
+            .catch(function(err){
+              console.log(err);
+            });
+        };
       },
       //保存求职意向
       saveJobInfo: function () {
         let vm = this;
-        var userid = sessionStorage.getItem("userId");
-        if (!userid || userid == 0) {
-          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
-          return false;
-        };
-        let data = JSON.parse(JSON.stringify(vm.Datas));
-        data.IntentArea = vm.sheng + vm.shi;
-        data.UserId = userid;
-        vm.$axios({
-          method:'post',
-          url:vm.$api + '/setjobapply?userid='+ userid,
-          data:JSON.stringify(data)
-        })
-          .then(function(res){
-            var res = res.data;
-            if(res.code == 0){
-              vm.$message.success("修改并保存求职意向成功!");
-              vm.getNewData();
-            }else {
-              vm.$message.error(res.message);
-            }
+        let userid = sessionStorage.getItem("userId");
+        if (userid && userid != 0) {
+          let data = JSON.parse(JSON.stringify(vm.Datas));
+          data.IntentArea = vm.sheng + vm.shi;
+          data.UserId = userid;
+          vm.$axios({
+            method:'post',
+            url:vm.$api + '/setjobapply?userid='+ userid,
+            data:JSON.stringify(data)
           })
-          .catch(function(err){
-            alert(err);
-          });
+            .then(function(res){
+              let resDates = res.data;
+              if(resDates.code == 0){
+                vm.$message.success("修改并保存求职意向成功!");
+                vm.getNewData();
+              }else {
+                vm.$message.error(resDates.message);
+              }
+            })
+            .catch(function(err){
+              console.log(err);
+            });
+        }else {
+          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
+        }
       },
       //删除求职意向
       delJobInfo: function () {
         let vm = this;
-        var userid = sessionStorage.getItem("userId");
-        if (!userid || userid == 0) {
-          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
-          return false;
-        };
-        vm.$axios({
-          method:'post',
-          url:vm.$api+'/deletejobapply?userid='+userid,
-        })
-          .then(function(res){
-            var res = res.data;
-            if(res.code == 0 ){
-              vm.$message.success('删除成功!');
-              vm.getNewData();
-            }else {
-              vm.$message.error(res.message);
-            }
+        let userid = sessionStorage.getItem("userId");
+        if (userid && userid != 0) {
+          vm.$axios({
+            method:'post',
+            url:vm.$api+'/deletejobapply?userid='+userid,
           })
-          .catch(function(err){
-            alert(err);
-          });
+            .then(function(res){
+              let resDates = res.data;
+              if(resDates.code == 0 ){
+                vm.$message.success('删除成功!');
+                vm.getNewData();
+              }else {
+                vm.$message.error(resDates.message);
+              }
+            })
+            .catch(function(err){
+              console.log(err);
+            });
+        }else {
+          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
+        }
+
       }
     }
   }

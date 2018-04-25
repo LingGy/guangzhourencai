@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Edit from '@/components/Edit/Edit';
-import Use from '@/components/Use/Use';
+import application from '@/components/Application/application';
 import Manage from '@/components/Manage/Manage';
 import Maintain from '@/components/Maintain/Maintain';
 import personnelLists from '@/components/Edit/personnelLists';
@@ -15,10 +15,17 @@ import project from '@/components/Edit/project';
 import reorganize from '@/components/Edit/reorganize';
 import runningInfo from '@/components/Manage/runningInfo';
 import taskManagement from '@/components/Manage/taskManagement';
+import accurate from '@/components/Application/accurate';
+import vague from '@/components/Application/vague';
+import packetList from '@/components/Application/packetList';
+import relation from '@/components/Application/relation';
+import relationpic from '@/components/Application/relationpic';
+import teamInfo from '@/components/Application/teamInfo';
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '*',
@@ -81,9 +88,46 @@ export default new Router({
       ]
     },
     {
-      path: '/Use',
-      name: 'Use',
-      component: Use
+      path: '/application',
+      name: 'application',
+      component: application,
+      children:[
+        {
+          path: '/application',
+          redirect:'/application/accurate'
+        },
+        {
+          path: '/application/accurate',
+          name: 'accurate',
+          component: accurate
+        },
+        {
+          path: '/application/vague',
+          name: 'vague',
+          component: vague
+        },
+
+        {
+          path: '/application/packetList',
+          name: 'packetList',
+          component: packetList
+        },
+        {
+          path: '/application/packetList/teamInfo',
+          name: 'teamInfo',
+          component: teamInfo
+        },
+        {
+          path: '/application/relation',
+          name: 'relation',
+          component: relation
+        },
+        {
+          path: '/application/relationpic',
+          name: 'relationpic',
+          component: relationpic
+        },
+      ]
     },
     {
       path: '/Manage',

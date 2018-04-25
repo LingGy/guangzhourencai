@@ -31,28 +31,37 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Bus from '../../assets/js/bus.js';
+  // import Bus from '../../assets/js/bus.js';
   export default {
     name:'runningInfo',
-    data: function () {
+    data:function () {
       return {
         lists:[],
       }
     },
-    mounted: function () {
+    created: function () {
       let vm = this;
-      vm.$axios.post("http://192.168.1.130:9700" + '/crawlerlist')
-        .then((response) => {
-          console.log(response);
-          vm.lists = response.data;
+      vm.$axios({
+          method:'post',
+          url:"http://192.168.1.130:9700" + '/crawlerlist',
+      })
+        .then(function (res) {
+          let resDatas = res.data;
+          if(resDatas.code == 0){
+            vm.lists = resDatas.data;
+          }else {
+            vm.$message.error(resDatas.message);
+          }
         })
         .catch(function (err) {
-          alert(err);
+          console.log(err);
         })
     },
     methods:{
       getName: function (index) {
-        Bus.$emit('val', this.lists[index].name);
+        // Bus.$emit('val', this.lists[index].name);
+        // this.$router.push('/Manage/taskManagement');
+        sessionStorage.setItem("CrawlerId",index);
         this.$router.push('/Manage/taskManagement');
       }
     }

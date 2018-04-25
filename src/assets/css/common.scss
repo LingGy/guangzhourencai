@@ -173,23 +173,19 @@ i {
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
 }
-
 button {
   border: none;
   &:hover {
     cursor: pointer;
   }
 }
-
 .position {
-  width: 331px;
-  height: 23px;
+  height: 24px;
   font-size: 14px !important;
   color: #8f8f8f !important;
   border-bottom: 1px solid #8f8f8f !important;
   margin-bottom: 16px;
 }
-
 #use, #edit, #manage, #maintain {
   display: block;
   position: relative;
@@ -223,9 +219,35 @@ button {
             margin-left: 26px;
           }
         }
+
+      }
+      .subson{
+        width: 100%;
+        padding-left: 45px;
+        overflow: hidden;
+        span{
+          display: block;
+          width: 120px;
+          height: 40px;
+          line-height: 40px;
+          text-align: center;
+          color: #545454;
+          background-color: #f5f6f9;
+          font-size: 18px;
+          &:hover{
+            cursor: pointer;
+            color: #40aff5;
+          }
+        }
+        .sp_active{
+          color: #40aff5;
+        }
+      }
+      .subsonH{
+        height: 0px;
       }
       .active1 {
-        background: url("../images/flag.png") no-repeat center/ 100%;
+        background: url("/static/img/flag.png") no-repeat center/ 100%;
         color: #ffffff !important;
       }
       &:hover {
@@ -246,7 +268,7 @@ button {
             width: 120px;
             height: 40px;
             line-height: 40px;
-            margin-left: 52px;
+            margin-left: 45px;
             background-color: #f5f6f9;
             text-align: center;
             &:hover {
@@ -275,4 +297,3 @@ button {
     padding: 45px 0px 0px 90px;
   }
 }
-

@@ -17,7 +17,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Bus from '../../assets/js/bus.js'
+  // import Bus from '../../assets/js/bus.js'
   export default {
     name:'taskManagement',
     data: function () {
@@ -28,30 +28,30 @@
       }
     },
     mounted: function () {
-      var vm = this;
-      // 用$on事件来接收参数
-      Bus.$on('val', (data) => {
-        vm.name = data;
-        vm.$axios.get(vm.$api + '/crawler',{
-          params:{
-            name:vm.name
-          }
+      let vm = this;
+      let testcrawler = sessionStorage.getItem("CrawlerId");
+      if(testcrawler){
+        vm.$axios({
+          method:'get',
+          url:"http://192.168.1.130:9700/crawler?name=" + testcrawler,
         })
-          .then((response) => {
-            vm.resData = response.data;
-            console.log(response.data);
+          .then(function(res){
+            let resDatas = res.data;
+            if(resDatas == 0){
+              vm.resData = resDatas.result;
+            }else {
+              vm.$message.error(resDatas.message);
+            }
           })
-          .catch(function (err) {
-            alert(err)
+          .catch(function(err){
             console.log(err);
-          })
-      });
+          });
+      }
     },
     methods:{
       setTime: function () {
         var vm = this;
         var strTime = new Date(this.startTime).getTime()/1000;
-
         this.$notify({
           title:"操作提示",
           message: '设置成功',

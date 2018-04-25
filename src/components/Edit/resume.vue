@@ -12,25 +12,31 @@
         </div>
       </div>
 
-      <div class="op timebox">
+      <div class="op">
         <p class="name">出生日期:</p>
-        <div class="val">
           <el-date-picker
             type="date"
             v-model='allData.Birthday'
             class="time_box"
             value-format='timestamp'>
           </el-date-picker>
-        </div>
       </div>
 
       <div class="op">
         <p class="name">国籍:</p>
         <div class="val">
-          <!--<p class="s1">中国大陆<i class="el-icon-caret-bottom"></i></p>-->
-          <select name="" id="" class="s1" v-model="allData.Nationality">
-            <option v-for="(option ,index ) in options1" :value="option.value" :key="index">{{option.value}}</option>
-          </select>
+          <el-select
+            v-model="allData.Nationality"
+            filterable
+            allow-create
+            placeholder="选择或输入留学国籍">
+            <el-option
+              v-for="item in countrys"
+              :key="item"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
         </div>
       </div>
 
@@ -56,16 +62,36 @@
       <div class="op">
         <p class="name">留学国家:</p>
         <div class="val">
-          <select name="" id="" class="s1" v-model='allData.StudyRegion'>
-            <option v-for="(option ,index ) in options4" :value="option.value" :key="index">{{option.value}}</option>
-          </select>
+          <el-select
+            v-model="allData.StudyRegion"
+            filterable
+            allow-create
+            placeholder="选择或输入留学国家">
+            <el-option
+              v-for="item in countrys"
+              :key="item"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
         </div>
       </div>
 
       <div class="op">
         <p class="name">毕业院校:</p>
         <div class="val">
-          <input type="text" placeholder="请输入毕业院校" v-model="allData.GraduateSchool" maxlength='30'>
+          <el-select
+            v-model="allData.GraduateSchool"
+            filterable
+            allow-create
+            placeholder="选择或输入毕业院校">
+            <el-option
+              v-for="(item,index) in colleges"
+              :key="index"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
         </div>
       </div>
 
@@ -73,7 +99,7 @@
         <p class="name">最高学历:</p>
         <div class="val">
           <select name="" id="" class="s1" v-model='allData.HighestDegree'>
-            <option v-for="(option ,index ) in options5" :value="option.text" :key="index">{{option.text}}</option>
+            <option v-for="(option ,index ) in options5" :value="option.value" :key="index">{{option.value}}</option>
           </select>
         </div>
       </div>
@@ -233,12 +259,7 @@
     name: 'Resume',
     data: function () {
       return {
-        options1: [
-          {value: '中国',},
-          {value: '美国',},
-          {value: '日本',},
-          {value: '俄罗斯',},
-        ],
+        countrys: [],
         options2: [
           {value: '广东省',},
           {value: '福建省',},
@@ -251,18 +272,10 @@
           {value: '长沙市',},
           {value: '哈尔滨市',},
         ],
-        options4: [
-          {value: '中国',},
-          {value: '美国',},
-          {value: '日本',},
-          {value: '俄罗斯',},
-        ],
         options5: [
-          {value: '1',text:'本科'},
-          {value: '2',text:'大专'},
-          {value: '3',text:'硕士'},
-          {value: '4',text:'博士'},
-          {value: '5',text:'研究生'},
+          {value:"博士"},
+          {value:"硕士"},
+          {value:"学士"},
         ],
         options6: [
           {value: '刚毕业'},
@@ -274,6 +287,7 @@
           {value: '两地往返'},
           {value: '长期在中国'},
         ],
+        colleges: [],
         value: '',
         upFile:{
           fg:false,
@@ -310,35 +324,88 @@
         },
       }
     },
-    mounted: function () {
-      let vm = this;
-      var userid = sessionStorage.getItem('userId');
-      if(!userid || userid == 0) return false;
-      vm.$axios({
-        method:'post',
-        url:vm.$api + "/resume",
-        data:"userid="+userid
+    created: function () {
+      let _this = this;
+      _this.$axios({
+        method:'get',
+        url:_this.$api+'/college',
       })
-        .then(function (res) {
-          var res = res.data
-          if(res.code == 0){
-            vm.allData = res.result;
-            vm.allData.Birthday = vm.allData.Birthday * 1000;
-            var bpl = vm.allData.Birthplace.split("省")
-            vm.Birthplace1 = bpl[0].toString()+"省";
-            vm.Birthplace2 = bpl[1].toString();
+        .then(function(res){
+          let resDatas = res.data;
+          if(resDatas.code == 0){
+            _this.colleges = resDatas.result;
           }else {
-            vm.$message.error(res.message)
+            console.log(resDatas.message);
           }
         })
-        .catch(function (err) {
-          alert(err);
+        .catch(function(err){
+          console.log(err);
+        });
+      _this.$axios({
+        method:'get',
+        url:_this.$api+'/major',
+      })
+        .then(function(res){
+          let resDatas = res.data;
+          if(resDatas.code == 0){
+            _this.majors = resDatas.result;
+          }else {
+            console.log(resDatas.message);
+          }
         })
+        .catch(function(err){
+          console.log(err);
+        });
+      _this.$axios({
+        method:'get',
+        url:_this.$api+'/country',
+      })
+        .then(function(res){
+          let resDatas = res.data;
+          if(resDatas.code == 0){
+            _this.countrys = resDatas.result;
+          }else {
+            console.log(resDatas.message);
+          }
+        })
+        .catch(function(err){
+          console.log(err);
+        });
+        _this.getNewData();
     },
     //方法
     methods: {
+      //获取初始化数据
+      getNewData: function () {
+        let vm = this;
+        let userid = sessionStorage.getItem('userId');
+        if(userid && userid != 0) {
+          vm.$axios({
+            method:'post',
+            url:vm.$api + "/resume",
+            data:"userid="+userid
+          })
+            .then(function (res) {
+              let resDatas = res.data
+              if(resDatas.code == 0){
+                if (!resDatas.result) return false;
+                vm.allData = resDatas.result;
+                vm.allData.Birthday = vm.allData.Birthday * 1000;
+                let bpl = vm.allData.Birthplace.split("省")
+                vm.Birthplace1 = bpl[0].toString()+"省";
+                vm.Birthplace2 = bpl[1].toString();
+              }else {
+                vm.$message.error(res.message)
+              }
+            })
+            .catch(function (err) {
+              console.log(err);
+            })
+        };
+
+      },
       beforeAvatarUpload: function (file) {
-        var testmsg=file.name.substring(file.name.lastIndexOf('.')+1)
+        let testmsg=file.name.substring(file.name.lastIndexOf('.')+1)
         const extension = testmsg === 'xls'
         const extension2 = testmsg === 'xlsx'
         const isLt2M = file.size / 1024 / 1024 < 2
@@ -378,37 +445,37 @@
       //保存上传简历数据
       subData: function () {
         let vm = this;
-        var userid = sessionStorage.getItem("userId");
-        if(!userid || userid == 0) {
+        let userid = sessionStorage.getItem("userId");
+        if(userid && userid != 0) {
+          let data = JSON.parse(JSON.stringify(vm.allData));
+          data.Birthplace = vm.Birthplace1 + vm.Birthplace2;
+          data.Birthday = data.Birthday/1000;
+          data.UserId = userid;
+          vm.$axios({
+            method:'post',
+            url:vm.$api + "/setresume?userid=" + userid,
+            data:JSON.stringify(data)
+          })
+            .then(function (res) {
+              let resDatas = res.data;
+              if(resDatas.code == 0){
+                vm.$message.success('保存成功!');
+              }else {
+                vm.$message.error(resDatas.message);
+              }
+            })
+            .catch(function (err) {
+              console.log(err);
+            })
+        }else {
           vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
-          return false;
         }
-        let data = JSON.parse(JSON.stringify(vm.allData));
-        data.Birthplace = vm.Birthplace1 + vm.Birthplace2;
-        data.Birthday = data.Birthday/1000;
-        data.UserId = userid;
-        vm.$axios({
-          method:'post',
-          url:vm.$api + "/setresume?userid=" + userid,
-          data:JSON.stringify(data)
-        })
-          .then(function (res) {
-            var res = res.data;
-            if(res.code == 0){
-              vm.$message.success('保存成功!');
-            }else {
-              vm.$message.error(res.message);
-            }
-          })
-          .catch(function (err) {
-            alert(err);
-          })
       }
     }
   }
 </script>
 
-<style lang="scss" type="text/scss" scoped>
+<style lang="scss" type="text/scss">
   .resumeInfo_box {
     width: 582px;
     div.op {
@@ -451,6 +518,22 @@
         .s2{
           margin-right: 15px;
         }
+        .el-select{
+          overflow: hidden;
+          .el-input__inner{
+            height: 22px;
+            width: 240px;
+            border-radius:0px;
+            line-height: 20px;
+            border: solid 1px #53b1dc;
+          }
+        }
+        .country{
+          width: 148px;
+          .el-input__inner{
+            width: 148px;
+          }
+        }
       }
       label {
         input {
@@ -459,22 +542,30 @@
         }
       }
     }
-    div.timebox{
-      height: 40px;
-        .el-input__inner{
-          border: 1px solid #53b1dc !important;
-          border-radius: 0px !important;
+    .time_box{
+      height: 22px;
+      width: 148px;
+      .el-input__inner{
+        height: 22px;
+        width: 148px;
+        line-height: 20px;
+        border: 1px solid #53b1dc;
+        border-radius: 0px;
+      }
+      span{
+        i.el-input__icon{
+          line-height: 20px !important;
         }
+      }
     }
   }
 
   .ex {
     height: 70px !important;
   }
-
   .mb {
     display: block;
-    margin: 0;
+    margin-left: 0px !important;
     margin-bottom: 8px;
   }
   .te{

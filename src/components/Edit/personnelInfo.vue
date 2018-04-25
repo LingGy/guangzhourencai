@@ -43,7 +43,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {formatDate} from '../../assets/js/date.js';
   export default {
     name:"personnelInfo",
     data: function () {
@@ -62,37 +61,35 @@
         ],
       }
     },
-    mounted: function () {
+    created: function () {
       this.getNewData();
     },
     methods:{
       //获取初始化数据
       getNewData: function () {
         let vm = this;
-        var userid = sessionStorage.getItem("userId");
+        let userid = sessionStorage.getItem("userId");
         if(!userid){
           userid = 0;
         };
-        if(userid !=0){
+        if(userid && userid !=0){
           vm.$axios({
             method:'post',
             url:vm.$api + "/baseinfo",
             data:"userid="+userid
           })
             .then(function (res) {
-              var res = res.data
-              if(res.code == 0){
-                vm.result = res.result;
-                vm.result.RegisterDate = res.result.RegisterDate * 1000;
+              let resDatas = res.data
+              if(resDatas.code == 0){
+                vm.result = resDatas.result;
+                vm.result.RegisterDate = resDatas.result.RegisterDate * 1000;
               }else {
-                vm.$message.error(res.message);
+                vm.$message.error(resDatas.message);
               }
             })
             .catch(function (err) {
-              alert(err);
+              console.log(err);
             })
-        }else {
-          return false
         }
       },
       handleAvatarSuccess(res, file) {
@@ -114,36 +111,37 @@
       //保存基本信息修改
       subData: function () {
         let vm = this;
-        var userid = sessionStorage.getItem('userId');
-        if(!userid || userid ==0){
+        let userid = sessionStorage.getItem('userId');
+        if(userid && userid !=0){
+          let data = JSON.parse(JSON.stringify(vm.result));
+          data.RegisterDate = data.RegisterDate/1000;
+          vm.$axios({
+            method:"post",
+            url:vm.$api + "/setbaseinfo?operate=2&userid="+userid,
+            data:JSON.stringify(data)
+          })
+            .then(function (res) {
+              let data = res.data;
+              if(data.code == 0){
+                vm.$message.success("保存成功!");
+                vm.getNewData();
+              }else {
+                vm.$message.error(data.message);
+              }
+            })
+            .catch(function (err) {
+              console.log(err);
+            })
+        }else {
           vm.$message.warning("未检测到人才id,如为新增人才请点击新增并保存!");
-          return false;
         }
-        let data = JSON.parse(JSON.stringify(vm.result));
-        data.RegisterDate = data.RegisterDate/1000;
-        vm.$axios({
-          method:"post",
-          url:vm.$api + "/setbaseinfo?operate=2&userid="+userid,
-          data:JSON.stringify(data)
-        })
-          .then(function (res) {
-            let data = res.data;
-            if(data.code == 0){
-              vm.$message.success("保存成功!");
-              vm.getNewData();
-            }else {
-              vm.$message.error(data.message);
-            }
-          })
-          .catch(function (err) {
-            alert(err);
-          })
+
       },
       //新增并保存基本信息
       addSave: function () {
         let vm = this;
         sessionStorage.setItem('userId',0)
-        var userid = sessionStorage.getItem('userId');
+        let userid = sessionStorage.getItem('userId');
         let data = JSON.parse(JSON.stringify(vm.result));
         data.RegisterDate = data.RegisterDate /1000;
         vm.$axios({
@@ -152,13 +150,13 @@
           data:JSON.stringify(data)
         })
           .then(function (res) {
-            var res = res.data;
-           if(res.code == 0){
-             sessionStorage.setItem("userId",res.result.id);
+            let resDatas = res.data;
+           if(resDatas.code == 0){
+             sessionStorage.setItem("userId",resDatas.result.id);
              vm.$message.success('新增并保存成功!');
              vm.getNewData();
            }else {
-             vm.$message.error(res.message);
+             vm.$message.error(resDatas.message);
            }
           })
           .catch(function (err) {

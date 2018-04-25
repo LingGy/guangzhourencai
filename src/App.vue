@@ -4,7 +4,6 @@
       <h1 class="header-text">海外人才数据库</h1>
       <div class="nav-box">
         <ul>
-          <!--<li v-for='(list,index) in navlists' :class='{active:index == flag}' v-on:click='tabChange(index),toLink(list.path)'>{{list.text}}</li>-->
           <router-link tag="li" v-for='(list,index) in navlists' :to='list.path' :key='list.id' active-class='active'>{{list.text}}</router-link>
         </ul>
       </div>
@@ -30,7 +29,7 @@ export default {
         },
         {
           'text':'数据应用',
-          'path':'/Use'
+          'path':'/application'
         },
         {
           'text':'爬虫管理',
@@ -66,7 +65,7 @@ export default {
     .b-header-box{
       min-width: 1300px;
       height: 87px;
-      background:url("./assets/images/header.png") no-repeat center;
+      background:url("/static/img/header.png") no-repeat center;
       margin: 0 auto;
       .header-text{
         width: 224px;

@@ -10,11 +10,11 @@
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <td>XXXXXX</td>
-        <td>是</td>
+      <tr v-for="(list,index) in DataLists" :key="index" @click="getInfo(list.Id)">
+        <td>{{list.Name}}</td>
+        <td>{{list.PatentStatus}}</td>
         <td>
-          <button type=button>删除</button>
+          <button type=button @click.stop="delProject(list.Id)">删除</button>
         </td>
       </tr>
       </tbody>
@@ -23,76 +23,74 @@
       <div class="main_box">
         <p class="name">项目名称&nbsp;:</p>
         <div class="main">
-          <input type="text" class="project_name" placeholder="请输入项目名称">
+          <input type="text" class="project_name" placeholder="请输入项目名称" v-model="viewData.Name" maxlength="50">
         </div>
       </div>
       <div class="main_box">
         <p class="name">项目类型&nbsp;:</p>
         <div class="main">
-          <el-radio-group v-model="radio1">
-            <el-radio :label="0">创业项目</el-radio>
-            <el-radio :label="1">合作项目</el-radio>
+          <el-radio-group v-model="viewData.Type">
+            <el-radio v-for="(list,index) in options1" :label="list.value" :key="index">{{list.text}}</el-radio>
           </el-radio-group>
         </div>
       </div>
       <div class="main_box">
         <p class="name">所属行业&nbsp;:</p>
         <div class="main">
-          <div class="choice_box">
-            <p class="chocie">选择/修改 <i class="el-icon-caret-right"></i></p>
-          </div>
+            <select name="" id="" class="choice_box" v-model="viewData.Industry">
+              <option v-for="(option,index) in options" :value="option.value" :key="index">{{option.value}}</option>
+            </select>
         </div>
       </div>
       <div class="main_box">
         <p class="name">成果持有人&nbsp;:</p>
         <div class="main">
-          <input type="text" class="project_name" placeholder="请输入持有人姓名">
+          <input type="text" class="project_name" placeholder="请输入持有人姓名" v-model="viewData.Holder">
         </div>
       </div>
       <div class="main_box">
         <p class="name">是否取得专利&nbsp;:</p>
         <div class="main">
-          <el-radio-group v-model="radio2">
-            <el-radio :label="0">是</el-radio>
-            <el-radio :label="1">否</el-radio>
-            <el-radio :label="2">正在申请</el-radio>
+          <el-radio-group v-model="viewData.PatentStatus">
+            <el-radio v-for="(list,index) in options2" :label="list.value" :key="index">{{list.value}}</el-radio>
           </el-radio-group>
         </div>
       </div>
       <div class="main_box info_box">
         <p class="name">专利情况&nbsp;:</p>
         <div class="main">
-          <textarea name="info" id="info" cols="30" rows="10" placeholder="请输入专利情况"></textarea>
+          <textarea name="info" id="info" cols="30" rows="10" placeholder="专利注册地、专利（申请）号、专利查询网站" v-model="viewData.PatentSituation"></textarea>
         </div>
       </div>
       <div class="main_box info_box">
         <p class="name">更多资料&nbsp;:</p>
         <div class="main">
-          <textarea name="more" id="more" cols="30" rows="10" placeholder="请输入更多资料"></textarea>
+          <textarea name="more" id="more" cols="30" rows="10" placeholder="请输入更多资料" v-model="viewData.Info"></textarea>
         </div>
       </div>
       <div class="main_box">
         <p class="name">项目所处状态&nbsp;:</p>
         <div class="main">
-          <input type="text" class="project_name" placeholder="请输入项目所处状态">
+          <input type="text" class="project_name" placeholder="请输入项目所处状态" v-model="viewData.CurrentStatus">
         </div>
       </div>
       <div class="main_box">
         <p class="name">项目关键字&nbsp;:</p>
         <div class="main">
-          <input type="text" class="project_name" placeholder="请输入项目关键字">
+          <input type="text" class="project_name" placeholder="请输入项目关键字" v-model="viewData.Keyword">
         </div>
       </div>
       <div class="main_box need">
         <p class="name">项目需求&nbsp;:</p>
         <div class="main">
           <textarea name="need" id="need" cols="30" rows="10" placeholder="请输入项目需求，例如找资金、找技术合作伙伴、招人才、
-找落地园区；资金、城市"></textarea>
+找落地园区；资金、城市" v-model="viewData.Demand"></textarea>
         </div>
       </div>
     </div>
     <div class="submit_box">
-      <button class="btn_save">保存</button>
+      <button class="btn_add" @click="addNewProject()">保存并新增个人项目</button>
+      <button class="btn_save" @click="saveProject()">保存</button>
       <button class="toEn">英译中</button>
     </div>
   </div>
@@ -101,11 +99,166 @@
 <script type="text/ecmascript-6">
   export default {
     name:"Project",
-    data () {
+    data:function() {
       return {
-        radio1: 0,
-        radio2: 0
-      };
+        options:[
+          {value:"金融"},
+          {value:"影视"},
+          {value:"生物科学"},
+        ],
+        options1:[
+          {value:"1",text:"创业项目"},
+          {value:"2",text:"合作项目"},
+        ],
+        options2:[
+          {value:"是"},
+          {value:"否"},
+          {value:"正在申请"},
+        ],
+        DataLists:[],
+        viewData:{
+          UserId:'',
+          Name:'',
+          Type:'',
+          Industry:'',
+          Holder:'',
+          PatentStatus:'',
+          PatentSituation:'',
+          Info:'',
+          Keyword:'',
+          CurrentStatus:'',
+          Demand:'',
+        },
+      }
+    },
+    created: function () {
+        this.getNewData();
+    },
+    methods:{
+      //获取数据列表
+      getNewData: function () {
+        let vm = this;
+        let userid = sessionStorage.getItem("userId");
+        if(userid && userid != 0) {
+          vm.$axios({
+            method:'post',
+            url:vm.$api + '/projects?userid=' + userid,
+          })
+            .then(function(res){
+              let data = res.data;
+              if(data.code == 0){
+                if(data.result){
+                  vm.DataLists = data.result;
+                }
+              }else {
+                vm.$message.error(data.message);
+              }
+            })
+            .catch(function(err){
+              console.log(err);
+            });
+        };
+      },
+      //保存并新增学习经历
+      addNewProject: function () {
+        let vm = this;
+        let userid = sessionStorage.getItem("userId");
+        if(userid && userid !=0) {
+          let data = JSON.parse(JSON.stringify(vm.viewData));
+          data.UserId = userid;
+          vm.$axios({
+            method:'post',
+            url:vm.$api + '/setproject?operate=1&user='+userid+'&id=0',
+            data:JSON.stringify(data)
+          })
+            .then(function(res){
+              let resdata = res.data;
+              if(resdata.code == 0){
+                vm.$message.success("新增并保存个人项目成功!");
+                vm.getNewData();
+              }else {
+                vm.$message.error(resdata.message);
+              }
+            })
+            .catch(function(err){
+              console.log(err);
+            });
+        }else {
+          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
+        }
+
+      },
+      //保存修改学习经历
+      saveProject: function () {
+        let vm = this;
+        let userid = sessionStorage.getItem("userId");
+        if (userid && userid != 0) {
+          let data = JSON.parse(JSON.stringify(vm.viewData));
+          if(!data.Id){
+            vm.$message.warning("请先从列表中选择需要修改的项!");
+            return false;
+          }
+          vm.$axios({
+            method:'post',
+            url:vm.$api + '/setproject?operate=2&user='+userid+'&id='+data.Id,
+            data:JSON.stringify(data)
+          })
+            .then(function(res){
+              let resdata = res.data;
+              if(resdata.code == 0){
+                vm.$message.success("修改并保存工作经历成功!");
+                vm.getNewData();
+              }else {
+                vm.$message.error(resdata.message);
+              }
+            })
+            .catch(function(err){
+              console.log(err);
+            });
+        }else {
+          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
+        }
+      },
+      //获取单项详情
+      getInfo: function (id) {
+        let vm = this;
+        vm.$axios({
+          method:'post',
+          url:vm.$api + '/project?id=' + id,
+        })
+          .then(function(res){
+            let resdata = res.data;
+            if(resdata.code == 0){
+              vm.viewData = resdata.result;
+              vm.viewData.Id = id;
+            }else {
+              vm.$message.error(resdata.message);
+            }
+          })
+          .catch(function(err){
+            console.log(err);
+          });
+      },
+      //删除学习经历
+      delProject: function (id) {
+        let vm = this;
+        vm.$axios({
+          method:'post',
+          url:vm.$api+'/deleteproject?id='+id,
+        })
+          .then(function(res){
+            let resdata = res.data;
+            if(resdata.code == 0 ){
+              vm.$message.success('删除成功!');
+              vm.getNewData();
+            }else {
+              vm.$message.error(resdata.message);
+            }
+          })
+          .catch(function(err){
+            console.log(err);
+          });
+      }
     }
   }
 </script>
@@ -116,7 +269,7 @@
     border:1px solid #cccccc;
   }
   .projectLists_box{
-    width: 846px;
+    min-width: 846px;
     border-collapse:collapse;
     text-align: center;
     color: #454545;
@@ -140,9 +293,14 @@
       height: 32px;
       line-height: 32px;
       font-size: 14px;
+      tr{
+        &:hover{
+          background-color: #f1f1f1;
+        }
+      }
       button{
         color: #169bd8;
-        background-color: #fff;
+        background-color: transparent;
       }
     }
   }
@@ -173,11 +331,6 @@
           border: solid 1px #53b1dc;
           text-align: center;
           color: #29a9f5;
-          i{
-            float: right;
-            margin-right: 10px;
-            line-height: 20px;
-          }
         }
         #info,#more,#need{
           width: 378px;
@@ -199,12 +352,12 @@
     }
   }
   .submit_box{
-    width: 140px;
+    width: 100%;
     height: 24px;
-    margin: 0 auto;
     margin-top: 50px;
     margin-bottom: 60px;
-    .btn_save{
+    padding-left: 180px;
+    .btn_save,.btn_add{
       width: 50px;
       height: 24px;
       background-color: #169bd8;
@@ -213,6 +366,10 @@
       line-height: 24px;
       color: #fff;
       float: left;
+      margin-right: 30px;
+    }
+    .btn_add{
+      width: 156px;
     }
     .toEn{
       width: 66px;
@@ -222,7 +379,7 @@
       color: #545454;
       line-height: 24px;
       background-color: #fff;
-      float: right;
+      float: left;
     }
   }
 }

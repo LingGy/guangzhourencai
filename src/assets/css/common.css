@@ -144,8 +144,7 @@ button {
     cursor: pointer; }
 
 .position {
-  width: 331px;
-  height: 23px;
+  height: 24px;
   font-size: 14px !important;
   color: #8f8f8f !important;
   border-bottom: 1px solid #8f8f8f !important;
@@ -181,8 +180,28 @@ button {
             margin: 0 12px 0 12px; }
           #use .sub_nav_box .sub_nav li.sub_nav_li p i:nth-child(2), #edit .sub_nav_box .sub_nav li.sub_nav_li p i:nth-child(2), #manage .sub_nav_box .sub_nav li.sub_nav_li p i:nth-child(2), #maintain .sub_nav_box .sub_nav li.sub_nav_li p i:nth-child(2) {
             margin-left: 26px; }
+      #use .sub_nav_box .sub_nav .subson, #edit .sub_nav_box .sub_nav .subson, #manage .sub_nav_box .sub_nav .subson, #maintain .sub_nav_box .sub_nav .subson {
+        width: 100%;
+        padding-left: 45px;
+        overflow: hidden; }
+        #use .sub_nav_box .sub_nav .subson span, #edit .sub_nav_box .sub_nav .subson span, #manage .sub_nav_box .sub_nav .subson span, #maintain .sub_nav_box .sub_nav .subson span {
+          display: block;
+          width: 120px;
+          height: 40px;
+          line-height: 40px;
+          text-align: center;
+          color: #545454;
+          background-color: #f5f6f9;
+          font-size: 18px; }
+          #use .sub_nav_box .sub_nav .subson span:hover, #edit .sub_nav_box .sub_nav .subson span:hover, #manage .sub_nav_box .sub_nav .subson span:hover, #maintain .sub_nav_box .sub_nav .subson span:hover {
+            cursor: pointer;
+            color: #40aff5; }
+        #use .sub_nav_box .sub_nav .subson .sp_active, #edit .sub_nav_box .sub_nav .subson .sp_active, #manage .sub_nav_box .sub_nav .subson .sp_active, #maintain .sub_nav_box .sub_nav .subson .sp_active {
+          color: #40aff5; }
+      #use .sub_nav_box .sub_nav .subsonH, #edit .sub_nav_box .sub_nav .subsonH, #manage .sub_nav_box .sub_nav .subsonH, #maintain .sub_nav_box .sub_nav .subsonH {
+        height: 0px; }
       #use .sub_nav_box .sub_nav .active1, #edit .sub_nav_box .sub_nav .active1, #manage .sub_nav_box .sub_nav .active1, #maintain .sub_nav_box .sub_nav .active1 {
-        background: url("../images/flag.png") no-repeat center/100%;
+        background: url("/static/img/flag.png") no-repeat center/100%;
         color: #ffffff !important; }
       #use .sub_nav_box .sub_nav:hover, #edit .sub_nav_box .sub_nav:hover, #manage .sub_nav_box .sub_nav:hover, #maintain .sub_nav_box .sub_nav:hover {
         cursor: pointer; }
@@ -200,7 +219,7 @@ button {
             width: 120px;
             height: 40px;
             line-height: 40px;
-            margin-left: 52px;
+            margin-left: 45px;
             background-color: #f5f6f9;
             text-align: center; }
             #use .sub_nav_box .sub_nav .edit_sub ul.edit_sub_ul li.edit_sub_ul_li:hover, #edit .sub_nav_box .sub_nav .edit_sub ul.edit_sub_ul li.edit_sub_ul_li:hover, #manage .sub_nav_box .sub_nav .edit_sub ul.edit_sub_ul li.edit_sub_ul_li:hover, #maintain .sub_nav_box .sub_nav .edit_sub ul.edit_sub_ul li.edit_sub_ul_li:hover {
