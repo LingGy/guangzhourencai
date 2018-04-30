@@ -20,7 +20,11 @@ import vague from '@/components/Application/vague';
 import packetList from '@/components/Application/packetList';
 import relation from '@/components/Application/relation';
 import relationpic from '@/components/Application/relationpic';
+import relationInfo from '@/components/Application/relationInfo';
 import teamInfo from '@/components/Application/teamInfo';
+import systemLog from '@/components/Maintain/systemLog';
+import category from '@/components/Maintain/category';
+import scoreSet from '@/components/Maintain/scoreSet';
 
 Vue.use(Router)
 
@@ -127,6 +131,11 @@ export default new Router({
           name: 'relationpic',
           component: relationpic
         },
+        {
+          path:'/application/relationInfo',
+          name:'relationInfo',
+          component:relationInfo
+        }
       ]
     },
     {
@@ -153,7 +162,28 @@ export default new Router({
     {
       path: '/Maintain',
       name: 'Maintain',
-      component: Maintain
+      component: Maintain,
+      children:[
+        {
+          path: '/Maintain',
+          redirect:'/Maintain/systemLog'
+        },
+        {
+          path:'/Maintain/systemLog',
+          name:'systemLog',
+          component:systemLog
+        },
+        {
+          path:'/Maintain/category',
+          name:'category',
+          component:category
+        },
+        {
+          path:'/Maintain/scoreSet',
+          name:'scoreSet',
+          component:scoreSet
+        },
+      ]
     },
   ]
 })

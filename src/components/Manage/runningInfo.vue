@@ -37,30 +37,33 @@
     data:function () {
       return {
         lists:[],
+        page:1
       }
     },
     created: function () {
-      let vm = this;
-      vm.$axios({
-          method:'post',
-          url:"http://192.168.1.130:9700" + '/crawlerlist',
-      })
-        .then(function (res) {
-          let resDatas = res.data;
-          if(resDatas.code == 0){
-            vm.lists = resDatas.data;
-          }else {
-            vm.$message.error(resDatas.message);
-          }
-        })
-        .catch(function (err) {
-          console.log(err);
-        })
+      this.getLogLists('',this.page)
     },
     methods:{
+      //获取日志列表
+      getLogLists: function (name,page) {
+        let vm = this;
+        vm.$axios({
+          method:'post',
+          url:vm.$api + '/log?name='+name+'&page='+page+'&count=20',
+        })
+          .then(function (res) {
+            let resDatas = res.data;
+            if(resDatas.code == 0){
+              vm.lists = resDatas.data;
+            }else {
+              vm.$message.error(resDatas.message);
+            }
+          })
+          .catch(function (err) {
+            console.log(err);
+          })
+      },
       getName: function (index) {
-        // Bus.$emit('val', this.lists[index].name);
-        // this.$router.push('/Manage/taskManagement');
         sessionStorage.setItem("CrawlerId",index);
         this.$router.push('/Manage/taskManagement');
       }

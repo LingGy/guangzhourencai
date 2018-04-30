@@ -37,6 +37,12 @@
         </tr>
         </tbody>
       </table>
+    <div class="console_box">
+      <div class="console">
+        <button class="console1">上一页</button>
+        <button class="console2">下一页</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -52,29 +58,32 @@
       }
     },
     created: function () {//获取人才列表
-      let vm = this;
-      vm.$axios({
-        method: 'post',
-        url: vm.$api + "/talents",
-        data: "name=" + vm.name + "&page=" + vm.page + "&count=" + vm.count
-      })
-        .then(function (response) {
-          let data = response.data;
-          if (data.code == 0) {
-            if(data.result){
-              return vm.results = data.result;
-            }else {
-              return vm.results = [];
-            }
-          } else {
-            vm.$message.error(data.message);
-          };
-        })
-        .catch(function (err) {
-          console.log(err);
-        })
+     this.getNewLists(this.page);
     },
     methods: {
+      getNewLists: function (page) {
+        let vm = this;
+        vm.$axios({
+          method: 'post',
+          url: vm.$api + "/talents",
+          data: "name=" + vm.name + "&page=" + page + "&count=" + vm.count
+        })
+          .then(function (response) {
+            let data = response.data;
+            if (data.code == 0) {
+              if(data.result){
+                return vm.results = data.result;
+              }else {
+                return vm.results = [];
+              }
+            } else {
+              vm.$message.error(data.message);
+            };
+          })
+          .catch(function (err) {
+            console.log(err);
+          })
+      },
       btnToInfo: function (userid) {//获取点击对应人才的userid并传值给中间件
         sessionStorage.setItem("userId", userid);
         this.$router.push('/Edit/personnelInfo');
@@ -167,6 +176,31 @@
           }
         }
       }
+    .console_box{
+      min-width: 948px;
+      height: 30px;
+      .console{
+        width: 212px;
+        margin: 0 auto;
+        margin-top: 44px;
+        .console1,.console2{
+          width: 82px;
+          height: 30px;
+          text-align: center;
+          line-height: 30px;
+        }
+        .console1{
+          border: solid 1px #999999;
+          float: left;
+          background-color: transparent;
+        }
+        .console2{
+          background-color: #169bd8;
+          color: #ffffff;
+          float: right;
+        }
+      }
+    }
   }
 
 </style>
