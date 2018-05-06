@@ -8,6 +8,14 @@ const vfilter = {
       return "";
     }
   },
+  formatDate1: function (time) { //时间戳转日期
+    if(time){
+      let date = new Date(time * 1000);
+      return formatDate(date, 'yyyy-MM-dd hh:mm:ss');
+    }else {
+      return "";
+    }
+  },
   getSex: function (sex) {
     if(sex){
       return sex == 1 ? "男":"女";

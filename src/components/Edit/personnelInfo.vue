@@ -27,13 +27,12 @@
           </el-date-picker>
         </div>
       </div>
-
-      <div class=perBox>
-        <span class='name'>人才等级<i>:</i></span>
-        <select name="grade" id="grade" class="grade" v-model="result.Level">
-          <option v-for="option in options" :value="option.value">{{option.text}}</option>
-        </select>
-      </div>
+      <!--<div class=perBox>-->
+        <!--<span class='name'>人才等级<i>:</i></span>-->
+        <!--<select name="grade" id="grade" class="grade" v-model="result.Level">-->
+          <!--<option v-for="option in options" :value="option.value">{{option.text}}</option>-->
+        <!--</select>-->
+      <!--</div>-->
       <p class='btnBox'>
         <button class="btn_save1" type='button' @click="subData()">保存</button>
         <button class="btn_save2" type='button' @click="addSave()">新增并保存</button>
@@ -53,7 +52,7 @@
           EnglishName:'',
           Email:'',
           RegisterDate:'',
-          Level:'',
+          // Level:'',
         },
         options: [
           { text: '高级', value: '1' },
@@ -62,6 +61,10 @@
       }
     },
     created: function () {
+      if(this.$route.path == "/Edit/personnelInfo"){
+        this.$parent.fg1 = true;
+        this.$parent.fg2 = true;
+      }
       this.getNewData();
     },
     methods:{
@@ -75,7 +78,7 @@
         if(userid && userid !=0){
           vm.$axios({
             method:'post',
-            url:vm.$api + "/baseinfo",
+            url:window.$g_url.ApiUrl + "/baseinfo",
             data:"userid="+userid
           })
             .then(function (res) {
@@ -117,7 +120,7 @@
           data.RegisterDate = data.RegisterDate/1000;
           vm.$axios({
             method:"post",
-            url:vm.$api + "/setbaseinfo?operate=2&userid="+userid,
+            url:window.$g_url.ApiUrl + "/setbaseinfo?operate=2&userid="+userid,
             data:JSON.stringify(data)
           })
             .then(function (res) {
@@ -146,7 +149,7 @@
         data.RegisterDate = data.RegisterDate /1000;
         vm.$axios({
           method:'post',
-          url:vm.$api + "/setbaseinfo?operate=1&userid="+userid,
+          url:window.$g_url.ApiUrl + "/setbaseinfo?operate=1&userid="+userid,
           data:JSON.stringify(data)
         })
           .then(function (res) {

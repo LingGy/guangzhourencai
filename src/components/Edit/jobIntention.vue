@@ -120,6 +120,10 @@
       };
     },
     created: function () {
+      if(this.$route.path == "/Edit/jobIntention"){
+        this.$parent.fg1 = true;
+        this.$parent.fg2 = true;
+      }
         this.getNewData();
     },
     methods:{
@@ -130,7 +134,7 @@
         if(userid && userid != 0) {
           vm.$axios({
             method:'post',
-            url:vm.$api + '/jobapply?userid=' + userid,
+            url:window.$g_url.ApiUrl + '/jobapply?userid=' + userid,
           })
             .then(function(res){
               let resDates = res.data;
@@ -159,7 +163,7 @@
           data.UserId = userid;
           vm.$axios({
             method:'post',
-            url:vm.$api + '/setjobapply?userid='+ userid,
+            url:window.$g_url.ApiUrl + '/setjobapply?userid='+ userid,
             data:JSON.stringify(data)
           })
             .then(function(res){
@@ -185,7 +189,7 @@
         if (userid && userid != 0) {
           vm.$axios({
             method:'post',
-            url:vm.$api+'/deletejobapply?userid='+userid,
+            url:window.$g_url.ApiUrl+'/deletejobapply?userid='+userid,
           })
             .then(function(res){
               let resDates = res.data;

@@ -325,10 +325,14 @@
       }
     },
     created: function () {
+      if(this.$route.path == "/Edit/resume"){
+        this.$parent.fg1 = true;
+        this.$parent.fg2 = true;
+      }
       let _this = this;
       _this.$axios({
         method:'get',
-        url:_this.$api+'/college',
+        url:window.$g_url.ApiUrl+'/college',
       })
         .then(function(res){
           let resDatas = res.data;
@@ -343,7 +347,7 @@
         });
       _this.$axios({
         method:'get',
-        url:_this.$api+'/major',
+        url:window.$g_url.ApiUrl+'/major',
       })
         .then(function(res){
           let resDatas = res.data;
@@ -358,7 +362,7 @@
         });
       _this.$axios({
         method:'get',
-        url:_this.$api+'/country',
+        url:window.$g_url.ApiUrl+'/country',
       })
         .then(function(res){
           let resDatas = res.data;
@@ -371,7 +375,7 @@
         .catch(function(err){
           console.log(err);
         });
-        _this.getNewData();
+      _this.getNewData();
     },
     //方法
     methods: {
@@ -382,7 +386,7 @@
         if(userid && userid != 0) {
           vm.$axios({
             method:'post',
-            url:vm.$api + "/resume",
+            url:window.$g_url.ApiUrl + "/resume",
             data:"userid="+userid
           })
             .then(function (res) {
@@ -453,7 +457,7 @@
           data.UserId = userid;
           vm.$axios({
             method:'post',
-            url:vm.$api + "/setresume?userid=" + userid,
+            url:window.$g_url.ApiUrl + "/setresume?userid=" + userid,
             data:JSON.stringify(data)
           })
             .then(function (res) {

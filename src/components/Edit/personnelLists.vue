@@ -7,18 +7,19 @@
         <p>人才列表</p>
       </div>
       <div class="top_right">
-        <input type="text" class='name' placeholder='请输入搜索人姓名'>
-        <button type='button' class='btn_search'>搜索</button>
+        <input type="text" class='name' placeholder='请输入搜索人姓名' v-model="name">
+        <button type='button' class='btn_search' @click="search()">搜索</button>
       </div>
     </div>
-    <table class="box">
+    <div class="t_box">
+      <table class="box"  v-loading="loading">
         <thead>
         <tr>
-          <th>中午名</th>
+          <th>中文名</th>
           <th>英文名</th>
           <th>邮箱</th>
           <th>注册时间</th>
-          <th>人才等级</th>
+          <!--<th>人才等级</th>-->
           <th>用户类型</th>
           <th>详情</th>
         </tr>
@@ -29,7 +30,7 @@
           <th>{{result.EnglishName}}</th>
           <th>{{result.Email}}</th>
           <th>{{result.RegisterDate | formatDate()}}</th>
-          <th>{{result.Level | getLevel}}</th>
+          <!--<th>{{result.Level | getLevel}}</th>-->
           <th>{{result.Type | getType}}</th>
           <th>
             <button type='button' class='toInfo' @click="btnToInfo(result.UserId)">详情</button>
@@ -37,10 +38,11 @@
         </tr>
         </tbody>
       </table>
+    </div>
     <div class="console_box">
       <div class="console">
-        <button class="console1">上一页</button>
-        <button class="console2">下一页</button>
+        <button :class="['console','c1',isA?'console1':'console2']" @click="lastPage()" :disabled="bt1">上一页</button>
+        <button :class="['console','c2',isB?'console1':'console2']" @click="nextPage()" :disabled="bt2">下一页</button>
       </div>
     </div>
   </div>
@@ -55,38 +57,84 @@
         page: 0,
         count: 20,
         results: [],
+        loading:true,
+        bt1:true,
+        bt2:false,
+        isA:true,
+        isB:false,
       }
     },
     created: function () {//获取人才列表
-     this.getNewLists(this.page);
+      if(this.$route.path == "/Edit/personnelLists"){
+        this.$parent.fg1 = false;
+      }
+     this.getNewLists(this.name,this.page);
     },
     methods: {
-      getNewLists: function (page) {
+      //获取列表
+      getNewLists: function (name,page) {
         let vm = this;
         vm.$axios({
           method: 'post',
-          url: vm.$api + "/talents",
-          data: "name=" + vm.name + "&page=" + page + "&count=" + vm.count
+          url: window.$g_url.ApiUrl + "/talents",
+          data: "name=" + name + "&page=" + page + "&count=" + vm.count
         })
           .then(function (response) {
+            vm.loading = false;
             let data = response.data;
             if (data.code == 0) {
               if(data.result){
-                return vm.results = data.result;
+                vm.results = data.result;
               }else {
-                return vm.results = [];
+                if(page>0){
+                  vm.page = page - 1;
+                  vm.isB = true;
+                  vm.bt2 = true;
+                }
+              }
+              if(page>0){
+                vm.bt1 = false;
+                vm.isA = false;
+              }else if(page == 0){
+                vm.bt1 = true;
+                vm.isA = true;
               }
             } else {
               vm.$message.error(data.message);
+              if(page>0){
+                vm.page = page - 1;
+                vm.isB = true;
+                vm.bt2 = true;
+              }
             };
           })
           .catch(function (err) {
-            console.log(err);
+            console.log(toString(err));
+            alert(err);
           })
       },
+      //获取详情
       btnToInfo: function (userid) {//获取点击对应人才的userid并传值给中间件
         sessionStorage.setItem("userId", userid);
         this.$router.push('/Edit/personnelInfo');
+      },
+      //搜索
+      search: function () {
+        this.getNewLists(this.name,0);
+      },
+      //上一页
+      lastPage: function () {
+        let vm = this;
+        vm.bt2 = false;
+        vm.isB = false;
+        vm.page = vm.page-1;
+        vm.getNewLists(vm.name,vm.page);
+      },
+      //下一页
+      nextPage: function () {
+        let vm = this;
+        vm.page = vm.page+1;
+        vm.getNewLists(vm.name,vm.page);
       }
     }
   }
@@ -138,9 +186,11 @@
         }
       }
     }
-    .box {
-      min-width: 948px;
-      border-collapse: collapse;
+    .t_box{
+      min-height: 800px;
+      .box {
+        min-width: 948px;
+        border-collapse: collapse;
         margin-top: 14px;
         thead {
           width: 100%;
@@ -176,28 +226,34 @@
           }
         }
       }
+
+    }
     .console_box{
       min-width: 948px;
       height: 30px;
       .console{
         width: 212px;
         margin: 0 auto;
-        margin-top: 44px;
-        .console1,.console2{
+        margin-top: 30px;
+        .console{
           width: 82px;
           height: 30px;
           text-align: center;
           line-height: 30px;
         }
+        .c1{
+          float: left;
+        }
+        .c2{
+          float: right;
+        }
         .console1{
           border: solid 1px #999999;
-          float: left;
           background-color: transparent;
         }
         .console2{
           background-color: #169bd8;
           color: #ffffff;
-          float: right;
         }
       }
     }

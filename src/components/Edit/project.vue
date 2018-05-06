@@ -132,6 +132,10 @@
       }
     },
     created: function () {
+      if(this.$route.path == "/Edit/project"){
+        this.$parent.fg1 = true;
+        this.$parent.fg2 = true;
+      }
         this.getNewData();
     },
     methods:{
@@ -142,7 +146,7 @@
         if(userid && userid != 0) {
           vm.$axios({
             method:'post',
-            url:vm.$api + '/projects?userid=' + userid,
+            url:window.$g_url.ApiUrl + '/projects?userid=' + userid,
           })
             .then(function(res){
               let data = res.data;
@@ -168,7 +172,7 @@
           data.UserId = userid;
           vm.$axios({
             method:'post',
-            url:vm.$api + '/setproject?operate=1&user='+userid+'&id=0',
+            url:window.$g_url.ApiUrl + '/setproject?operate=1&user='+userid+'&id=0',
             data:JSON.stringify(data)
           })
             .then(function(res){
@@ -200,7 +204,7 @@
           }
           vm.$axios({
             method:'post',
-            url:vm.$api + '/setproject?operate=2&user='+userid+'&id='+data.Id,
+            url:window.$g_url.ApiUrl + '/setproject?operate=2&user='+userid+'&id='+data.Id,
             data:JSON.stringify(data)
           })
             .then(function(res){
@@ -224,7 +228,7 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:vm.$api + '/project?id=' + id,
+          url:window.$g_url.ApiUrl + '/project?id=' + id,
         })
           .then(function(res){
             let resdata = res.data;
@@ -244,7 +248,7 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:vm.$api+'/deleteproject?id='+id,
+          url:window.$g_url.ApiUrl+'/deleteproject?id='+id,
         })
           .then(function(res){
             let resdata = res.data;

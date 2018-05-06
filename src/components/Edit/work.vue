@@ -112,6 +112,10 @@
       };
     },
     created: function () {
+      if(this.$route.path == "/Edit/work"){
+        this.$parent.fg1 = true;
+        this.$parent.fg2 = true;
+      }
         this.getNewData();
     },
     methods:{
@@ -122,7 +126,7 @@
         if(userId && userId != 0){
           _this.$axios({
             method:'post',
-            url:_this.$api + '/workexperiences?userid=' + userId,
+            url:window.$g_url.ApiUrl + '/workexperiences?userid=' + userId,
           })
             .then(function(res){
               let data = res.data;
@@ -150,7 +154,7 @@
           data.UserId = userid;
           vm.$axios({
             method:'post',
-            url:vm.$api + '/setworkexprience?operate=1&id=0',
+            url:window.$g_url.ApiUrl + '/setworkexprience?operate=1&id=0',
             data:JSON.stringify(data)
           })
             .then(function(res){
@@ -184,7 +188,7 @@
           data.EndDate = vm.time[1]/1000;
           vm.$axios({
             method:'post',
-            url:vm.$api + '/seteducation?operate=2&id='+ data.Id,
+            url:window.$g_url.ApiUrl + '/seteducation?operate=2&id='+ data.Id,
             data:JSON.stringify(data)
           })
             .then(function(res){
@@ -208,7 +212,7 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:vm.$api + '/workexperience?id=' + id,
+          url:window.$g_url.ApiUrl + '/workexperience?id=' + id,
         })
           .then(function(res){
             let resdata = res.data;
@@ -228,7 +232,7 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:vm.$api+'/deleteworkexprience?id='+id,
+          url:window.$g_url.ApiUrl+'/deleteworkexprience?id='+id,
         })
           .then(function(res){
             let data = res.data;

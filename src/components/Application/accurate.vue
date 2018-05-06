@@ -16,10 +16,16 @@
               <option v-for="(list,index) in majors" :value="list" :key="index">{{list}}</option>
             </select>
           </div>
+          <!--<div class="opstions">-->
+            <!--<p class="op_name">人才等级&nbsp;:</p>-->
+            <!--<select class="select_box" v-model="level">-->
+              <!--<option v-for="(list,index) in levelLists" :value="list.value" :key="index">{{list.text}}</option>-->
+            <!--</select>-->
+          <!--</div>-->
           <div class="opstions">
-            <p class="op_name">人才等级&nbsp;:</p>
-            <select class="select_box" v-model="level">
-              <option v-for="(list,index) in levelLists" :value="list.value" :key="index">{{list.text}}</option>
+            <p class="op_name">留学国家&nbsp;:</p>
+            <select class="select_box" v-model="studyregion">
+              <option v-for="(list,index) in countrys" :value="list" :key="index">{{list}}</option>
             </select>
           </div>
         </div>
@@ -36,12 +42,6 @@
               <option v-for="(list,index) in degreeList" :value="list.value" :key="index">{{list.value}}</option>
             </select>
           </div>
-          <div class="opstions">
-            <p class="op_name">留学国家&nbsp;:</p>
-            <select class="select_box" v-model="studyregion">
-              <option v-for="(list,index) in countrys" :value="list" :key="index">{{list}}</option>
-            </select>
-          </div>
         </div>
       </div>
       <button type=button class="search_btn" @click="searchDatas()">搜索</button>
@@ -51,7 +51,7 @@
       <p class="text">人才列表</p>
     </div>
     <el-checkbox-group v-model="checkedUserId" @change="handleCheckedCitiesChange" class='checkbox_box'>
-    <table class="lists_table_box">
+    <table class="lists_table_box" v-loading="loading">
       <thead>
       <tr>
         <td>序号</td>
@@ -59,7 +59,7 @@
         <td>英文名</td>
         <td>邮箱</td>
         <td>性别</td>
-        <td>人才等级</td>
+        <!--<td>人才等级</td>-->
         <td>最高学历</td>
         <td>现工作单位</td>
         <td>操作</td>
@@ -74,7 +74,7 @@
         <td>{{list.EnglishName}}</td>
         <td>{{list.Email}}</td>
         <td>{{list.IsMale | getSex()}}</td>
-        <td>{{list.Level | getLevel()}}</td>
+        <!--<td>{{list.Level | getLevel()}}</td>-->
         <td>{{list.HighestDegree}}</td>
         <td>{{list.WorkUnit}}</td>
         <td>
@@ -126,15 +126,19 @@
         college: '',
         major: '',
         degree: '',
-        level: '',
-        teamName:''
+        // level: '',
+        teamName:'',
+        loading:false
       }
     },
     created: function () {
+      if(this.$route.path == "/application/accurate"){
+        this.$parent.fg1 = true;
+      }
       let _this = this;
       _this.$axios({
         method: 'get',
-        url: _this.$api + '/college',
+        url: window.$g_url.ApiUrl + '/college',
       })
         .then(function (res) {
           let resDatas = res.data;
@@ -149,7 +153,7 @@
         });
       _this.$axios({
         method: 'get',
-        url: _this.$api + '/major',
+        url: window.$g_url.ApiUrl + '/major',
       })
         .then(function (res) {
           let resDatas = res.data;
@@ -164,7 +168,7 @@
         });
       _this.$axios({
         method: 'get',
-        url: _this.$api + '/country',
+        url: window.$g_url.ApiUrl + '/country',
       })
         .then(function (res) {
           let resDatas = res.data;
@@ -182,9 +186,10 @@
       //搜索发送请求获取结果
       searchDatas: function () {
         let vm = this;
+        vm.loading = true;
         vm.$axios({
           method: 'post',
-          url: vm.$api + '/search?',
+          url: window.$g_url.ApiUrl + '/search?',
           data: "nationality=" + vm.nationality
           + "&studyregion=" + vm.studyregion
           + "&college=" + vm.college
@@ -193,6 +198,7 @@
           + "&level=" + vm.level
         })
           .then(function (res) {
+            vm.loading = false;
             let resDatas = res.data;
             if (resDatas.code == 0) {
               if (resDatas.result) {
@@ -237,7 +243,7 @@
         }
         vm.$axios({
             method:'post',
-            url:vm.$api + '/setgroupname?name=' + vm.teamName,
+            url:window.$g_url.ApiUrl + '/setgroupname?name=' + vm.teamName,
             data:JSON.stringify(vm.checkedUserId)
         })
            .then(function(res){
@@ -350,7 +356,7 @@
             width: 45px;
             height: 24px;
             background-color: #6ecffa;
-            color: #ffff;
+            color: #ffffff;
             margin-top: 3px;
             line-height: 24px;
             text-align: center;

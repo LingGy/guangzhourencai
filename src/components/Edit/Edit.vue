@@ -2,30 +2,29 @@
   <div id="edit">
     <div class="sub_nav_box">
       <ul class="sub_nav">
-        <li class='sub_nav_li' @click="toLists()">
-          <p :class="{active1:fg1 == 1}">
+        <router-link tag="li" class='sub_nav_li' to="/Edit/personnelLists" active-class="active1">
+          <p>
             <i class='iconfont'>&#xe63c;</i>人才浏览<i class='iconfont'>&#xe735;</i>
           </p>
-        </li>
-        <li class='sub_nav_li' @click="toBj()">
-          <p :class="{active1:fg1 == 2}">
+        </router-link>
+        <router-link tag="li" class='sub_nav_li' to="/Edit/personnelInfo" active-class="active1" :class="{active1:fg1}">
+          <p @click="toBj">
             <i class='iconfont'>&#xe624;</i>编辑数据<i class='iconfont'>&#xe735;</i>
           </p>
-        </li>
-        <div class="edit_sub" :class="{edit_sub1:fg2}">
+        </router-link>
+        <li class="edit_sub" :class="{edit_sub1:fg2}">
           <ul class='edit_sub_ul'>
-            <router-link tag="li" v-for='list in navList' :to='list.path' class='edit_sub_ul_li' active-class='active2'
-                         :key='list.id'>
+            <router-link tag="li" v-for='(list,index) in navList' :to='list.path' class='edit_sub_ul_li' active-class='active2'
+                         :key='index'>
               <p>{{list.text}}</p>
             </router-link>
           </ul>
-        </div>
-        <li class='sub_nav_li' @click="toRg()">
-          <p :class="{active1:fg1 == 3}">
+        </li>
+        <router-link tag="li" class='sub_nav_li' to="/Edit/reorganize" active-class="active1">
+          <p>
             <i class='iconfont'>&#xe65b;</i>合并数据<i class='iconfont'>&#xe735;</i>
           </p>
-        </li>
-
+        </router-link>
       </ul>
     </div>
     <div class="content">
@@ -54,31 +53,14 @@
           {"path": "/Edit/personnelLists"},
           {"path": "/Edit/reorganize"},
         ],
-        changeNb: -1,
-        fg1: 1,
+        fg1: false,
         fg2: false,
       }
     },
     methods: {
-      tabChange: function (index) {
-        this.changeNb = index;
-      },
-      toLists: function () {
-        this.fg1 = 1;
-        this.$router.push(this.navList1[0].path);
-      },
       toBj: function () {
-        this.fg1 = 2;
-        if (this.fg2) {
-          this.fg2 = false;
-        } else {
-          this.fg2 = true;
-        }
+        this.fg2 == true ? this.fg2 = false : this.fg2 = true;
       },
-      toRg: function () {
-        this.fg1 = 3;
-        this.$router.push(this.navList1[1].path);
-      }
     }
   }
 </script>

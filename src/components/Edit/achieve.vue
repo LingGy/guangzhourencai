@@ -71,7 +71,11 @@
         },
       }
     },
-    created: function () {
+    mounted: function () {
+      if(this.$route.path == "/Edit/achieve"){
+        this.$parent.fg1 = true;
+        this.$parent.fg2 = true;
+      }
         this.getNewData();
     },
     methods:{
@@ -86,7 +90,7 @@
           data.Id = 0;
           vm.$axios({
             method:'post',
-            url:vm.$api +'/setachievement?operate=1&id=0',
+            url:window.$g_url.ApiUrl +'/setachievement?operate=1&id=0',
             data:JSON.stringify(data)
           })
             .then(function(res){
@@ -111,7 +115,7 @@
           data.Date = data.Date/1000;
           vm.$axios({
             method:'post',
-            url:vm.$api +'/setachievement?operate=2&id='+data.Id,
+            url:window.$g_url.ApiUrl +'/setachievement?operate=2&id='+data.Id,
             data:JSON.stringify(data)
           })
             .then(function(res){
@@ -134,7 +138,7 @@
         let vm = this;
         vm.$axios({
             method:'post',
-            url:vm.$api + '/achievement?id=' + id,
+            url:window.$g_url.ApiUrl + '/achievement?id=' + id,
         })
            .then(function(res){
              let resDatas = res.data;
@@ -155,7 +159,7 @@
         let vm = this;
         vm.$axios({
             method:'post',
-            url:vm.$api+'/deleteachivement?id='+id,
+            url:window.$g_url.ApiUrl+'/deleteachivement?id='+id,
         })
            .then(function(res){
              let resDatas = res.data;
@@ -177,7 +181,7 @@
         if(userid && userid != 0) {
           vm.$axios({
             method:'post',
-            url:vm.$api + "/achievements?userid=" + userid,
+            url:window.$g_url.ApiUrl + "/achievements?userid=" + userid,
           })
             .then(function (res) {
               let resDatas = res.data;

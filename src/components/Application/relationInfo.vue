@@ -151,7 +151,7 @@
         let userid = sessionStorage.getItem("relationUserId");
         vm.$axios({
             method:'post',
-            url:vm.$api + '/relationdetail?userid=' + userid +'&type='+relation,
+            url:window.$g_url.ApiUrl + '/relationdetail?userid=' + userid +'&type='+relation,
         })
            .then(function(res){
              let resdatas = res.data;

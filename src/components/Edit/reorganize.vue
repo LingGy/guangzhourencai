@@ -38,7 +38,17 @@
 </template>
 
 <script type="text/ecmascript-6">
-
+export default {
+  name:"reorganize",
+  data: function () {
+    return {}
+  },
+  created: function () {
+    if(this.$route.path == "/Edit/reorganize"){
+      this.$parent.fg1 = false;
+    }
+  }
+}
 </script>
 
 <style lang="scss" type="text/scss" scoped>

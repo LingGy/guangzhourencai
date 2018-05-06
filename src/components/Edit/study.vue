@@ -112,6 +112,10 @@
       };
     },
     created: function () {
+      if(this.$route.path == "/Edit/study"){
+        this.$parent.fg1 = true;
+        this.$parent.fg2 = true;
+      }
         this.getNewData();
     },
     methods:{
@@ -122,7 +126,7 @@
         if(userId && userId != 0) {
           _this.$axios({
             method:'post',
-            url:_this.$api + '/educations?userid=' + userId,
+            url:window.$g_url.ApiUrl + '/educations?userid=' + userId,
           })
             .then(function(res){
               let resDatas = res.data;
@@ -149,7 +153,7 @@
           data.UserId = userid;
           vm.$axios({
             method:'post',
-            url:vm.$api + '/seteducation?operate=1&id=0',
+            url:window.$g_url.ApiUrl + '/seteducation?operate=1&id=0',
             data:JSON.stringify(data)
           })
             .then(function(res){
@@ -178,7 +182,7 @@
           data.EndDate = vm.time[1]/1000;
           vm.$axios({
             method:'post',
-            url:vm.$api + '/seteducation?operate=2&id='+ userid,
+            url:window.$g_url.ApiUrl + '/seteducation?operate=2&id='+ userid,
             data:JSON.stringify(data)
           })
             .then(function(res){
@@ -202,7 +206,7 @@
         let vm = this;
         vm.$axios({
             method:'post',
-            url:vm.$api + '/education?id=' + id,
+            url:window.$g_url.ApiUrl + '/education?id=' + id,
         })
            .then(function(res){
              let resDatas = res.data;
@@ -223,7 +227,7 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:vm.$api+'/deleteeducation?id='+id,
+          url:window.$g_url.ApiUrl+'/deleteeducation?id='+id,
         })
           .then(function(res){
             let resDatas = res.data;

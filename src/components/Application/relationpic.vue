@@ -3,7 +3,7 @@
     <p class="position"><i class='iconfont'>&#xe8e6;</i>您现在的位置 : 数据应用 > 关系分析(图)</p>
     <div class="operation">
       <button class="return" @click='goBack()'>返回</button>
-      <button class="moreInof" type='button' @click="toMoreInof()">查看完整关系详情</button>
+      <!--<button class="moreInof" type='button' @click="toMoreInof()">查看完整关系详情</button>-->
     </div>
     <div id="myChart" class="myChart"></div>
   </div>
@@ -15,7 +15,7 @@ export default {
   data: function () {
     return {
       datas:{
-        name:'人才名字',
+        name:'',
         children:[]
       }
     }
@@ -30,12 +30,13 @@ export default {
       let userid = sessionStorage.getItem("relationUserId");
       vm.$axios({
           method:'post',
-          url:vm.$api +'/relation?userid='+userid,
+          url:window.$g_url.ApiUrl +'/relation?userid='+userid,
       })
          .then(function(res){
            let resDatas = res.data;
            if(resDatas.code == 0){
              if(resDatas.result){
+               vm.datas.name = sessionStorage.getItem("relationUserName");
                vm.datas.children = resDatas.result;
                // 基于准备好的dom，初始化echarts实例
                let myChart = vm.$echarts.init(document.getElementById('myChart'));

@@ -15,14 +15,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(list,index) in lists" :key="list.id">
+          <tr v-for="(list,index) in lists" :key="index">
             <td>{{list.machine_ip}}</td>
             <td>{{list.name_ch}}</td>
             <td>{{list.target_url}}</td>
             <td>已连接</td>
             <td>{{list.status}}</td>
-            <td>{{list.end_time}}</td>
-            <td><button type='button' @click="getName(index)">详情</button></td>
+            <td>{{list.end_time | formatDate()}}</td>
+            <td>
+              <button type='button' @click="getName(index)" disabled='disabled'>详情</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -40,6 +42,11 @@
         page:1
       }
     },
+    filters:{
+      status: function (s) {
+        return s == 0?"正常":'';
+      }
+    },
     created: function () {
       this.getLogLists('',this.page)
     },
@@ -49,12 +56,14 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:vm.$api + '/log?name='+name+'&page='+page+'&count=20',
+          url:window.$g_url.ApiUrl_1 + '/crawlerlist',
         })
           .then(function (res) {
             let resDatas = res.data;
             if(resDatas.code == 0){
-              vm.lists = resDatas.data;
+              if(resDatas.result){
+                vm.lists = resDatas.result;
+              }
             }else {
               vm.$message.error(resDatas.message);
             }
@@ -76,7 +85,7 @@ table,table tr th, table tr td {
   border:1px solid #cccccc;
 }
 .info_box{
-  width: 988px;
+  min-width: 988px;
   table{
     width: 100%;
     border-collapse:collapse;

@@ -2,7 +2,7 @@
   <div id="packetList">
     <p class="position"><i class='iconfont'>&#xe8e6;</i>您现在的位置 : 数据应用 > 分组管理 > 分组列表</p>
     <div class="packet_box">
-      <table>
+      <table v-loading="loading">
         <tr v-for="(value,index) in teams" :key="index" class="tr_st">
           <td class="teamName">{{value.Name}}</td>
           <td class="number">{{value.Count}}条人才信息</td>
@@ -20,19 +20,24 @@
     name:"packetList",
     data: function () {
       return {
-        teams:[]
+        teams:[],
+        loading:true
       }
     },
     created: function () {
-      let _this = this;
-      _this.$axios({
+      if(this.$route.path == "/application/packetList"){
+        this.$parent.fg1 = true;
+      }
+      let vm = this;
+      vm.$axios({
           method:'post',
-          url:_this.$api +'/groups',
+          url:window.$g_url.ApiUrl +'/groups',
       })
          .then(function(res){
+           vm.loading = false;
            let resdata = res.data;
            if(resdata.code == 0){
-             _this.teams = resdata.result;
+             vm.teams = resdata.result;
            }else {
              vm.$message.warning(resdata.message);
            }

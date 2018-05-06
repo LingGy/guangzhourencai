@@ -5,14 +5,14 @@
       <p class="shu"></p>
       <p class="text">分组详情</p>
     </div>
-    <table class="box">
+    <table class="box" v-loading="loading">
       <thead>
       <tr>
         <th>中午名</th>
         <th>英文名</th>
         <th>邮箱</th>
         <th>性别</th>
-        <th>人才等级</th>
+        <!--<th>人才等级</th>-->
         <th>最高学历</th>
         <th>现工作单位</th>
         <th>操作</th>
@@ -24,7 +24,7 @@
         <th>{{result.EnglishName}}</th>
         <th>{{result.Email}}</th>
         <th>{{result.IsMale | getSex()}}</th>
-        <th>{{result.Level | getLevel}}</th>
+        <!--<th>{{result.Level | getLevel}}</th>-->
         <th>{{result.HighestDegree}}</th>
         <th>{{result.WorkUnit}}</th>
         <th>
@@ -41,22 +41,24 @@
     name:"teamInfo",
     data: function () {
       return {
-        resDatas:[]
+        resDatas:[],
+        loading:true
       }
     },
     created: function () {
-      let _this = this;
+      let vm = this;
       let teamId = sessionStorage.getItem("teamId");
-      _this.$axios({
+      vm.$axios({
           method:'post',
-          url:_this.$api + '/group?id=' + teamId,
+          url:window.$g_url.ApiUrl + '/group?id=' + teamId,
       })
          .then(function(res){
+           vm.loading = false;
            let resdata = res.data;
            if(resdata.code == 0){
-             _this.resDatas = resdata.result;
+             vm.resDatas = resdata.result;
            }else {
-             _this.$message.warning(resdata.message);
+             vm.$message.warning(resdata.message);
            }
          })
          .catch(function(err){
