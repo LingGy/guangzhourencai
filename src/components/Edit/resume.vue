@@ -29,6 +29,7 @@
             v-model="allData.Nationality"
             filterable
             allow-create
+            class='myel1'
             placeholder="选择或输入留学国籍">
             <el-option
               v-for="item in countrys"
@@ -43,12 +44,37 @@
       <div class="op">
         <p class="name">出生地:</p>
         <div class="val">
-          <select name="" id="" class="s2" v-model='Birthplace1'>
-            <option v-for="(option ,index ) in options2" :value="option.value" :key="index">{{option.value}}</option>
-          </select>
-          <select name="" id="" class="s3" v-model='Birthplace2'>
-            <option v-for="(option ,index ) in options3" :value="option.value" :key="index">{{option.value}}</option>
-          </select>
+          <!--<select name="" id="" class="s2" v-model='Birthplace1'>-->
+            <!--<option v-for="(option ,index ) in options2" :value="option.value" :key="index">{{option.label}}</option>-->
+          <!--</select>-->
+          <!--<select name="" id="" class="s3" v-model='Birthplace2'>-->
+            <!--<option v-for="(list ,index ) in options3" :value="option.value" :key="index">{{list}}</option>-->
+          <!--</select>-->
+          <el-select
+            v-model="Birthplace1"
+            filterable
+            allow-create
+            @change="handleItemChange"
+            class="s2">
+            <el-option
+              v-for="(option,index ) in options2"
+              :key="index"
+              :label="option"
+              :value="option">
+            </el-option>
+          </el-select>
+          <el-select
+            v-model="Birthplace2"
+            filterable
+            allow-create
+            class="s3">
+            <el-option
+              v-for="(option,index ) in options3"
+              :key="index"
+              :label="option"
+              :value="option">
+            </el-option>
+          </el-select>
         </div>
       </div>
 
@@ -68,8 +94,8 @@
             allow-create
             placeholder="选择或输入留学国家">
             <el-option
-              v-for="item in countrys"
-              :key="item"
+              v-for="(item,index) in countrys"
+              :key="index"
               :label="item"
               :value="item">
             </el-option>
@@ -255,27 +281,22 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import province from '../../../static/city'
   export default {
     name: 'Resume',
     data: function () {
       return {
-        countrys: [],
-        options2: [
-          {value: '广东省',},
-          {value: '福建省',},
-          {value: '湖南省',},
-          {value: '黑龙江省',},
-        ],
-        options3: [
-          {value: '深圳市',},
-          {value: '漳州市',},
-          {value: '长沙市',},
-          {value: '哈尔滨市',},
-        ],
-        options5: [
-          {value:"博士"},
-          {value:"硕士"},
-          {value:"学士"},
+        countrys:[],
+        majors:[],
+        colleges: [],
+        options2: province.arr1,
+        options3: [],
+        options5:[
+          {value:''},
+          {value:'博士'},
+          {value:'硕士'},
+          {value:'学士'},
+          {value:'其他'},
         ],
         options6: [
           {value: '刚毕业'},
@@ -287,7 +308,6 @@
           {value: '两地往返'},
           {value: '长期在中国'},
         ],
-        colleges: [],
         value: '',
         upFile:{
           fg:false,
@@ -325,56 +345,15 @@
       }
     },
     created: function () {
-      if(this.$route.path == "/Edit/resume"){
-        this.$parent.fg1 = true;
-        this.$parent.fg2 = true;
-      }
       let _this = this;
-      _this.$axios({
-        method:'get',
-        url:window.$g_url.ApiUrl+'/college',
-      })
-        .then(function(res){
-          let resDatas = res.data;
-          if(resDatas.code == 0){
-            _this.colleges = resDatas.result;
-          }else {
-            console.log(resDatas.message);
-          }
-        })
-        .catch(function(err){
-          console.log(err);
-        });
-      _this.$axios({
-        method:'get',
-        url:window.$g_url.ApiUrl+'/major',
-      })
-        .then(function(res){
-          let resDatas = res.data;
-          if(resDatas.code == 0){
-            _this.majors = resDatas.result;
-          }else {
-            console.log(resDatas.message);
-          }
-        })
-        .catch(function(err){
-          console.log(err);
-        });
-      _this.$axios({
-        method:'get',
-        url:window.$g_url.ApiUrl+'/country',
-      })
-        .then(function(res){
-          let resDatas = res.data;
-          if(resDatas.code == 0){
-            _this.countrys = resDatas.result;
-          }else {
-            console.log(resDatas.message);
-          }
-        })
-        .catch(function(err){
-          console.log(err);
-        });
+      if(_this.$route.path == "/Edit/resume"){
+        _this.$parent.fg1 = true;
+        _this.$parent.fg2 = true;
+        _this.$parent.fg3 = false;
+      }
+      _this.getAssistData('/country');
+      _this.getAssistData('/major');
+      _this.getAssistData('/college');
       _this.getNewData();
     },
     //方法
@@ -474,7 +453,42 @@
         }else {
           vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
         }
-      }
+      },
+      //二级联动
+      handleItemChange: function () {
+        let vm = this;
+        let val = vm.Birthplace1;
+        let i = vm.options2.indexOf(val);
+        vm.Birthplace2='';
+        if(i != -1){
+          vm.options3 = province.arr2[i];
+        }
+      },
+      //获取国籍选项数据
+      getAssistData: function (api) {
+        let vm = this;
+        vm.$axios({
+          method:'post',
+          url:window.$g_url.ApiUrl+api,
+        })
+          .then(function(res){
+            let resData = res.data;
+            if(resData.code == 0){
+              if(api == '/country'){
+                vm.countrys = resData.result;
+              }else if(api == '/major'){
+                vm.majors = resData.result;
+              }else if(api == '/college'){
+                vm.colleges = resData.result;
+              }
+            }else {
+              vm.$message.error(resData.message);
+            }
+          })
+          .catch(function(err){
+            console.log(err);
+          });
+      },
     }
   }
 </script>
@@ -482,6 +496,13 @@
 <style lang="scss" type="text/scss">
   .resumeInfo_box {
     width: 582px;
+    .el-input__inner{
+      height: 22px;
+      border-radius:0px;
+      line-height: 20px;
+      border: solid 1px #53b1dc;
+      color: #29a9f5;
+    }
     div.op {
       height: 22px;
       width: 100%;
@@ -515,21 +536,19 @@
           padding-left: 20px;
         }
         .s2,.s3 {
-          width: 82px;
-          padding-left: 8px;
+          width: 100px;
           float: left;
+          .el-input__inner{
+            width: 100px;
+          }
         }
         .s2{
           margin-right: 15px;
         }
-        .el-select{
+        .myel1{
           overflow: hidden;
           .el-input__inner{
-            height: 22px;
             width: 240px;
-            border-radius:0px;
-            line-height: 20px;
-            border: solid 1px #53b1dc;
           }
         }
         .country{

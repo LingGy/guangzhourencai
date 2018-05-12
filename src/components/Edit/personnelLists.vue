@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="t_box">
-      <table class="box"  v-loading="loading">
+      <table class="box" v-loading="loading">
         <thead>
         <tr>
           <th>中文名</th>
@@ -67,6 +67,7 @@
     created: function () {//获取人才列表
       if(this.$route.path == "/Edit/personnelLists"){
         this.$parent.fg1 = false;
+        this.$parent.fg3 = false;
       }
      this.getNewLists(this.name,this.page);
     },
@@ -226,7 +227,6 @@
           }
         }
       }
-
     }
     .console_box{
       min-width: 948px;

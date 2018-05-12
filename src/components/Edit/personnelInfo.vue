@@ -64,6 +64,8 @@
       if(this.$route.path == "/Edit/personnelInfo"){
         this.$parent.fg1 = true;
         this.$parent.fg2 = true;
+        this.$parent.fg3 = false;
+
       }
       this.getNewData();
     },

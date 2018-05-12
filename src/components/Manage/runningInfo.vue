@@ -2,7 +2,7 @@
   <div id="runningInfo">
     <p class="position"><i class='iconfont'>&#xe8e6;</i>您现在的位置 : 爬虫管理 > 运行情况</p>
     <div class="info_box">
-      <table>
+      <table  v-loading="loading">
         <thead>
           <tr>
             <th>ip地址</th>
@@ -39,7 +39,8 @@
     data:function () {
       return {
         lists:[],
-        page:1
+        page:1,
+        loading:true,
       }
     },
     filters:{
@@ -59,6 +60,7 @@
           url:window.$g_url.ApiUrl_1 + '/crawlerlist',
         })
           .then(function (res) {
+            vm.loading = false;
             let resDatas = res.data;
             if(resDatas.code == 0){
               if(resDatas.result){

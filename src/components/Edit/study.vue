@@ -59,7 +59,7 @@
         <p class="name">专&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;业&nbsp;:</p>
         <div class="st_content_box st_faculty_box">
           <select name="" id="" class="st_faculty" v-model="viewData.Major">
-            <option v-for="(option,index) in options1" :value="option.value" :key="index">{{option.value}}</option>
+            <option v-for="(option,index) in majors" :value="option.value" :key="index">{{option}}</option>
           </select>
         </div>
       </div>
@@ -86,13 +86,9 @@
     name:"Study",
     data:function () {
       return {
-        options1:[
-          {value:"计算机系"},
-          {value:"外语系"},
-          {value:"艺术系"},
-          {value:"热作系系"},
-        ],
+        majors:[],
         options2:[
+          {value:""},
           {value:"博士"},
           {value:"硕士"},
           {value:"学士"},
@@ -115,8 +111,10 @@
       if(this.$route.path == "/Edit/study"){
         this.$parent.fg1 = true;
         this.$parent.fg2 = true;
+        this.$parent.fg3 = false;
       }
-        this.getNewData();
+      this.getAssistData('/major');
+      this.getNewData();
     },
     methods:{
       //获取数据列表
@@ -241,7 +239,32 @@
           .catch(function(err){
             console.log(err);
           });
-      }
+      },
+      //获取国籍选项数据
+      getAssistData: function (api) {
+        let vm = this;
+        vm.$axios({
+          method:'post',
+          url:window.$g_url.ApiUrl+api,
+        })
+          .then(function(res){
+            let resData = res.data;
+            if(resData.code == 0){
+              if(api == '/country'){
+                vm.countrys = resData.result;
+              }else if(api == '/major'){
+                vm.majors = resData.result;
+              }else if(api == '/college'){
+                vm.colleges = resData.result;
+              }
+            }else {
+              vm.$message.error(resData.message);
+            }
+          })
+          .catch(function(err){
+            console.log(err);
+          });
+      },
     }
   }
 </script>

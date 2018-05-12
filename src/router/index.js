@@ -13,6 +13,8 @@ import work from '@/components/Edit/work';
 import jobIntention from '@/components/Edit/jobIntention';
 import project from '@/components/Edit/project';
 import reorganize from '@/components/Edit/reorganize';
+import assn from '@/components/Edit/assn';
+import assnInfo from '@/components/Edit/assnInfo';
 import runningInfo from '@/components/Manage/runningInfo';
 import taskManagement from '@/components/Manage/taskManagement';
 import accurate from '@/components/Application/accurate';
@@ -88,7 +90,17 @@ export default new Router({
           path: '/Edit/reorganize',
           name: 'reorganize',
           component: reorganize
-        }
+        },
+        {
+          path: '/Edit/assn',
+          name: 'assn',
+          component: assn
+        },
+        {
+          path: '/Edit/assnInfo',
+          name: 'assnInfo',
+          component: assnInfo
+        },
       ]
     },
     {

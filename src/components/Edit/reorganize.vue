@@ -6,10 +6,10 @@
         <div class="bule"></div>
         <p>人才数据</p>
       </div>
-      <div class="top_right">
-        <input type="text" class='name' placeholder='请输入搜索人姓名'>
-        <button type='button' class='btn_search'>搜索</button>
-      </div>
+      <!--<div class="top_right">-->
+        <!--<input type="text" class='name' placeholder='请输入搜索人姓名'>-->
+        <!--<button type='button' class='btn_search'>搜索</button>-->
+      <!--</div>-->
     </div>
     <table class="re_infoLists">
       <thead>
@@ -46,6 +46,7 @@ export default {
   created: function () {
     if(this.$route.path == "/Edit/reorganize"){
       this.$parent.fg1 = false;
+      this.$parent.fg3 = false;
     }
   }
 }

@@ -4,15 +4,15 @@
       <ul class="sub_nav">
         <router-link tag="li" class='sub_nav_li' to="/Edit/personnelLists" active-class="active1">
           <p>
-            <i class='iconfont'>&#xe63c;</i>人才浏览<i class='iconfont'>&#xe735;</i>
+            <i class='iconfont'>&#xe63c;</i>人才浏览<i class='el-icon-arrow-right'></i>
           </p>
         </router-link>
-        <router-link tag="li" class='sub_nav_li' to="/Edit/personnelInfo" active-class="active1" :class="{active1:fg1}">
-          <p @click="toBj">
-            <i class='iconfont'>&#xe624;</i>编辑数据<i class='iconfont'>&#xe735;</i>
+        <router-link tag="li" to="/Edit/personnelInfo" active-class="active1" :class="{sub_nav_li:true,active1:fg1}">
+          <p @click="toBj1">
+            <i class='iconfont'>&#xe624;</i>编辑数据<i class='el-icon-arrow-right'></i>
           </p>
         </router-link>
-        <li class="edit_sub" :class="{edit_sub1:fg2}">
+        <li :class="{edit_sub:true,edit_sub1:fg2}">
           <ul class='edit_sub_ul'>
             <router-link tag="li" v-for='(list,index) in navList' :to='list.path' class='edit_sub_ul_li' active-class='active2'
                          :key='index'>
@@ -22,9 +22,18 @@
         </li>
         <router-link tag="li" class='sub_nav_li' to="/Edit/reorganize" active-class="active1">
           <p>
-            <i class='iconfont'>&#xe65b;</i>合并数据<i class='iconfont'>&#xe735;</i>
+            <i class='iconfont'>&#xe65b;</i>合并数据<i class='el-icon-arrow-right'></i>
           </p>
         </router-link>
+        <router-link tag="li" to="/Edit/assn" active-class="active1" :class="{sub_nav_li:true,active1:fg3}">
+          <p @click="toBj2">
+            <i class='iconfont'>&#xe61f;</i>社团管理<i class='el-icon-arrow-right'></i>
+          </p>
+        </router-link>
+        <li :class="{lite:true,isA:isA}">
+          <router-link tag='p' to="/Edit/assn" active-class="h">社团列表</router-link>
+          <router-link tag='p' to="/Edit/assnInfo" active-class="h">编辑社团</router-link>
+        </li>
       </ul>
     </div>
     <div class="content">
@@ -55,18 +64,45 @@
         ],
         fg1: false,
         fg2: false,
+        fg3: false,
+        isA:true,
       }
     },
     methods: {
-      toBj: function () {
+      toBj1: function () {
         this.fg2 == true ? this.fg2 = false : this.fg2 = true;
+      },
+      toBj2: function () {
+        this.isA == true ? this.isA = false : this.isA = true;
       },
     }
   }
 </script>
 
 <style lang="scss" type="text/scss" scoped>
-
-
+#edit{
+  .lite{
+    width: 172px;
+    padding-left: 45px;
+    p{
+      width: 120px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      color: #545454;
+      font-size: 18px;
+      background-color: #f5f6f9;
+      &:hover{
+        color: #40aff5;
+      }
+    }
+    .h{
+      color: #40aff5;
+    }
+  }
+  .isA{
+    display: none;
+  }
+}
 </style>
 

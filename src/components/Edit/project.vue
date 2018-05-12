@@ -135,6 +135,7 @@
       if(this.$route.path == "/Edit/project"){
         this.$parent.fg1 = true;
         this.$parent.fg2 = true;
+        this.$parent.fg3 = false;
       }
         this.getNewData();
     },

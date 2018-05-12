@@ -2,9 +2,9 @@
   <div id="maintain">
     <div class="sub_nav_box">
       <ul class="sub_nav">
-        <router-link tag="li" :to='navLists[0].path' class='sub_nav_li' active-class='active1'><p><i class='iconfont'>&#xe61d;</i>系统日志<i class='iconfont'>&#xe735;</i></p></router-link>
-        <router-link tag="li" :to='navLists[1].path' class='sub_nav_li' active-class='active1'><p><i class='iconfont'>&#xe640;</i>类别管理<i class='iconfont'>&#xe735;</i></p></router-link>
-        <router-link tag="li" :to='navLists[2].path' class='sub_nav_li' active-class='active1'><p><i class='el-icon-star-off'></i>评分设置<i class='iconfont'>&#xe735;</i></p></router-link>
+        <router-link tag="li" :to='navLists[0].path' class='sub_nav_li' active-class='active1'><p><i class='iconfont'>&#xe61d;</i>系统日志<i class='el-icon-arrow-right'></i></p></router-link>
+        <router-link tag="li" :to='navLists[1].path' class='sub_nav_li' active-class='active1'><p><i class='iconfont'>&#xe640;</i>类别管理<i class='el-icon-arrow-right'></i></p></router-link>
+        <router-link tag="li" :to='navLists[2].path' class='sub_nav_li' active-class='active1'><p><i class='el-icon-star-off'></i>评分设置<i class='el-icon-arrow-right'></i></p></router-link>
       </ul>
     </div>
     <div class="content">

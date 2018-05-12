@@ -75,6 +75,7 @@
       if(this.$route.path == "/Edit/achieve"){
         this.$parent.fg1 = true;
         this.$parent.fg2 = true;
+        this.$parent.fg3 = false;
       }
         this.getNewData();
     },

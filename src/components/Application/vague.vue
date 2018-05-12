@@ -195,7 +195,6 @@
           + "&college="+vm.college
           + "&major="+vm.major
           + "&degree="+vm.degree
-          + "&level="+vm.level
         })
           .then(function(res){
             vm.loading = false;

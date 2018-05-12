@@ -73,6 +73,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import province from '../../../static/city'
   export default {
     name:"JobIntention",
     data:function () {
@@ -108,6 +109,7 @@
         ],
         sheng:'',
         shi:'',
+        majors:[],
         Datas:{
           IntentArea:'',
           IntentIndustry:'',
@@ -123,6 +125,8 @@
       if(this.$route.path == "/Edit/jobIntention"){
         this.$parent.fg1 = true;
         this.$parent.fg2 = true;
+        this.$parent.fg3 = false;
+
       }
         this.getNewData();
     },
@@ -207,7 +211,32 @@
           vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
         }
 
-      }
+      },
+      //获取国籍选项数据
+      getAssistData: function (api) {
+        let vm = this;
+        vm.$axios({
+          method:'post',
+          url:window.$g_url.ApiUrl+api,
+        })
+          .then(function(res){
+            let resData = res.data;
+            if(resData.code == 0){
+              if(api == '/country'){
+                vm.countrys = resData.result;
+              }else if(api == '/major'){
+                vm.majors = resData.result;
+              }else if(api == '/college'){
+                vm.colleges = resData.result;
+              }
+            }else {
+              vm.$message.error(resData.message);
+            }
+          })
+          .catch(function(err){
+            console.log(err);
+          });
+      },
     }
   }
 </script>

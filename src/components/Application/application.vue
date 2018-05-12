@@ -17,7 +17,7 @@
         <!--</li>-->
         <router-link tag="li" class='sub_nav_li' to="/application/accurate" active-class="active1" :class="{active1:fg1}">
           <p @click="toBj()">
-            <i class='iconfont'>&#xe675;</i>分组管理<i class='iconfont'>&#xe735;</i>
+            <i class='iconfont'>&#xe675;</i>分组管理<i class='el-icon-arrow-right'></i>
           </p>
         </router-link>
         <li :class='{subson:true,subsonH:fg2}'>
@@ -25,7 +25,7 @@
         </li>
         <router-link tag="li" class='sub_nav_li' to="/application/relation" active-class="active1">
           <p>
-            <i class='iconfont'>&#xe706;</i>关系分析<i class='iconfont'>&#xe735;</i>
+            <i class='iconfont'>&#xe706;</i>关系分析<i class='el-icon-arrow-right'></i>
           </p>
         </router-link>
       </ul>
