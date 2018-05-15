@@ -13,6 +13,13 @@ import work from '@/components/Edit/work';
 import jobIntention from '@/components/Edit/jobIntention';
 import project from '@/components/Edit/project';
 import reorganize from '@/components/Edit/reorganize';
+import rg_Info from '@/components/Edit/rg_Info';
+import rg_Resume from '@/components/Edit/rg_Resume';
+import rg_Achieve from '@/components/Edit/rg_Achieve';
+import rg_Job from '@/components/Edit/rg_Job';
+import rg_Project from '@/components/Edit/rg_Project';
+import rg_Study from '@/components/Edit/rg_Study';
+import rg_Work from '@/components/Edit/rg_Work';
 import assn from '@/components/Edit/assn';
 import assnInfo from '@/components/Edit/assnInfo';
 import runningInfo from '@/components/Manage/runningInfo';
@@ -90,6 +97,41 @@ export default new Router({
           path: '/Edit/reorganize',
           name: 'reorganize',
           component: reorganize
+        },
+        {
+          path: '/Edit/reorganize/rg_Info',
+          name: 'rg_Info',
+          component: rg_Info
+        },
+        {
+          path: '/Edit/reorganize/rg_Achieve',
+          name: 'rg_Achieve',
+          component: rg_Achieve
+        },
+        {
+          path: '/Edit/reorganize/rg_Job',
+          name: 'rg_Job',
+          component: rg_Job
+        },
+        {
+          path: '/Edit/reorganize/rg_Project',
+          name: 'rg_Project',
+          component: rg_Project
+        },
+        {
+          path: '/Edit/reorganize/rg_Resume',
+          name: 'rg_Resume',
+          component: rg_Resume
+        },
+        {
+          path: '/Edit/reorganize/rg_Study',
+          name: 'rg_Study',
+          component: rg_Study
+        },
+        {
+          path: '/Edit/reorganize/rg_Work',
+          name: 'rg_Work',
+          component: rg_Work
         },
         {
           path: '/Edit/assn',

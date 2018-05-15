@@ -44,12 +44,6 @@
       <div class="op">
         <p class="name">出生地:</p>
         <div class="val">
-          <!--<select name="" id="" class="s2" v-model='Birthplace1'>-->
-            <!--<option v-for="(option ,index ) in options2" :value="option.value" :key="index">{{option.label}}</option>-->
-          <!--</select>-->
-          <!--<select name="" id="" class="s3" v-model='Birthplace2'>-->
-            <!--<option v-for="(list ,index ) in options3" :value="option.value" :key="index">{{list}}</option>-->
-          <!--</select>-->
           <el-select
             v-model="Birthplace1"
             filterable
@@ -124,9 +118,18 @@
       <div class="op">
         <p class="name">最高学历:</p>
         <div class="val">
-          <select name="" id="" class="s1" v-model='allData.HighestDegree'>
-            <option v-for="(option ,index ) in options5" :value="option.value" :key="index">{{option.value}}</option>
-          </select>
+          <el-select
+            v-model="allData.HighestDegree"
+            filterable
+            allow-create
+            class="s1">
+            <el-option
+              v-for="(option,index ) in options5"
+              :key="index"
+              :label="option.value"
+              :value="option.value">
+            </el-option>
+          </el-select>
         </div>
       </div>
 
@@ -533,7 +536,9 @@
         }
         .s1 {
           width: 148px;
-          padding-left: 20px;
+          .el-input__inner{
+            width: 148px;
+          }
         }
         .s2,.s3 {
           width: 100px;

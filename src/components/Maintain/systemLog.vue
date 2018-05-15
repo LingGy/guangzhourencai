@@ -54,7 +54,7 @@
         vm.$axios({
             method:'post',
             url:window.$g_url.ApiUrl+'/log',
-            data:'name' + '' + '&page=' + page + '&count=20'
+            data:'name=' + '' + '&page=' + page + '&count=20'
         })
            .then(function(res){
              vm.loading = false;
@@ -64,7 +64,6 @@
                  vm.logs = resData.result;
                }else {
                  if(page>1){
-                   vm.page = page - 1;
                    vm.isB = true;
                    vm.bt2 = true;
                  }

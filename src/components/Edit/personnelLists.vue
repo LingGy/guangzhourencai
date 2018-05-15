@@ -88,7 +88,6 @@
                 vm.results = data.result;
               }else {
                 if(page>0){
-                  vm.page = page - 1;
                   vm.isB = true;
                   vm.bt2 = true;
                 }
@@ -101,9 +100,7 @@
                 vm.isA = true;
               }
             } else {
-              vm.$message.error(data.message);
               if(page>0){
-                vm.page = page - 1;
                 vm.isB = true;
                 vm.bt2 = true;
               }
@@ -230,7 +227,6 @@
     }
     .console_box{
       min-width: 948px;
-      height: 30px;
       .console{
         width: 212px;
         margin: 0 auto;

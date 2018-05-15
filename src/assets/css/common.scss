@@ -297,3 +297,218 @@ button {
     padding: 45px 0px 0px 90px;
   }
 }
+.console_box{
+  min-width: 948px;
+  height: 30px;
+  .console{
+    width: 212px;
+    margin: 0 auto;
+    margin-top: 30px;
+    .console{
+      width: 82px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+    }
+    .c1{
+      float: left;
+    }
+    .c2{
+      float: right;
+    }
+    .console1{
+      border: solid 1px #999999;
+      background-color: transparent;
+    }
+    .console2{
+      background-color: #169bd8;
+      color: #ffffff;
+    }
+  }
+}
+.top{
+  width: 948px;
+  height: 28px;
+  .top_left{
+    float: left;
+    height: 100%;
+    .bule{
+      width: 4px;
+      height: 100%;
+      background-color:#169bd8;
+      float: left;
+    }
+    p{
+      font-size: 18px;
+      color: #454545;
+      margin-left: 5px;
+      float: left;
+      line-height: 28px;
+    }
+  }
+  .top_right{
+    float: right;
+    .name{
+      float: left;
+      width: 134px;
+      height: 28px;
+      font-size: 12px;
+      color: #999;
+      padding-left: 4px;
+      margin-right: 14px;
+    }
+    .btn_search{
+      float: right;
+      width: 90px;
+      height: 28px;
+      background-color: #169bd8;
+      border: none;
+      font-size: 18px;
+      line-height: 28px;
+      text-align: center;
+      color: #fff;
+    }
+  }
+}
+.Info_div_box{
+  width: 984px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap:wrap;
+  .info_box{
+    width: 424px;
+    border: solid 1px #dedede;
+    margin-bottom: 40px;
+    .list_box{
+      display: flex;
+      height: 28px;
+      width: 100%;
+      justify-content: space-between;
+      border-top: solid 1px #dedede;
+      .touxiang{
+        display: block;
+        width: 55px;
+        height: 74px;
+        margin: 0 auto;
+        margin-top: 3px;
+      }
+      .list_l{
+        height: 100%;
+        width: 95px;
+        line-height: 28px;
+        padding-left: 10px;
+        color: #454545;
+        font-size: 14px;
+        border-right: solid 1px #dedede;
+      }
+      .list_r{
+        flex:1;
+        height: 28px;
+        padding: 3px 0px 0px 3px;
+        p{
+          font-size: 14px;
+          height: 28px;;
+          line-height: 24px;
+          color: #666666;
+          padding-left: 6px;
+          overflow: hidden;
+          white-space: nowrap;
+          -ms-text-overflow: ellipsis;
+          text-overflow: ellipsis;
+        }
+        p.te{
+          width: 306px;
+          height: 74px;
+        }
+        .inp{
+          display: block;
+          width: 190px;
+          height: 22px;
+          line-height: 22px;
+          border: solid 1px #53b1dc;
+          padding-left: 6px;
+        }
+        .zhuangctext{
+          width: 306px;
+          height: 74px;
+          border: solid 1px #53b1dc;
+          font-size: 14px;
+          color: #666666;
+        }
+        .onlybox{
+          width: 190px;
+          height: 22px;
+          .el-input__inner{
+            width: 190px;
+            height: 22px;
+            border: solid 1px #53b1dc;
+            border-radius:0px;
+            color: #000;
+          }
+          .el-input__prefix,.el-input__suffix{
+            height: 22px;
+            i{
+              height: 22px;
+              line-height: 22px;
+            }
+          }
+        }
+      }
+    }
+    .list_l2{
+      height: 80px;
+      line-height: 80px;
+      border:none;
+      .list_l{
+        line-height: 80px;
+      }
+    }
+    .imgbox{
+      height: 90px;
+      .list_l{
+        line-height: 90px;
+      }
+      .list_r{
+        .pic1{
+          display: block;
+          width: 100px;
+          height: 78px;
+        }
+        .pic{
+          display: block;
+          width: 55px;
+          height: 74px;
+        }
+      }
+    }
+  }
+}
+.control_wear{
+  width: 984px;
+  height: 24px;
+  padding: 0px 363px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  .btn1,.btn2,.btn3{
+    font-size: 16px;
+    height: 24px;
+    text-align: center;
+    line-height: 22px;
+  }
+  .btn1{
+    width: 50px;
+    background-color: #169bd8;
+    color: #ffffff;
+  }
+  .btn2{
+    width: 120px;
+    border: solid 1px #999999;
+    background-color: transparent;
+  }
+  .btn3{
+    width: 50px;
+    border: solid 1px #999999;
+    background-color: transparent;
+  }
+}
