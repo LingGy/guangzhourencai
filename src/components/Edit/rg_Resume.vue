@@ -275,7 +275,7 @@
             let resData = res.data;
             if(resData.code == 0){
               if(resData.result.original){
-                resData.result.original.RegisterDate = resData.result.original.RegisterDate*1000;
+                resData.result.original.Birthday = resData.result.original.Birthday*1000;
                 resData.result.original.IsMale = resData.result.original.IsMale == 1? "男":"女";
                 resData.result.original.EverStarupAbroad = resData.result.original.EverStarupAbroad == 1? "有":"无";
                 vm.original = resData.result.original;
@@ -283,7 +283,7 @@
               if(resData.result.duplicate){
                 let length = resData.result.duplicate.length;
                 for(let i = 0 ,len = length ; i < len; i++){
-                  resData.result.duplicate[i].RegisterDate = resData.result.duplicate[i].RegisterDate*1000;
+                  resData.result.duplicate[i].Birthday = resData.result.duplicate[i].Birthday*1000;
                 };
                 vm.duplicate = resData.result.duplicate;
               }
@@ -300,17 +300,20 @@
       subData: function (id) {
         let vm = this;
         let data = JSON.parse(JSON.stringify(vm.original));
-        data.RegisterDate = data.RegisterDate/1000;
+        data.EverStarupAbroad = data.EverStarupAbroad == '有'? 1:0;
+        data.IsMale = data.IsMale == '男'? 1:0;
+        data.Birthday = data.Birthday/1000;
+        console.log(JSON.stringify(data));
         vm.$axios({
           method:"post",
-          url:window.$g_url.ApiUrl + "/setbaseinfo?operate=2&userid="+id,
+          url:window.$g_url.ApiUrl + "/setresume?userid="+id,
           data:JSON.stringify(data)
         })
           .then(function (res) {
             let data = res.data;
             if(data.code == 0){
               vm.$message.success("保存成功!");
-              vm.getNewData();
+              vm.getData(id);
             }else {
               vm.$message.error(data.message);
             }
@@ -324,12 +327,13 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/deletebaseinfodup',
+          url:window.$g_url.ApiUrl + '/deleteresumedup',
           data:'userid='+id
         })
           .then(function(res){
             if(res.data.code == 0){
               vm.$message.success("删除重复记录成功!");
+              vm.getData(id);
             }else {
               vm.$message.error(res.data.message);
             }
