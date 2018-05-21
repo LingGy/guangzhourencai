@@ -30,7 +30,7 @@
         <div class="list_box descriptionBox">
           <div class="list_l">描述:</div>
           <div class="list_r">
-            <textarea class='text' v-model="originallist.description"></textarea>
+            <textarea class='text' v-model="originallist.Description"></textarea>
           </div>
         </div>
       </div>
@@ -44,19 +44,20 @@
         <div class="list_box">
           <div class="list_l">注册时间:</div>
           <div class="list_r">
-            <p>{{list.Date}}</p>
+            <p>{{list.Date | formatDate()}}</p>
           </div>
         </div>
         <div class="list_box descriptionBox">
           <div class="list_l">描述:</div>
           <div class="list_r">
-            <p class="typeBox">{{list.description}}</p>
+            <p class="typeBox">{{list.Description}}</p>
           </div>
         </div>
       </div>
     </div>
-    <div class="control_wear">
-      <button class="btn1" @click='subData(originallist.UserId)'>保存</button>
+    <div class="control_wear wear">
+      <button class="btn1" @click='subData(originallist.Id)'>保存</button>
+      <button class="btn1" @click='addData()'>新增</button>
       <button class="btn2" @click='del(originallist.UserId)'>删除重复记录</button>
       <button class="btn3" @click='goBack()'>返回</button>
     </div>
@@ -96,7 +97,6 @@ export default {
               for(let i = 0 ,len = newData.length ;  i< len; i++){
                 newData[i].Date = newData[i].Date*1000;
                 vm.options[i] = newData[i].Type;
-
               }
               vm.original = resData.result.original;
               vm.originallist = vm.original[0];
@@ -116,41 +116,52 @@ export default {
     change: function () {
       this.originallist = this.original[this.type];
     },
-    //保存
-    subData: function (id) {
+    //保存或新增
+    or: function (id,type) {
       let vm = this;
-      let userid = sessionStorage.getItem('rgId');
-      let data = JSON.parse(JSON.stringify(vm.originallist));
-      data.Date = data.Date/1000;
+      let userid;
+      let reqdata = JSON.parse(JSON.stringify(vm.originallist));
+      if(id == 0){
+        reqdata.Id = 0 ;
+      }
+      reqdata.Date = reqdata.Date/1000;
       vm.$axios({
         method:"post",
-        url:window.$g_url.ApiUrl + "/setachievement?operate=2&userid="+id,
-        data:JSON.stringify(data)
+        url:window.$g_url.ApiUrl + "/setachievement?operate="+type+"&id="+id,
+        data:JSON.stringify(reqdata)
       })
         .then(function (res) {
-          let data = res.data;
-          if(data.code == 0){
-            vm.$message.success("保存成功!");
-            vm.getData(id);
+          let resdata = res.data;
+          if(resdata.code == 0){
+            vm.$message.success("设置成功!");
+            vm.getData(reqdata.UserId);
           }else {
-            vm.$message.error(data.message);
+            vm.$message.error(resdata.message);
           }
         })
         .catch(function (err) {
           console.log(err);
         })
     },
+    //保存
+    subData: function (id) {
+      this.or(id,2);
+    },
+    //新增
+    addData: function () {
+      this.or(0,1);
+    },
     //删除重复记录
-    del: function (id) {
+    del: function (userid) {
       let vm = this;
       vm.$axios({
         method:'post',
-        url:window.$g_url.ApiUrl + '/deleteachievementdup',
-        data:'userid='+id
+        url:window.$g_url.ApiUrl + '/deleteachievementdup?userid='+userid,
       })
         .then(function(res){
           if(res.data.code == 0){
             vm.$message.success("删除重复记录成功!");
+            vm.getData(userid);
           }else {
             vm.$message.error(res.data.message);
           }
@@ -196,6 +207,9 @@ export default {
     .iw{
       width: 280px;
     }
+  }
+  .wear{
+    padding: 0px 330px;
   }
 }
 </style>

@@ -27,7 +27,7 @@
             <span @click='toStudy(list.UserId)'>学习经历</span>
             <span @click='toWork(list.UserId)'>工作经历</span>
             <span @click='toJob(list.UserId)'>求职意向</span>
-            <span @click='toProject(list.UserId)'>求职意向</span>
+            <span @click='toProject(list.UserId)'>个人项目</span>
           </td>
           <td>
             <button class="del" @click='del(list.UserId)'>删除</button>

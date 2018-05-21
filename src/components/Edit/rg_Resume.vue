@@ -281,10 +281,10 @@
                 vm.original = resData.result.original;
               }
               if(resData.result.duplicate){
-                let length = resData.result.duplicate.length;
-                for(let i = 0 ,len = length ; i < len; i++){
-                  resData.result.duplicate[i].Birthday = resData.result.duplicate[i].Birthday*1000;
-                };
+                // let length = resData.result.duplicate.length;
+                // for(let i = 0 ,len = length ; i < len; i++){
+                //   resData.result.duplicate[i].Birthday = resData.result.duplicate[i].Birthday*1000;
+                // };
                 vm.duplicate = resData.result.duplicate;
               }
 

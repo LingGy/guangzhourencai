@@ -107,10 +107,6 @@
                  vm.original = resData.result.original;
                }
                if(resData.result.duplicate){
-                 let length = resData.result.duplicate.length;
-                 for(let i = 0 ,len = length ; i < len; i++){
-                   resData.result.duplicate[i].RegisterDate = resData.result.duplicate[i].RegisterDate*1000;
-                 };
                  vm.duplicate = resData.result.duplicate;
                }
 

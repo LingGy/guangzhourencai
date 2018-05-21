@@ -38,7 +38,7 @@
         <p class="name">所属行业&nbsp;:</p>
         <div class="main">
             <select name="" id="" class="choice_box" v-model="viewData.Industry">
-              <option v-for="(option,index) in options" :value="option.value" :key="index">{{option.value}}</option>
+              <option v-for="(option,index) in options" :value="option" :key="index">{{option}}</option>
             </select>
         </div>
       </div>
@@ -101,11 +101,7 @@
     name:"Project",
     data:function() {
       return {
-        options:[
-          {value:"金融"},
-          {value:"影视"},
-          {value:"生物科学"},
-        ],
+        options:[],
         options1:[
           {value:"1",text:"创业项目"},
           {value:"2",text:"合作项目"},
@@ -132,12 +128,21 @@
       }
     },
     created: function () {
-      if(this.$route.path == "/Edit/project"){
-        this.$parent.fg1 = true;
-        this.$parent.fg2 = true;
-        this.$parent.fg3 = false;
+      let vm = this;
+      if(vm.$route.path == "/Edit/project"){
+        vm.$parent.fg1 = true;
+        vm.$parent.fg2 = true;
+        vm.$parent.fg3 = false;
       }
-        this.getNewData();
+      vm.$axios({
+          method:'post',
+          url:window.$g_url.ApiUrl + '/major',
+      })
+         .then(function(res){
+            vm.options = res.data.result;
+         })
+         .catch(function(err){});
+      vm.getNewData();
     },
     methods:{
       //获取数据列表
@@ -173,7 +178,7 @@
           data.UserId = userid;
           vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl + '/setproject?operate=1&user='+userid+'&id=0',
+            url:window.$g_url.ApiUrl + '/setproject?operate=1'+'&id=0',
             data:JSON.stringify(data)
           })
             .then(function(res){
