@@ -128,8 +128,70 @@ i {
 
 @font-face {
   font-family: 'iconfont';
-  src: url("../font/iconfont.eot");
-  src: url("../font/iconfont.eot?#iefix") format("embedded-opentype"), url("../font/iconfont.woff") format("woff"), url("../font/iconfont.ttf") format("truetype"), url("../font/iconfont.svg#iconfont") format("svg"); }
+  src: url("../../src/assets/font/iconfont.eot");
+  src: url("../../src/assets/font/iconfont.eot?#iefix") format("embedded-opentype"), url("../../src/assets/font/iconfont.woff") format("woff"), url("../../src/assets/font/iconfont.ttf") format("truetype"), url("../../src/assets/font/iconfont.svg#iconfont") format("svg"); }
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0;
+  border: none; }
+  #app .b-header-box {
+    min-width: 1300px;
+    height: 87px;
+    background: url("../img/header.png") no-repeat center;
+    margin: 0 auto; }
+    #app .b-header-box .header-text {
+      width: 224px;
+      font-size: 30px;
+      color: #ffffff;
+      margin: 30px 0px 0px 35px;
+      float: left; }
+    #app .b-header-box .nav-box {
+      height: 100%;
+      position: relative;
+      float: left; }
+      #app .b-header-box .nav-box ul {
+        width: 968px;
+        height: 38px;
+        position: absolute;
+        bottom: 0;
+        float: left; }
+        #app .b-header-box .nav-box ul li {
+          display: block;
+          float: left;
+          width: 152px;
+          height: 38px;
+          background-color: #169bd8;
+          text-align: center;
+          line-height: 38px;
+          color: #ffffff;
+          font-size: 20px;
+          font-weight: 600;
+          margin: 0px 45px; }
+          #app .b-header-box .nav-box ul li a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            color: #ffffff; }
+        #app .b-header-box .nav-box ul :hover {
+          cursor: pointer;
+          background-color: #ffffff;
+          color: #000; }
+        #app .b-header-box .nav-box ul .active {
+          color: #000;
+          background-color: #fff; }
+        #app .b-header-box .nav-box ul li:nth-child(4) {
+          margin-right: 0px; }
+  #app .line {
+    width: 100%;
+    height: 16px;
+    background-color: #fff; }
+  #app .line2 {
+    width: 100%;
+    height: 20px;
+    background-color: #f2f3f7; }
+
 .iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
@@ -201,7 +263,7 @@ button {
       #use .sub_nav_box .sub_nav .subsonH, #edit .sub_nav_box .sub_nav .subsonH, #manage .sub_nav_box .sub_nav .subsonH, #maintain .sub_nav_box .sub_nav .subsonH {
         height: 0px; }
       #use .sub_nav_box .sub_nav .active1, #edit .sub_nav_box .sub_nav .active1, #manage .sub_nav_box .sub_nav .active1, #maintain .sub_nav_box .sub_nav .active1 {
-        background: url("/static/img/flag.png") no-repeat center/100%;
+        background: url("../img/flag.png") no-repeat center/100%;
         color: #ffffff !important; }
       #use .sub_nav_box .sub_nav:hover, #edit .sub_nav_box .sub_nav:hover, #manage .sub_nav_box .sub_nav:hover, #maintain .sub_nav_box .sub_nav:hover {
         cursor: pointer; }

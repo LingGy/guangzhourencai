@@ -69,7 +69,7 @@
         this.$parent.fg1 = false;
         this.$parent.fg3 = false;
       }
-     this.getNewLists(this.name,this.page);
+      this.getNewLists(this.name,this.page);
     },
     methods: {
       //获取列表

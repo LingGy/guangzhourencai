@@ -2,17 +2,16 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
 import Vue from 'vue';
+import '../static/config';
 import App from './App';
 import promise from 'es6-promise';
 promise.polyfill();
 import axios from 'axios';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import './assets/css/common.css';
+import '../static/css/common.css';
 import vfilters from './assets/js/vfilters';
 import echarts from 'echarts';
-
-
 
 // Vue.prototype.$api ='http://192.168.1.130:9801';
 // Vue.prototype.$api ='http://frp.ttyuecai.com:10011';
