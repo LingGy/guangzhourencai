@@ -44,31 +44,32 @@
       <div class="op">
         <p class="name">出生地:</p>
         <div class="val">
-          <el-select
-            v-model="Birthplace1"
-            filterable
-            allow-create
-            @change="handleItemChange"
-            class="s2">
-            <el-option
-              v-for="(option,index ) in options2"
-              :key="index"
-              :label="option"
-              :value="option">
-            </el-option>
-          </el-select>
-          <el-select
-            v-model="Birthplace2"
-            filterable
-            allow-create
-            class="s3">
-            <el-option
-              v-for="(option,index ) in options3"
-              :key="index"
-              :label="option"
-              :value="option">
-            </el-option>
-          </el-select>
+          <!--<el-select-->
+            <!--v-model="Birthplace1"-->
+            <!--filterable-->
+            <!--allow-create-->
+            <!--@change="handleItemChange"-->
+            <!--class="s2">-->
+            <!--<el-option-->
+              <!--v-for="(option,index ) in options2"-->
+              <!--:key="index"-->
+              <!--:label="option"-->
+              <!--:value="option">-->
+            <!--</el-option>-->
+          <!--</el-select>-->
+          <!--<el-select-->
+            <!--v-model="Birthplace2"-->
+            <!--filterable-->
+            <!--allow-create-->
+            <!--class="s3">-->
+            <!--<el-option-->
+              <!--v-for="(option,index ) in options3"-->
+              <!--:key="index"-->
+              <!--:label="option"-->
+              <!--:value="option">-->
+            <!--</el-option>-->
+          <!--</el-select>-->
+          <input type="text" placeholder="请输入出生地" v-model='allData.Birthplace' maxlength='20'>
         </div>
       </div>
 
@@ -171,7 +172,7 @@
       <div class="op ex">
         <p class="name">海外工作经验:</p>
         <div class="val">
-          <el-radio-group v-model="allData.AbroadWorkExp" class='ex'>
+          <el-radio-group v-model="allData.AbroadWorkExp" class='ex1'>
             <el-radio v-for="(option,index) in options6" :label="option.value" class='mb' :key='index'>{{option.value}}</el-radio>
           </el-radio-group>
         </div>
@@ -180,7 +181,7 @@
       <div class="op ex">
         <p class="name">是否已经回国工作:</p>
         <div class="val">
-          <el-radio-group v-model="allData.WorkHomeStat" class='ex'>
+          <el-radio-group v-model="allData.WorkHomeStat" class='ex1'>
             <el-radio v-for="(option,index) in options7" :label="option.value" class='mb' :key='index'>{{option.value}}</el-radio>
           </el-radio-group>
         </div>
@@ -201,78 +202,76 @@
           <textarea type="text" placeholder='请输入专长优势' class='good'  v-model='allData.Advantage'></textarea>
         </div>
       </div>
-      <div class="op te">
-        <p class="name">学位证书:</p>
-        <div class="val">
-          <p class="file_box">
-            <span class="choice_box">
-              <el-upload
-                class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-remove="handleRemove"
-                :multiple="upFile.fg"
-                :limit="1"
-                :on-exceed="handleExceed"
-                :on-change="getfilename1"
-                :before-upload="beforeAvatarUpload"
-                :auto-upload="upFile.fg">
-                <el-button size="small" type="primary" class="btn_choice">选择上传文件</el-button>
-              </el-upload>
-            </span>
-            <span slot="tip" class="el-upload__tip file_name">
-              {{fileName[0].name}}
-            </span>
-          </p>
-        </div>
-      </div>
-
-      <div class="op te">
-        <p class="name">个人近照:</p>
-        <div class="val">
-          <p class="file_box">
-            <span class="choice_box">
-              <el-upload
-                class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-remove="handleRemove"
-                :multiple="upFile.fg"
-                :limit="1"
-                :on-exceed="handleExceed"
-                :on-change="getfilename2"
-                :auto-upload="upFile.fg">
-                <el-button size="small" type="primary" class="btn_choice">选择上传文件</el-button>
-              </el-upload>
-            </span>
-            <span slot="tip" class="el-upload__tip file_name">
-              {{fileName[1].name}}
-            </span>
-          </p>
-        </div>
-      </div>
-
-      <div class="op te">
-        <p class="name">小一寸照:</p>
-        <div class="val">
-          <p class="file_box">
-            <span class="choice_box">
-              <el-upload
-                class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-remove="handleRemove"
-                :multiple="upFile.fg"
-                :limit="1"
-                :on-exceed="handleExceed"
-                :on-change="getfilename3"
-                :auto-upload="upFile.fg">
-                <el-button size="small" type="primary" class="btn_choice">选择上传文件</el-button>
-              </el-upload>
-            </span>
-            <span slot="tip" class="el-upload__tip file_name">
-              {{fileName[2].name}}
-            </span>
-          </p>
-        </div>
-      </div>
+      <!--<div class="op te">-->
+        <!--<p class="name">学位证书:</p>-->
+        <!--<div class="val">-->
+          <!--<p class="file_box">-->
+            <!--<span class="choice_box">-->
+              <!--<el-upload-->
+                <!--class="upload-demo"-->
+                <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+                <!--:on-remove="handleRemove"-->
+                <!--:multiple="upFile.fg"-->
+                <!--:limit="1"-->
+                <!--:on-exceed="handleExceed"-->
+                <!--:on-change="getfilename1"-->
+                <!--:before-upload="beforeAvatarUpload"-->
+                <!--:auto-upload="upFile.fg">-->
+                <!--<el-button size="small" type="primary" class="btn_choice">选择上传文件</el-button>-->
+              <!--</el-upload>-->
+            <!--</span>-->
+            <!--<span slot="tip" class="el-upload__tip file_name">-->
+              <!--{{fileName[0].name}}-->
+            <!--</span>-->
+          <!--</p>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="op te">-->
+        <!--<p class="name">个人近照:</p>-->
+        <!--<div class="val">-->
+          <!--<p class="file_box">-->
+            <!--<span class="choice_box">-->
+              <!--<el-upload-->
+                <!--class="upload-demo"-->
+                <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+                <!--:on-remove="handleRemove"-->
+                <!--:multiple="upFile.fg"-->
+                <!--:limit="1"-->
+                <!--:on-exceed="handleExceed"-->
+                <!--:on-change="getfilename2"-->
+                <!--:auto-upload="upFile.fg">-->
+                <!--<el-button size="small" type="primary" class="btn_choice">选择上传文件</el-button>-->
+              <!--</el-upload>-->
+            <!--</span>-->
+            <!--<span slot="tip" class="el-upload__tip file_name">-->
+              <!--{{fileName[1].name}}-->
+            <!--</span>-->
+          <!--</p>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="op te">-->
+        <!--<p class="name">小一寸照:</p>-->
+        <!--<div class="val">-->
+          <!--<p class="file_box">-->
+            <!--<span class="choice_box">-->
+              <!--<el-upload-->
+                <!--class="upload-demo"-->
+                <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+                <!--:on-remove="handleRemove"-->
+                <!--:multiple="upFile.fg"-->
+                <!--:limit="1"-->
+                <!--:on-exceed="handleExceed"-->
+                <!--:on-change="getfilename3"-->
+                <!--:auto-upload="upFile.fg">-->
+                <!--<el-button size="small" type="primary" class="btn_choice">选择上传文件</el-button>-->
+              <!--</el-upload>-->
+            <!--</span>-->
+            <!--<span slot="tip" class="el-upload__tip file_name">-->
+              <!--{{fileName[2].name}}-->
+            <!--</span>-->
+          <!--</p>-->
+        <!--</div>-->
+      <!--</div>-->
 
       <div class="submit_box">
         <button class="btn_save" @click="subData()">保存</button>
@@ -434,7 +433,7 @@
         let userid = sessionStorage.getItem("userId");
         if(userid && userid != 0) {
           let data = JSON.parse(JSON.stringify(vm.allData));
-          data.Birthplace = vm.Birthplace1 + vm.Birthplace2;
+          // data.Birthplace = vm.Birthplace1 + vm.Birthplace2;
           data.Birthday = data.Birthday/1000;
           data.UserId = userid;
           vm.$axios({
@@ -534,6 +533,12 @@
           height: 22px;
           line-height: 20px;
         }
+        .ex1{
+          height: 80px !important;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
         .s1 {
           width: 148px;
           .el-input__inner{
@@ -588,9 +593,10 @@
     }
   }
 
-  .ex {
-    height: 70px !important;
+  .ex{
+    height: 80px !important;
   }
+
   .mb {
     display: block;
     margin-left: 0px !important;
@@ -602,7 +608,7 @@
   .good {
     display: block;
     width: 378px;
-    height: 70px !important;
+    height: 120px !important;
     border: solid 1px #53b1dc;
     padding: 5px 0px 0px 5px;
     font-size: 14px;

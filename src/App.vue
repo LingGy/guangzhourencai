@@ -55,4 +55,32 @@ export default {
 </script>
 
 <style lang="scss" type="text/scss">
+  input{
+    color: #666666;
+  }
+  .el-input__inner {
+    height: 33px;
+    font-size: 13px;
+    box-shadow: none;
+    border: 1px solid #e9e9e9;
+  }
+
+  .el-input__inner:hover {
+    border-color: #e9e9e9;
+  }
+
+  .el-input__inner:focus {
+    border-color: #42a5f5;
+    box-shadow: none;
+    transition-duration: .5s;
+  }
+
+  .el-input__inner::-webkit-input-placeholder {
+    line-height: 20px;
+    color: #666666;
+  }
+
+  .el-input__inner, .el-checkbox__inner, .el-textarea__inner, .el-button {
+    border-radius: 0;
+  }
 </style>

@@ -6,15 +6,31 @@
         <div class="options_box">
           <div class="opstions">
             <p class="op_name">国籍&nbsp;:</p>
-            <select class="select_box" v-model="nationality">
-              <option v-for="(list,index) in countrys" :value="list" :key="index">{{list}}</option>
-            </select>
+            <el-select
+              v-model="nationality"
+              filterable
+              class="select_box">
+              <el-option
+                v-for="(option,index) in countrys"
+                :key="index"
+                :label="option"
+                :value="option">
+              </el-option>
+            </el-select>
           </div>
           <div class="opstions">
             <p class="op_name">行业&nbsp;:</p>
-            <select class="select_box" v-model="major">
-              <option v-for="(list,index) in majors" :value="list" :key="index">{{list}}</option>
-            </select>
+            <el-select
+              v-model="major"
+              filterable
+              class="select_box">
+              <el-option
+                v-for="(option,index) in majors"
+                :key="index"
+                :label="option"
+                :value="option">
+              </el-option>
+            </el-select>
           </div>
           <!--<div class="opstions">-->
             <!--<p class="op_name">人才等级&nbsp;:</p>-->
@@ -24,23 +40,47 @@
           <!--</div>-->
           <div class="opstions">
             <p class="op_name">留学国家&nbsp;:</p>
-            <select class="select_box" v-model="studyregion">
-              <option v-for="(list,index) in countrys" :value="list" :key="index">{{list}}</option>
-            </select>
+            <el-select
+              v-model="studyregion"
+              filterable
+              class="select_box">
+              <el-option
+                v-for="(option,index) in countrys"
+                :key="index"
+                :label="option"
+                :value="option">
+              </el-option>
+            </el-select>
           </div>
         </div>
         <div class="options_box mg_top">
           <div class="opstions">
             <p class="op_name">学校&nbsp;:</p>
-            <select class="select_box" v-model="college">
-              <option v-for="(list,index) in colleges" :value="list" :key="index">{{list}}</option>
-            </select>
+            <el-select
+              v-model="college"
+              filterable
+              class="select_box">
+              <el-option
+                v-for="(option,index) in colleges"
+                :key="index"
+                :label="option"
+                :value="option">
+              </el-option>
+            </el-select>
           </div>
           <div class="opstions">
             <p class="op_name">学历&nbsp;:</p>
-            <select class="select_box" v-model="degree">
-              <option v-for="(list,index) in degreeList" :value="list.value" :key="index">{{list.value}}</option>
-            </select>
+            <el-select
+              v-model="degree"
+              filterable
+              class="select_box">
+              <el-option
+                v-for="(option,index) in degreeList"
+                :key="index"
+                :label="option.value"
+                :value="option.value">
+              </el-option>
+            </el-select>
           </div>
         </div>
       </div>
@@ -110,6 +150,7 @@
           {value: "博士"},
           {value: "硕士"},
           {value: "学士"},
+          {value: "其它"},
         ],
         levelLists: [
           {value: '', text: ""},
@@ -266,7 +307,7 @@
   }
 </script>
 
-<style lang="scss" type="text/scss" scoped>
+<style lang="scss" type="text/scss">
   #accurate {
     .search_options_box {
       min-width: 1010px;
@@ -288,13 +329,17 @@
             .select_box {
               width: 148px;
               height: 22px;
-              border: solid 1px #53b1dc;
               float: left;
               color: #29a9f5;
               font-size: 14px;
-              padding-left: 10px;
               margin-left: 10px;
               background-color: #f1f2f6;
+              .el-input__inner{
+                width: 148px;
+                height: 22px;
+                border: solid 1px #53b1dc;
+                border-radius:0px;
+              }
             }
           }
         }

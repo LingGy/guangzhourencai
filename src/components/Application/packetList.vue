@@ -58,14 +58,22 @@
 
 <style lang="scss" type="text/scss" scoped>
 #packetList{
-  min-width: 320px;
+  min-width: 350px;
   .packet_box{
+    min-width: 350px;
     table{
+      min-width: 350px;
       border-collapse:collapse;
       .tr_st{
         height: 46px;
         line-height: 46px;
         border-bottom:solid 1px #dedede;
+        td{
+          padding: 0px 30px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
         .teamName{
           font-size: 16px;
           color: #454545;
@@ -73,7 +81,6 @@
         .number{
           font-size: 14px;
           color: #666666;
-          padding: 0px 45px;
         }
         .teamInof{
           width: 48px;

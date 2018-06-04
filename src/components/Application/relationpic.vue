@@ -37,6 +37,36 @@ export default {
            if(resDatas.code == 0){
              if(resDatas.result){
                vm.datas.name = sessionStorage.getItem("relationUserName");
+               //限定数据10条
+               for(let i = 0 ,len = resDatas.result.length ; i < len; i++){
+                 let typename;
+                 switch (resDatas.result[i].relation) {
+                   case 'college':typename='college';
+                    break;
+                   case 'institution':typename='institution';
+                     break;
+                   case 'industry':typename='industry';
+                     break;
+                   case 'nationality':typename='nationality';
+                     break;
+                   case 'project':typename='project';
+                     break;
+                 }
+                 let children = resDatas.result[i].children
+                 if(children){
+                   if(children.length > 10){
+                     children = children.slice(0,10);
+                     children.push({name:"更多",type:typename});
+                     resDatas.result[i].children = children;
+                   }else if(children.length >= 0 && children.length < 11 ) {
+                     children.push({name:"更多",type:typename});
+                     resDatas.result[i].children = children;
+                   }
+                 }else{
+                   continue
+                 }
+                 // vm.limit(resDatas.result[i].children);
+               }
                vm.datas.children = resDatas.result;
                // 基于准备好的dom，初始化echarts实例
                let myChart = vm.$echarts.init(document.getElementById('myChart'));
@@ -79,6 +109,32 @@ export default {
                    }
                  ]
                });
+               //给跟多注册点击事件
+               myChart.on("click", clickFun);
+               function clickFun(param) {
+                 if (typeof param.seriesIndex == 'undefined') {
+                   return;
+                 }
+                 if (param.type == 'click') {
+                   if(param.data.type){
+                     let type;
+                     switch (param.data.type) {
+                       case 'college':type = "college";
+                        break;
+                       case 'institution':type = "institution";
+                         break;
+                       case 'industry':type = "industry";
+                         break;
+                       case 'nationality':type = "nationality";
+                         break;
+                       case 'project':type = "project";
+                         break;
+                     }
+                     sessionStorage.setItem('infoType',type);
+                     vm.$router.push('/application/relationInfo');
+                   }
+                 }
+               }
              }else {
                vm.$message.warning("未找到该人才有关系的其余人才");
                return false;
@@ -90,10 +146,6 @@ export default {
          .catch(function(err){
            console.log(err);
          });
-    },
-    //查看完整关系列表
-    toMoreInof: function () {
-      this.$router.push('/application/relationInfo');
     },
     //返回
     goBack: function () {

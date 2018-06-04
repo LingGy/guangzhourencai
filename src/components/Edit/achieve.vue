@@ -23,9 +23,20 @@
       <div class="ac_title">
         <p class="ac_name">类&nbsp;&nbsp;&nbsp;&nbsp;别&nbsp;:</p>
         <div class="main_name_box">
-          <select name="" id="" class="main_name" v-model="resData.Type">
-            <option v-for="(option,index) in options" :value="option.value" :key="index">{{option.value}}</option>
-          </select>
+          <!--<select name="" id="" class="main_name" v-model="resData.Type">-->
+            <!--<option v-for="(option,index) in options" :value="option.value" :key="index">{{option.value}}</option>-->
+          <!--</select>-->
+          <el-select
+            v-model="resData.Type"
+            filterable
+            class="main_name">
+            <el-option
+              v-for="(option,index) in options"
+              :key="index"
+              :label="option.value"
+              :value="option.value">
+            </el-option>
+          </el-select>
         </div>
       </div>
       <div class="ac_title ac_a2">
@@ -199,7 +210,7 @@
   }
 </script>
 
-<style lang="scss" type="text/scss" scoped>
+<style lang="scss" type="text/scss">
   table,table tr th, table tr td {
     border:1px solid #cccccc;
   }
@@ -255,12 +266,16 @@
         .main_name{
           width: 100%;
           height: 100%;
-          border: solid 1px #53b1dc;
-          padding-left: 5px;
           font-size: 14px;
           color: #29a9f5;
           letter-spacing: 1px;
           line-height: 20px;
+          .el-input__inner{
+            width: 310px;
+            height: 22px;
+            border: solid 1px #53b1dc;
+            border-radius: 0px;
+          }
         }
       }
       .ch_time{
@@ -268,6 +283,8 @@
         height: 22px;
         float: left;
         color: #454545;
+        .el-input__inner{
+        }
       }
     }
     .ac_only{

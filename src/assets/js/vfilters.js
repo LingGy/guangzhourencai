@@ -30,6 +30,22 @@ const vfilter = {
   },
   ifAbroa: function (value) {
       return value== 1 ? "有":"无";
+  },
+  statusInfo: function (info) {
+    let st ='';
+    switch (info){
+      case 0: st='正在运行';
+        break;
+      case 1: st='正在运行';
+        break;
+      case 2: st='暂停状态';
+        break;
+      case 4: st='停止';
+        break;
+      case 8: st='异常';
+      default: st='异常';
+    }
+    return st;
   }
 };
 export default vfilter;

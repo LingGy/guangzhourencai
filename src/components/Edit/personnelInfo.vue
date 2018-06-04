@@ -2,36 +2,30 @@
   <div id="personnelInfo">
     <p class="position"><i class='iconfont'>&#xe8e6;</i>您现在的位置 : 数据加工 > 编辑数据 > 人才信息</p>
     <div class="info_box">
-      <div class="pic">
-        <el-upload
-          class="avatar-uploader "
-          action=""
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
-      </div>
+      <!--<div class="pic">-->
+        <!--<el-upload-->
+          <!--class="avatar-uploader "-->
+          <!--action=""-->
+          <!--:show-file-list="false"-->
+          <!--:on-success="handleAvatarSuccess"-->
+          <!--:before-upload="beforeAvatarUpload">-->
+          <!--<img v-if="imageUrl" :src="imageUrl" class="avatar">-->
+          <!--<i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+        <!--</el-upload>-->
+      <!--</div>-->
       <div class=perBox><span class='name'>中文名<i>:</i></span><input type="text" class='ipt' v-model="result.ChineseName"></div>
       <div class=perBox><span class='name'>英文名<i>:</i></span><input type="text" class='ipt' v-model="result.EnglishName"></div>
       <div class=perBox><span class='name'>邮箱<i>:</i></span><input type="text" class='ipt' v-model="result.Email"></div>
-      <div class="perBox datebox">
-        <span class='name'>注册时间<i>:</i></span>
-        <div class="dateInfo">
-          <el-date-picker
-            v-model="result.RegisterDate"
-            type="date"
-            class="onlybox"
-            value-format='timestamp'>
-          </el-date-picker>
-        </div>
-      </div>
-      <!--<div class=perBox>-->
-        <!--<span class='name'>人才等级<i>:</i></span>-->
-        <!--<select name="grade" id="grade" class="grade" v-model="result.Level">-->
-          <!--<option v-for="option in options" :value="option.value">{{option.text}}</option>-->
-        <!--</select>-->
+      <!--<div class="perBox datebox">-->
+        <!--<span class='name'>注册时间<i>:</i></span>-->
+        <!--<div class="dateInfo">-->
+          <!--<el-date-picker-->
+            <!--v-model="result.RegisterDate"-->
+            <!--type="date"-->
+            <!--class="onlybox"-->
+            <!--value-format='timestamp'>-->
+          <!--</el-date-picker>-->
+        <!--</div>-->
       <!--</div>-->
       <p class='btnBox'>
         <button class="btn_save1" type='button' @click="subData()">保存</button>
@@ -47,55 +41,48 @@
     data: function () {
       return {
         imageUrl: '',
-        result:{
-          ChineseName:'',
-          EnglishName:'',
-          Email:'',
-          RegisterDate:'',
-          // Level:'',
-        },
+        result:{},
         options: [
           { text: '高级', value: '1' },
           { text: '基本', value: '2' },
         ],
+        editId:''
       }
     },
-    created: function () {
-      if(this.$route.path == "/Edit/personnelInfo"){
-        this.$parent.fg1 = true;
-        this.$parent.fg2 = true;
-        this.$parent.fg3 = false;
-
+    mounted: function () {
+      let vm = this;
+      vm.editId = sessionStorage.getItem('userId')
+      if(vm.$route.path == "/Edit/personnelInfo"){
+        vm.$parent.fg1 = true;
+        vm.$parent.fg2 = true;
+        vm.$parent.fg3 = false;
       }
-      this.getNewData();
+      vm.getNewData(vm.editId);
     },
     methods:{
       //获取初始化数据
-      getNewData: function () {
+      getNewData: function (userid) {
         let vm = this;
-        let userid = sessionStorage.getItem("userId");
         if(!userid){
-          userid = 0;
+         return false;
         };
-        if(userid && userid !=0){
-          vm.$axios({
-            method:'post',
-            url:window.$g_url.ApiUrl + "/baseinfo",
-            data:"userid="+userid
+        vm.$axios({
+          method:'post',
+          url:window.$g_url.ApiUrl + "/baseinfo",
+          data:"userid="+userid
+        })
+          .then(function (res) {
+            let resDatas = res.data
+            if(resDatas.code == 0){
+              vm.result = resDatas.result;
+              vm.result.RegisterDate = resDatas.result.RegisterDate * 1000;
+            }else {
+              vm.$message.error(resDatas.message);
+            }
           })
-            .then(function (res) {
-              let resDatas = res.data
-              if(resDatas.code == 0){
-                vm.result = resDatas.result;
-                vm.result.RegisterDate = resDatas.result.RegisterDate * 1000;
-              }else {
-                vm.$message.error(resDatas.message);
-              }
-            })
-            .catch(function (err) {
-              console.log(err);
-            })
-        }
+          .catch(function (err) {
+            console.log(err);
+          })
       },
       handleAvatarSuccess(res, file) {
         this.imageUrl = URL.createObjectURL(file.raw);
@@ -116,10 +103,11 @@
       //保存基本信息修改
       subData: function () {
         let vm = this;
-        let userid = sessionStorage.getItem('userId');
+        let userid = vm.editId;
         if(userid && userid !=0){
           let data = JSON.parse(JSON.stringify(vm.result));
-          data.RegisterDate = data.RegisterDate/1000;
+          //该参数暂时取消
+          // data.RegisterDate = data.RegisterDate/1000;
           vm.$axios({
             method:"post",
             url:window.$g_url.ApiUrl + "/setbaseinfo?operate=2&userid="+userid,
@@ -145,8 +133,7 @@
       //新增并保存基本信息
       addSave: function () {
         let vm = this;
-        sessionStorage.setItem('userId',0)
-        let userid = sessionStorage.getItem('userId');
+        let userid = 0;
         let data = JSON.parse(JSON.stringify(vm.result));
         data.RegisterDate = data.RegisterDate /1000;
         vm.$axios({
@@ -168,7 +155,7 @@
             vm.$message.error(err);
           })
       }
-    }
+    },
   }
 </script>
 

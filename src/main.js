@@ -2,7 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
 import Vue from 'vue';
-import '../static/config';
 import App from './App';
 import promise from 'es6-promise';
 promise.polyfill();
@@ -13,8 +12,7 @@ import '../static/css/common.css';
 import vfilters from './assets/js/vfilters';
 import echarts from 'echarts';
 
-// Vue.prototype.$api ='http://192.168.1.130:9801';
-// Vue.prototype.$api ='http://frp.ttyuecai.com:10011';
+
 Vue.prototype.$axios = axios;
 Vue.prototype.$echarts = echarts;
 
@@ -30,6 +28,9 @@ for(let key in vfilters){
 
 new Vue({
   el: '#app',
+  data:{
+    Bus:new Vue()
+  },
   components: { App },
   template: '<App/>'
 })

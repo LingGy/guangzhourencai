@@ -12,9 +12,17 @@
       </div>
       <div class="list">
         <span class="title">主要分布国家(地区):</span>
-        <select class="select_box" v-model="Data.Area">
-          <option v-for="(list,index) in countrys" :value="list" :key='index'>{{list}}</option>
-        </select>
+        <el-select
+          v-model="Data.Area"
+          allow-create
+          class='select_box'>
+          <el-option
+            v-for="(item,index) in countrys"
+            :key="index"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
       </div>
       <div class="list">
         <span class="title">推荐参会使(领)馆:</span>
@@ -30,9 +38,17 @@
       </div>
       <div class="list">
         <span class="title">主要专业分布:</span>
-        <select class="select_box" v-model="Data.Major">
-          <option v-for="(list,index) in majors" :value="list" :key='index'>{{list}}</option>
-        </select>
+        <el-select
+          v-model="Data.Major"
+          allow-create
+          class='select_box'>
+          <el-option
+            v-for="(item,index) in majors"
+            :key="index"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
       </div>
       <div class="list">
         <span class="title">社团会员人数:</span>
@@ -190,14 +206,17 @@
       height: 22px;
       border: solid 1px #53b1dc;
       padding-left: 6px;
+      color: #666666;
     }
     .select_box{
       width: 148px;
       height: 22px;
-      border: solid 1px #53b1dc;
-      padding-left: 20px;
       font-size: 14px;
       color: #29a9f5;
+      .el-input__inner{
+        width: 148px;
+        color: #666666;
+      }
     }
     .moreText{
       width: 309px;

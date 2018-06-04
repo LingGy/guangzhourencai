@@ -58,18 +58,33 @@
       <div class="study_main">
         <p class="name">专&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;业&nbsp;:</p>
         <div class="st_content_box st_faculty_box">
-          <select name="" id="" class="st_faculty" v-model="viewData.Major">
-            <option v-for="(option,index) in majors" :value="option.value" :key="index">{{option}}</option>
-          </select>
+          <el-select
+            v-model="viewData.Major"
+            filterable
+            class="st_faculty">
+            <el-option
+              v-for="(option,index) in majors"
+              :key="index"
+              :label="option"
+              :value="option">
+            </el-option>
+          </el-select>
         </div>
       </div>
-
       <div class="study_main">
         <p class="name">学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;历&nbsp;:</p>
         <div class="st_content_box st_faculty_box">
-          <select name="" id="" class="st_faculty" v-model="viewData.Degree">
-            <option v-for="(option,index) in options2" :value="option.value" :key="index">{{option.value}}</option>
-          </select>
+          <el-select
+            v-model="viewData.Degree"
+            filterable
+            class="st_faculty">
+            <el-option
+              v-for="(option,index) in options2"
+              :key="index"
+              :label="option.value"
+              :value="option.value">
+            </el-option>
+          </el-select>
         </div>
       </div>
       <div class="btn_box">
@@ -356,10 +371,13 @@
             width: 100%;
             height: 22px;
             line-height: 22px;
-            padding-left: 6px;
             color: #29a9f5;
             font-size: 14px;
-            border: solid 1px #53b1dc;
+            .el-input__inner{
+              width: 100%;
+              height: 22px;
+              border: solid 1px #53b1dc;
+            }
           }
         }
       }

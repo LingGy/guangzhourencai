@@ -20,10 +20,10 @@
             <td>{{list.name_ch}}</td>
             <td>{{list.target_url}}</td>
             <td>已连接</td>
-            <td>{{list.status}}</td>
+            <td>{{list.status | statusInfo()}}</td>
             <td>{{list.end_time | formatDate()}}</td>
             <td>
-              <button type='button' @click="getName(index)" disabled='disabled'>详情</button>
+              <button type='button' @click="getName(list.name)">详情</button>
             </td>
           </tr>
         </tbody>

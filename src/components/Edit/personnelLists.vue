@@ -18,7 +18,7 @@
           <th>中文名</th>
           <th>英文名</th>
           <th>邮箱</th>
-          <th>注册时间</th>
+          <!--<th>注册时间</th>-->
           <!--<th>人才等级</th>-->
           <th>用户类型</th>
           <th>详情</th>
@@ -29,7 +29,7 @@
           <th>{{result.ChineseName}}</th>
           <th>{{result.EnglishName}}</th>
           <th>{{result.Email}}</th>
-          <th>{{result.RegisterDate | formatDate()}}</th>
+          <!--<th>{{result.RegisterDate | formatDate()}}</th>-->
           <!--<th>{{result.Level | getLevel}}</th>-->
           <th>{{result.Type | getType}}</th>
           <th>

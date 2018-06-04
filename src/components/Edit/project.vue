@@ -37,9 +37,17 @@
       <div class="main_box">
         <p class="name">所属行业&nbsp;:</p>
         <div class="main">
-            <select name="" id="" class="choice_box" v-model="viewData.Industry">
-              <option v-for="(option,index) in options" :value="option" :key="index">{{option}}</option>
-            </select>
+          <el-select
+            v-model="viewData.Industry"
+            filterable
+            class="choice_box">
+            <el-option
+              v-for="(option,index) in options"
+              :key="index"
+              :label="option"
+              :value="option">
+            </el-option>
+          </el-select>
         </div>
       </div>
       <div class="main_box">
@@ -273,7 +281,7 @@
   }
 </script>
 
-<style lang="scss" type="text/scss" scoped>
+<style lang="scss" type="text/scss">
 #project{
   table,table tr th, table tr td {
     border:1px solid #cccccc;
@@ -338,9 +346,13 @@
         .choice_box{
           width: 148px;
           height: 22px;
-          border: solid 1px #53b1dc;
-          text-align: center;
           color: #29a9f5;
+          .el-input__inner{
+            width: 148px;
+            height: 22px;
+            border: solid 1px #53b1dc;
+            border-radius: 0px;
+          }
         }
         #info,#more,#need{
           width: 378px;
