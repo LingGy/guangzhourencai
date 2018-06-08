@@ -43,7 +43,6 @@ const vfilter = {
       case 4: st='停止';
         break;
       case 8: st='异常';
-      default: st='异常';
     }
     return st;
   }

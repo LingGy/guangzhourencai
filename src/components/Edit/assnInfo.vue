@@ -80,7 +80,19 @@
       return {
         countrys:[],
         majors:[],
-        Data:{}
+        Data:{
+          ChineseName:'',
+          EnglishName:'',
+          Area:'',
+          Embassy:'',
+          Chief:'',
+          ChiefContact:'',
+          Major:'',
+          MemberCount:0,
+          WebSite:'',
+          Info:'',
+          Status:0
+        }
       }
     },
     created: function () {
@@ -152,6 +164,8 @@
           }
         }
         let req = JSON.parse(JSON.stringify(vm.Data))
+        req.MemberCount=req.MemberCount?req.MemberCount:0;
+        req.Status=req.Status?req.Status:0;
         vm.$axios({
             method:'post',
             url:window.$g_url.ApiUrl+'/setorganization?operate='+operate+'&id='+id,

@@ -117,20 +117,20 @@ export default {
                  }
                  if (param.type == 'click') {
                    if(param.data.type){
-                     let type;
-                     switch (param.data.type) {
-                       case 'college':type = "college";
-                        break;
-                       case 'institution':type = "institution";
-                         break;
-                       case 'industry':type = "industry";
-                         break;
-                       case 'nationality':type = "nationality";
-                         break;
-                       case 'project':type = "project";
-                         break;
-                     }
-                     sessionStorage.setItem('infoType',type);
+                   //   let type;
+                   //   switch (param.data.type) {
+                   //     case 'college':type = "college";
+                   //      break;
+                   //     case 'institution':type = "institution";
+                   //       break;
+                   //     case 'industry':type = "industry";
+                   //       break;
+                   //     case 'nationality':type = "nationality";
+                   //       break;
+                   //     case 'project':type = "project";
+                   //       break;
+                   //   }
+                   //   sessionStorage.setItem('infoType',type);
                      vm.$router.push('/application/relationInfo');
                    }
                  }
