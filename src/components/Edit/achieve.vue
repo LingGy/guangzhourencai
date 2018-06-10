@@ -75,89 +75,84 @@
         ],
         resDataLists:[],
         resData:{
-          Id:'',
           Type:'',
           Date:'',
           Description:'',
         },
+        userid:'',
+        infoid:''
       }
     },
     mounted: function () {
+      let vm = this;
+      vm.userid = sessionStorage.getItem('userId');
       if(this.$route.path == "/Edit/achieve"){
         this.$parent.fg1 = true;
         this.$parent.fg2 = true;
         this.$parent.fg3 = false;
       }
-        this.getNewData();
+        this.getNewData(vm.userid);
     },
     methods:{
+      //新增或保存
+      fun: function (type) {
+        let vm = this;
+        let infoid;
+        if(!vm.userid){
+          vm.$message.warning("未检测到人才id,请先到人才浏览中选择单个人才进行操作!");
+          return false;
+        }
+        if(type == 1){
+          infoid = 0;
+        }else if(type == 2){
+          if(!vm.infoid){
+            vm.$message.warning("请先选择列表中单个选项进行修改!");
+            return false;
+          };
+          infoid = vm.infoid;
+        }
+        let data = JSON.parse(JSON.stringify(vm.resData));
+        data.Date = data.Date/1000;
+        data.UserId = vm.userid;
+        vm.$axios({
+          method:'post',
+          url:window.$g_url.ApiUrl +'/setachievement?operate='+type+'&id='+infoid,
+          data:JSON.stringify(data)
+        })
+          .then(function(res){
+            if(res.data.code == 0){
+              vm.$message.success(type == 1?"新增并保存成功!":'保存成功!');
+              vm.infoid = res.data.result.id;
+              vm.getNewData(vm.userid);
+            }else {
+              vm.$message.error(res.data.message);
+            }
+          })
+          .catch(function(err){
+            console.log(err);
+          });
+      },
       //新增并保存个人成就信息
       addDate: function () {
-        let vm = this;
-        let userid = sessionStorage.getItem("userId");
-        if(userid && userid !=0) {
-          let data = JSON.parse(JSON.stringify(vm.resData));
-          data.Date = data.Date/1000;
-          data.UserId = userid;
-          data.Id = 0;
-          vm.$axios({
-            method:'post',
-            url:window.$g_url.ApiUrl +'/setachievement?operate=1&id=0',
-            data:JSON.stringify(data)
-          })
-            .then(function(res){
-              if(res.data.code == 0){
-                vm.$message.success('保存成功!');
-                vm.getNewData();
-              }else {
-                vm.$message.error(res.data.message);
-              }
-            })
-            .catch(function(err){});
-        }else {
-          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
-        }
+        this.fun(1);
       },
       //保存上传个人成就数据
       saveDate: function () {
-        let vm = this;
-        let userid = sessionStorage.getItem("userId");
-        if(userid && userid !=0) {
-          let data = JSON.parse(JSON.stringify(vm.resData));
-          data.Date = data.Date/1000;
-          vm.$axios({
-            method:'post',
-            url:window.$g_url.ApiUrl +'/setachievement?operate=2&id='+data.Id,
-            data:JSON.stringify(data)
-          })
-            .then(function(res){
-              if(res.data.code == 0){
-                vm.$message.success('保存成功!');
-                vm.getNewData();
-              }else {
-                if(res.data.message == 'error:缺少必要字段'){
-                  vm.$message.warning('请先选择要修改的项');
-                }
-              }
-            })
-            .catch(function(err){});
-        }else {
-          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
-        }
+        this.fun(2);
       },
-      //点击查看获奖详情
+      //点击查看单个成就详情
       choiceId: function (id) {
         let vm = this;
+        vm.infoid = id
         vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl + '/achievement?id=' + id,
+            url:window.$g_url.ApiUrl + '/achievement?id=' + vm.infoid,
         })
            .then(function(res){
              let resDatas = res.data;
              if(resDatas.code == 0){
                vm.resData = resDatas.result;
                vm.resData.Date = vm.resData.Date * 1000;
-               vm.resData.Id = id;
              }else {
                vm.$message.error(resDatas.message);
              }
@@ -177,7 +172,7 @@
              let resDatas = res.data;
              if(resDatas.code == 0 ){
                vm.$message.success('删除成功!');
-               vm.getNewData();
+               vm.getNewData(vm.userid);
              }else {
                vm.$message.error(resDatas.message);
              }
@@ -187,10 +182,9 @@
            });
       },
       //获取数据
-      getNewData: function () {
+      getNewData: function (userid) {
         let vm = this;
-        let userid = sessionStorage.getItem('userId');
-        if(userid && userid != 0) {
+        if(userid == true && userid != 0) {
           vm.$axios({
             method:'post',
             url:window.$g_url.ApiUrl + "/achievements?userid=" + userid,

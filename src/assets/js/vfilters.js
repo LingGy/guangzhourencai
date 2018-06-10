@@ -45,6 +45,9 @@ const vfilter = {
       case 8: st='异常';
     }
     return st;
-  }
+  },
+  ifName: function (name) {
+    return name?name:"无";
+  },
 };
 export default vfilter;

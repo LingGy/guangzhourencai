@@ -8,7 +8,8 @@
       </div>
       <div class="top_right">
         <input type="text" class='name' placeholder='请输入搜索人姓名' v-model="name">
-        <button type='button' class='btn_search' @click="search()">搜索</button>
+        <!--<button type='button' class='btn_search' @click="search()">搜索</button>-->
+        <el-button icon="el-icon-search" class='btnsearch' @click="search()" circle></el-button>
       </div>
     </div>
     <div class="t_box">
@@ -26,8 +27,8 @@
         </thead>
         <tbody>
         <tr v-for="(result,index) in results" :key="index">
-          <th>{{result.ChineseName}}</th>
-          <th>{{result.EnglishName}}</th>
+          <th>{{result.ChineseName | ifName}}</th>
+          <th>{{result.EnglishName | ifName}}</th>
           <th>{{result.Email}}</th>
           <!--<th>{{result.RegisterDate | formatDate()}}</th>-->
           <!--<th>{{result.Level | getLevel}}</th>-->
@@ -143,31 +144,32 @@
     .top {
       min-width: 948px;
       height: 28px;
+      display: flex;
+      justify-content: space-between;
       .top_left {
-        float: left;
+        width: 82px;
         height: 100%;
+        display: flex;
+        justify-content: space-between;
         .bule {
           width: 4px;
           height: 100%;
           background-color: #169bd8;
-          float: left;
         }
         p {
           font-size: 18px;
           color: #454545;
           margin-left: 5px;
-          float: left;
           line-height: 28px;
         }
       }
       .top_right {
-        float: right;
         .name {
           float: left;
           width: 134px;
           height: 28px;
           font-size: 12px;
-          color: #999;
+          color: #999999;
           padding-left: 4px;
           margin-right: 14px;
         }
@@ -180,7 +182,10 @@
           font-size: 18px;
           line-height: 28px;
           text-align: center;
-          color: #fff;
+          color: #ffffff;
+        }
+        .btnsearch{
+          padding: 8px;
         }
       }
     }

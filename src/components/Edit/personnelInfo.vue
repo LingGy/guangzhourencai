@@ -103,21 +103,20 @@
       //保存基本信息修改
       subData: function () {
         let vm = this;
-        let userid = vm.editId;
-        if(userid && userid !=0){
+        if(vm.editId && vm.editId !=0){
           let data = JSON.parse(JSON.stringify(vm.result));
           //该参数暂时取消
           // data.RegisterDate = data.RegisterDate/1000;
           vm.$axios({
             method:"post",
-            url:window.$g_url.ApiUrl + "/setbaseinfo?operate=2&userid="+userid,
+            url:window.$g_url.ApiUrl + "/setbaseinfo?operate=2&userid="+vm.editId,
             data:JSON.stringify(data)
           })
             .then(function (res) {
               let data = res.data;
               if(data.code == 0){
                 vm.$message.success("保存成功!");
-                vm.getNewData();
+                vm.getNewData(vm.editId);
               }else {
                 vm.$message.error(data.message);
               }
@@ -145,8 +144,9 @@
             let resDatas = res.data;
            if(resDatas.code == 0){
              sessionStorage.setItem("userId",resDatas.result.id);
+             vm.editId = resDatas.result.id
              vm.$message.success('新增并保存成功!');
-             vm.getNewData();
+             vm.getNewData(vm.editId);
            }else {
              vm.$message.error(resDatas.message);
            }

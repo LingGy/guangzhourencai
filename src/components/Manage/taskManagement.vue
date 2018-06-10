@@ -175,10 +175,11 @@
         let vm = this;
         vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl_1+'/controler?name='+vm.testcrawler+'&command='+order,
+            url:window.$g_url.ApiUrl_1+'/controller?name='+vm.testcrawler+'&command='+order,
         })
            .then(function(res){
              if(res.data.code == 0){
+               vm.$message.success(res.data.message);
                vm.getdata(vm.testcrawler);
              }
            })

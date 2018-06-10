@@ -92,7 +92,8 @@
           WebSite:'',
           Info:'',
           Status:0
-        }
+        },
+        assnId:''
       }
     },
     created: function () {
@@ -104,11 +105,11 @@
       }
       vm.getAssistData('/country');
       vm.getAssistData('/major');
-      let assnId = sessionStorage.getItem('assnId')
-      if(assnId){
+      vm.assnId = sessionStorage.getItem('assnId')
+      if(vm.assnId){
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl+'/organization?id='+assnId,
+          url:window.$g_url.ApiUrl+'/organization?id='+vm.assnId,
         })
           .then(function(res){
             if(res.data.code == 0){
@@ -154,10 +155,9 @@
           id = 0;
           vm.Data.UserId = 0;
         }else if(operate == 2){
-          let assnId = sessionStorage.getItem('assnId');
-          if(assnId){
-            id = assnId;
-            vm.Data.UserId = assnId;
+          if(vm.assnId){
+            id = vm.assnId;
+            vm.Data.UserId = vm.assnId;
           }else {
             vm.$message.warning('请先从社团列表中选择需修改的社团进行修改保存!');
             return false;
@@ -166,6 +166,7 @@
         let req = JSON.parse(JSON.stringify(vm.Data))
         req.MemberCount=req.MemberCount?req.MemberCount:0;
         req.Status=req.Status?req.Status:0;
+        delete req.Id;
         vm.$axios({
             method:'post',
             url:window.$g_url.ApiUrl+'/setorganization?operate='+operate+'&id='+id,
@@ -175,6 +176,7 @@
              if(res.data.code == 0){
                let message;
                operate == 1?message='新增社团信息成功!':message='保存社团信息成功!';
+               vm.assnId = res.data.result.id;
                vm.$message.success(message);
              }else {
                vm.$message.error(res.data.message);

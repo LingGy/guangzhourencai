@@ -101,6 +101,8 @@
     name:"Study",
     data:function () {
       return {
+        userid:'',
+        infoid:'',
         majors:[],
         options2:[
           {value:""},
@@ -123,30 +125,30 @@
       };
     },
     created: function () {
+      this.userid = sessionStorage.getItem("userId");
       if(this.$route.path == "/Edit/study"){
         this.$parent.fg1 = true;
         this.$parent.fg2 = true;
         this.$parent.fg3 = false;
       }
       this.getAssistData('/major');
-      this.getNewData();
+      this.getNewData(this.userid);
     },
     methods:{
       //获取数据列表
-      getNewData: function () {
-        let _this = this;
-        let userId = sessionStorage.getItem("userId");
-        if(userId && userId != 0) {
-          _this.$axios({
+      getNewData: function (userid) {
+        let vm = this;
+        if(userid && userid != 0) {
+          vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl + '/educations?userid=' + userId,
+            url:window.$g_url.ApiUrl + '/educations?userid=' + userid,
           })
             .then(function(res){
               let resDatas = res.data;
               if(resDatas.code == 0){
-                _this.DataLists = resDatas.result;
+                vm.DataLists = resDatas.result;
               }else {
-                _this.$message.error(resDatas.message);
+                vm.$message.error(resDatas.message);
               }
             })
             .catch(function(err){
@@ -154,78 +156,66 @@
             });
         };
       },
+      //新增或保存
+      fun: function (type) {
+        let vm = this;
+        let infoid;
+        if(!vm.userid){
+          vm.$message.warning("未检测到人才id,请先到人才浏览中选择单个人才进行操作!");
+          return false;
+        }
+        if(type == 1){
+          infoid = 0;
+        }else if(type == 2){
+          if(!vm.infoid){
+            vm.$message.warning("请先选择列表中单个选项进行修改!");
+            return false;
+          };
+          infoid = vm.infoid;
+        }
+        let data = JSON.parse(JSON.stringify(vm.viewData));
+        data.BeginDate = vm.time[0]/1000;
+        data.EndDate = vm.time[1]/1000;
+        data.UserId = vm.userid;
+        vm.$axios({
+          method:'post',
+          url:window.$g_url.ApiUrl + '/seteducation?operate='+type+'&id='+infoid,
+          data:JSON.stringify(data)
+        })
+          .then(function(res){
+            let resDatas = res.data;
+            if(resDatas.code == 0){
+              vm.$message.success(type == 1?"新增并保存成功!":'保存成功!');
+              vm.infoid = res.data.result.id;
+              vm.getNewData(vm.userid);
+            }else {
+              vm.$message.error(resDatas.message);
+            }
+          })
+          .catch(function(err){
+            console.log(err);
+          });
+      },
       //保存并新增学习经历
       addNewStudy: function () {
-        let vm = this;
-        let userid = sessionStorage.getItem("userId");
-        if(userid && userid !=0) {
-          let data = JSON.parse(JSON.stringify(vm.viewData));
-          data.BeginDate = vm.time[0]/1000;
-          data.EndDate = vm.time[1]/1000;
-          data.Id = "0";
-          data.UserId = userid;
-          vm.$axios({
-            method:'post',
-            url:window.$g_url.ApiUrl + '/seteducation?operate=1&id=0',
-            data:JSON.stringify(data)
-          })
-            .then(function(res){
-              let resDatas = res.data;
-              if(resDatas.code == 0){
-                vm.$message.success("新增并保存学习经历成功!");
-                vm.getNewData();
-              }else {
-                vm.$message.error(resDatas.message);
-              }
-            })
-            .catch(function(err){
-              console.log(err);
-            });
-        }else {
-          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
-        }
+        this.fun(1);
       },
       //保存修改学习经历
       saveStudy: function () {
-        let vm = this;
-        let userid = sessionStorage.getItem("userId");
-        if (userid && userid != 0) {
-          let data = JSON.parse(JSON.stringify(vm.viewData));
-          data.BeginDate = vm.time[0]/1000;
-          data.EndDate = vm.time[1]/1000;
-          vm.$axios({
-            method:'post',
-            url:window.$g_url.ApiUrl + '/seteducation?operate=2&id='+ userid,
-            data:JSON.stringify(data)
-          })
-            .then(function(res){
-              let resDatas = res.data;
-              if(resDatas.code == 0){
-                vm.$message.success("修改并保存学习经历成功!");
-                vm.getNewData();
-              }else {
-                vm.$message.error(resDatas.message);
-              }
-            })
-            .catch(function(err){
-              alert(err);
-            });
-        }else {
-          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
-        }
+        this.fun(2);
       },
       //获取单项详情
       getInfo: function (id) {
         let vm = this;
+        vm.infoid = id
         vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl + '/education?id=' + id,
+            url:window.$g_url.ApiUrl + '/education?id=' + vm.infoid,
         })
            .then(function(res){
              let resDatas = res.data;
              if(resDatas.code == 0){
                vm.viewData = resDatas.result;
-               vm.viewData.Id = id;
                vm.time = [vm.viewData.BeginDate*1000,vm.viewData.EndDate*1000];
              }else {
                vm.$message.error(resDatas.message);
@@ -246,7 +236,7 @@
             let resDatas = res.data;
             if(resDatas.code == 0 ){
               vm.$message.success('删除成功!');
-              vm.getNewData();
+              vm.getNewData(vm.userid);
             }else {
               vm.$message.error(resDatas.message);
             }

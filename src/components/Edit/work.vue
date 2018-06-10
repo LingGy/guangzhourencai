@@ -28,8 +28,8 @@
         <p class="name">国内/国外&nbsp;:</p>
         <div class="wo_content_box">
           <el-radio-group v-model="viewData.IsHome">
-            <el-radio :label="0">国内</el-radio>
-            <el-radio :label="1">国外</el-radio>
+            <el-radio :label="1">国内</el-radio>
+            <el-radio :label="0">国外</el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -109,33 +109,35 @@
           Position:'',
           Description:'',
         },
+        userid:'',
+        infoid:'',
       };
     },
     created: function () {
+      this.userid = sessionStorage.getItem("userId");
       if(this.$route.path == "/Edit/work"){
         this.$parent.fg1 = true;
         this.$parent.fg2 = true;
         this.$parent.fg3 = false;
       }
-        this.getNewData();
+        this.getNewData(this.userid);
     },
     methods:{
       //获取数据列表
-      getNewData: function () {
-        let _this = this;
-        let userId = sessionStorage.getItem("userId");
-        if(userId && userId != 0){
-          _this.$axios({
+      getNewData: function (userid) {
+        let vm = this;
+        if(userid && userid != 0){
+          vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl + '/workexperiences?userid=' + userId,
+            url:window.$g_url.ApiUrl + '/workexperiences?userid=' + userid,
           })
             .then(function(res){
               let data = res.data;
               if(data.code == 0){
                 if(!data.result) return false;
-                _this.DataLists = data.result;
+                vm.DataLists = data.result;
               }else {
-                _this.$message.error(data.message);
+                vm.$message.error(data.message);
               }
             })
             .catch(function(err){
@@ -144,82 +146,67 @@
         };
 
       },
+      //新增或保存
+      fun: function (type) {
+        let vm = this;
+        let infoid;
+        if(!vm.userid){
+          vm.$message.warning("未检测到人才id,请先到人才浏览中选择单个人才进行操作!");
+          return false;
+        }
+        if(type == 1){
+          infoid = 0;
+        }else if(type == 2){
+          if(!vm.infoid){
+            vm.$message.warning("请先选择列表中单个选项进行修改!");
+            return false;
+          };
+          infoid = vm.infoid;
+        };
+        let data = JSON.parse(JSON.stringify(vm.viewData));
+        data.BeginDate = vm.time[0]/1000;
+        data.EndDate = vm.time[1]/1000;
+        data.UserId = vm.userid;
+        vm.$axios({
+          method:'post',
+          url:window.$g_url.ApiUrl + '/setworkexprience?operate='+type+'&id='+infoid,
+          data:JSON.stringify(data)
+        })
+          .then(function(res){
+            let resdata = res.data;
+            if(resdata.code == 0){
+              vm.$message.success(type == 1?"新增并保存成功!":'保存成功!');
+              vm.infoid = res.data.result.id;
+              vm.getNewData(vm.userid);
+            }else {
+              vm.$message.error(resdata.message);
+            }
+          })
+          .catch(function(err){
+            console.log(err);
+          });
+      },
       //保存并新增学习经历
       addNewWork: function () {
-        let vm = this;
-        let userid = sessionStorage.getItem("userId");
-        if(userid && userid !=0) {
-          let data = JSON.parse(JSON.stringify(vm.viewData));
-          data.BeginDate = vm.time[0]/1000;
-          data.EndDate = vm.time[1]/1000;
-          data.UserId = userid;
-          vm.$axios({
-            method:'post',
-            url:window.$g_url.ApiUrl + '/setworkexprience?operate=1&id=0',
-            data:JSON.stringify(data)
-          })
-            .then(function(res){
-              let resdata = res.data;
-              if(resdata.code == 0){
-                vm.$message.success("新增并保存工作经历成功!");
-                vm.getNewData();
-              }else {
-                vm.$message.error(resdata.message);
-              }
-            })
-            .catch(function(err){
-              console.log(err);
-            });
-        }else {
-          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
-        }
-
+        this.fun(1);
       },
       //保存修改学习经历
       saveWork: function () {
-        let vm = this;
-        let userid = sessionStorage.getItem("userId");
-        if (userid && userid != 0) {
-          let data = JSON.parse(JSON.stringify(vm.viewData));
-          if(!data.Id){
-            vm.$message.warning("请先从列表中选择需要修改的项!");
-            return false;
-          }
-          data.BeginDate = vm.time[0]/1000;
-          data.EndDate = vm.time[1]/1000;
-          vm.$axios({
-            method:'post',
-            url:window.$g_url.ApiUrl + '/seteducation?operate=2&id='+ data.Id,
-            data:JSON.stringify(data)
-          })
-            .then(function(res){
-              let resdata = res.data;
-              if(resdata.code == 0){
-                vm.$message.success("修改并保存工作经历成功!");
-                vm.getNewData();
-              }else {
-                vm.$message.error(resdata.message);
-              }
-            })
-            .catch(function(err){
-              console.log(err);
-            });
-        }else {
-          vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
-        }
+        this.fun(2);
       },
       //获取单项详情
       getInfo: function (id) {
         let vm = this;
+        vm.infoid = id
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/workexperience?id=' + id,
+          url:window.$g_url.ApiUrl + '/workexperience?id=' + vm.infoid,
         })
           .then(function(res){
             let resdata = res.data;
             if(resdata.code == 0){
               vm.viewData = resdata.result;
-              vm.time = [vm.viewData.BeginDate*1000,vm.EndDate*1000];
+              vm.time = [vm.viewData.BeginDate*1000,vm.viewData.EndDate*1000];
             }else {
               vm.$message.error(resdata.message);
             }
@@ -239,7 +226,7 @@
             let data = res.data;
             if(data.code == 0 ){
               vm.$message.success('删除成功!');
-              vm.getNewData();
+              vm.getNewData(vm.userid);
             }else {
               vm.$message.error(data.message);
             }
