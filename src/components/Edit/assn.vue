@@ -149,6 +149,9 @@
   }
   .t_box{
     min-height: 800px;
+    table,thead,tbody,tr,th,td{
+      border: 1px solid #dedede;
+    }
     .box {
       min-width: 1010px;
       border-collapse: collapse;
@@ -173,7 +176,10 @@
           color: #666666;
           font-size: 14px;
           letter-spacing: 1px;
-          text-align: center;
+          text-align: left;
+          td{
+            padding: 0px 10px;
+          }
           .toInfo {
             width: 45px;
             height: 24px;
