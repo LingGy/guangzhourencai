@@ -9,35 +9,33 @@
       <table class="box" v-loading="loading">
         <thead>
         <tr>
-          <th>中午名</th>
-          <th>英文名</th>
+          <th>姓名</th>
           <th>邮箱</th>
-          <th>注册时间</th>
-          <!--<th>人才等级</th>-->
-          <th>用户类型</th>
-          <th>操作</th>
+          <th>学校</th>
+          <th>学历</th>
+          <th>专业</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(result,index) in results" :key="index">
-          <th>{{result.ChineseName}}</th>
-          <th>{{result.EnglishName}}</th>
-          <th>{{result.Email}}</th>
-          <th>{{result.RegisterDate | formatDate()}}</th>
-          <!--<th>{{result.Level | getLevel}}</th>-->
-          <th>{{result.Type | getType}}</th>
-          <th>
-            <button type='button' class='toInfo' @click="toRelationPic(result.UserId,result.ChineseName)">人才关系分析</button>
-          </th>
+          <td class='bl' @click="toRelationPic(result.UserId,result.Name)">{{result.Name}}</td>
+          <td>{{result.Email}}</td>
+          <td>{{result.GraduateSchool}}</td>
+          <td>{{result.HighestDegree}}</td>
+          <td>{{result.Major}}</td>
         </tr>
         </tbody>
       </table>
     </div>
     <div class="console_box">
-      <div class="console">
-        <button :class="['console','c1',isA?'console1':'console2']" @click="lastPage()" :disabled="bt1">上一页</button>
-        <button :class="['console','c2',isB?'console1':'console2']" @click="nextPage()" :disabled="bt2">下一页</button>
-      </div>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="page"
+        :page-size="count"
+        layout="prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -48,9 +46,10 @@
     data: function () {
       return {
         name: '',
-        page: 0,
+        page: 1,
         count: 20,
         results: [],
+        total:0,
         loading:true,
         bt1:true,
         bt2:false,
@@ -75,31 +74,8 @@
           .then(function (response) {
             vm.loading = false;
             let data = response.data;
-            if (data.code == 0) {
-              if(data.result){
-                vm.results = data.result;
-              }else {
-                if(page>0){
-                  vm.page = page - 1;
-                  vm.isB = true;
-                  vm.bt2 = true;
-                }
-              }
-              if(page>0){
-                vm.bt1 = false;
-                vm.isA = false;
-              }else if(page == 0){
-                vm.bt1 = true;
-                vm.isA = true;
-              }
-            } else {
-              vm.$message.error(data.message);
-              if(page>0){
-                vm.page = page - 1;
-                vm.isB = true;
-                vm.bt2 = true;
-              }
-            };
+                vm.results = data.result.datas;
+                vm.total = data.result.total;
           })
           .catch(function (err) {
             console.log(err);
@@ -110,26 +86,21 @@
         sessionStorage.setItem("relationUserName",username);
         this.$router.push('/application/relationpic');
       },
-      //上一页
-      lastPage: function () {
-        let vm = this;
-        vm.bt2 = false;
-        vm.isB = false;
-        vm.page = vm.page-1;
-        vm.getNewLists(vm.page);
+      handleSizeChange(val) {
+        this.getNewLists(val);
       },
-      //下一页
-      nextPage: function () {
-        let vm = this;
-        vm.page = vm.page+1;
-        vm.getNewLists(vm.page);
-      }
+      handleCurrentChange(val) {
+        this.getNewLists(val);
+      },
     }
   }
 </script>
 
 <style lang="scss" type="text/scss" scoped>
 #relation{
+  table,thead,tbody,tr,th,td{
+    border: 1px solid #dedede;
+  }
   .proLists_title{
     height: 28px;
     margin-top: 20px;
@@ -150,6 +121,8 @@
   }
   .t_box{
     min-height: 800px;
+    word-break:keep-all;/* 不换行 */
+    white-space:nowrap;/* 不换行 */
     .box {
       min-width: 948px;
       border-collapse: collapse;
@@ -174,16 +147,16 @@
           color: #666666;
           font-size: 14px;
           letter-spacing: 1px;
-          text-align: center;
-          .toInfo {
-            width: 112px;
-            height: 24px;
-            line-height: 24px;
-            background-color: #6ecffa;
-            font-size: 14px;
-            color: #fff;
-            border: none;
-            text-align: center;
+          text-align: left;
+          td{
+            padding: 0px 10px;
+          }
+        }
+        .bl{
+          color: #6ecffa;
+          text-decoration: underline;
+          &:hover{
+            cursor:pointer;
           }
         }
       }
@@ -191,32 +164,9 @@
   }
   .console_box{
     min-width: 948px;
-    height: 30px;
-    .console{
-      width: 212px;
-      margin: 0 auto;
-      margin-top: 30px;
-      .console{
-        width: 82px;
-        height: 30px;
-        text-align: center;
-        line-height: 30px;
-      }
-      .c1{
-        float: left;
-      }
-      .c2{
-        float: right;
-      }
-      .console1{
-        border: solid 1px #999999;
-        background-color: transparent;
-      }
-      .console2{
-        background-color: #169bd8;
-        color: #ffffff;
-      }
-    }
+    margin-top: 20px;
+    text-align: center;
+    margin-bottom: 100px;
   }
 }
 </style>

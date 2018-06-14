@@ -10,32 +10,36 @@
         <thead>
           <tr>
             <th>中文名</th>
-            <th>英文名</th>
+            <!--<th>英文名</th>-->
             <th>国家</th>
             <th>负责人</th>
             <th>负责人联系方式</th>
             <th>人数</th>
-            <th>详情</th>
+            <!--<th>详情</th>-->
           </tr>
         </thead>
         <tbody>
           <tr v-for="(list,index) in lists" :key='index'>
-            <td>{{list.ChineseName}}</td>
-            <td>{{list.EnglishName}}</td>
+            <td class='bl' @click="toInfo(list.Id)">{{list.ChineseName}}</td>
+            <!--<td>{{list.EnglishName}}</td>-->
             <td>{{list.Area}}</td>
             <td>{{list.Chief}}</td>
             <td>{{list.ChiefContact}}</td>
             <td>{{list.MemberCount}}</td>
-            <td><button type='button' class='toInfo' @click="toInfo(list.Id)">详情</button></td>
+            <!--<td><button type='button' class='toInfo' @click="toInfo(list.Id)">详情</button></td>-->
           </tr>
         </tbody>
       </table>
-      <div class="console_box">
-        <div class="console">
-          <button :class="['console','c1',isA?'console1':'console2']" @click="lastPage()" :disabled="bt1">上一页</button>
-          <button :class="['console','c2',isB?'console1':'console2']" @click="nextPage()" :disabled="bt2">下一页</button>
-        </div>
-      </div>
+    </div>
+    <div class="console_box">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="page"
+        :page-size="count"
+        layout="prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -46,12 +50,14 @@
     data: function () {
       return {
         lists:[],
+        total:0,
         loading:true,
         page:0,
         bt1:true,
         bt2:false,
         isA:true,
         isB:false,
+        count:20,
       }
     },
     created: function () {
@@ -74,49 +80,21 @@
              vm.loading = false;
              let resData = res.data;
              if(resData.code == 0){
-               if(resData.result){
-                 vm.lists = resData.result;
-               }else {
-                 if(page>0){
-                   vm.page = page - 1;
-                   vm.isB = true;
-                   vm.bt2 = true;
-                 }
-               }
-               if(page>0){
-                 vm.bt1 = false;
-                 vm.isA = false;
-               }else if(page <= 0){
-                 vm.page = 0;
-                 vm.bt1 = true;
-                 vm.isA = true;
-               }
+                 vm.lists = resData.result.datas;
+                 vm.total = resData.result.total;
              }else {
                vm.$message.error(resData.message);
-               if(page>0){
-                 vm.page = page - 1;
-                 vm.isB = true;
-                 vm.bt2 = true;
-               }
              }
            })
            .catch(function(err){
              console.log(err);
            });
       },
-      //上一页
-      lastPage: function () {
-        let vm = this;
-        vm.bt2 = false;
-        vm.isB = false;
-        vm.page = vm.page-1;
-        vm.getNewData(vm.page);
+      handleSizeChange(val) {
+        this.getNewData(val);
       },
-      //下一页
-      nextPage: function () {
-        let vm = this;
-        vm.page = vm.page+1;
-        vm.getNewData(vm.page);
+      handleCurrentChange(val) {
+        this.getNewData(val);
       },
       //详情
       toInfo: function (assnId) {
@@ -148,14 +126,16 @@
     }
   }
   .t_box{
-    min-height: 800px;
     table,thead,tbody,tr,th,td{
       border: 1px solid #dedede;
     }
     .box {
+      min-height: 800px;
       min-width: 1010px;
       border-collapse: collapse;
       margin-top: 14px;
+      word-break:keep-all;/* 不换行 */
+      white-space:nowrap;/* 不换行 */
       thead {
         width: 100%;
         background-color: #f1f8ff;
@@ -167,6 +147,9 @@
           background-color: #f1f8ff;
           letter-spacing: 1px;
           text-align: center;
+          th{
+            padding: 0 10px;
+          }
         }
       }
       tbody {
@@ -179,6 +162,13 @@
           text-align: left;
           td{
             padding: 0px 10px;
+          }
+          .bl{
+            color: #6ecffa;
+            text-decoration: underline;
+            &:hover{
+              cursor:pointer;
+            }
           }
           .toInfo {
             width: 45px;
@@ -193,34 +183,14 @@
         }
       }
     }
-    .console_box{
-      height: 30px;
-      .console{
-        width: 212px;
-        margin: 0 auto;
-        margin-top: 30px;
-        .console{
-          width: 82px;
-          height: 30px;
-          text-align: center;
-          line-height: 30px;
-        }
-        .c1{
-          float: left;
-        }
-        .c2{
-          float: right;
-        }
-        .console1{
-          border: solid 1px #999999;
-          background-color: transparent;
-        }
-        .console2{
-          background-color: #169bd8;
-          color: #ffffff;
-        }
-      }
-    }
+
+  }
+  .console_box{
+    min-width: 1010px;
+    height: 30px;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 100px;
   }
 
 }

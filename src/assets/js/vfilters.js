@@ -16,7 +16,7 @@ const vfilter = {
       return "";
     }
   },
-  getSex: function (sex) {
+  getSex: function (sex) {``
       return sex == 1 ? "男":"女";
   },
   getLevel: function (level) {//判断等级

@@ -151,7 +151,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   #app .b-header-box {
     min-width: 1300px;
     height: 87px;
-    background: url("../img/header.png") no-repeat center;
+    background: url("../img/header.png") no-repeat 100%;
+    background: url("../img/header.png") repeat-x;
     margin: 0 auto; }
     #app .b-header-box .header-text {
       width: 224px;
@@ -167,7 +168,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
         width: 968px;
         height: 38px;
         position: absolute;
-        bottom: 0;
+        bottom: 1px;
         float: left; }
         #app .b-header-box .nav-box ul li {
           display: block;

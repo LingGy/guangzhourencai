@@ -12,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(list,index) in logs" :key="index">
+        <tr v-for="(list,index) in logs" :key="index" :class="{warn:list.Level== 1 ? true:false,error:list.Level == 2?true:false}">
           <td>{{list.T | formatDate1()}}</td>
           <td>{{list.ProcessName}}</td>
           <td>{{list.SystemName}}</td>
@@ -22,10 +22,14 @@
       </table>
     </div>
     <div class="console_box">
-      <div class="console">
-        <button :class="['console','c1',isA?'console1':'console2']" @click="lastPage()" :disabled="bt1">上一页</button>
-        <button :class="['console','c2',isB?'console1':'console2']" @click="nextPage()" :disabled="bt2">下一页</button>
-      </div>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="page"
+        :page-size="count"
+        layout="prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -42,6 +46,8 @@
         bt2:false,
         isA:true,
         isB:false,
+        count:20,
+        total:0,
       }
     },
     mounted: function () {
@@ -60,21 +66,8 @@
              vm.loading = false;
              let resData = res.data;
              if(resData.code == 0){
-               if(resData.result){
-                 vm.logs = resData.result;
-               }else {
-                 if(page>1){
-                   vm.isB = true;
-                   vm.bt2 = true;
-                 }
-               }
-               if(page>1){
-                 vm.bt1 = false;
-                 vm.isA = false;
-               }else if(page == 1){
-                 vm.bt1 = true;
-                 vm.isA = true;
-               }
+                 vm.logs = resData.result.datas;
+                 vm.total = resData.result.total;
              }else {
                vm.$message.error(resData.message);
              }
@@ -83,20 +76,12 @@
              console.log(err);
            });
       },
-      //上一页
-      lastPage: function () {
-        let vm = this;
-        vm.bt2 = false;
-        vm.isB = false;
-        vm.page = vm.page-1;
-        vm.getLogLists(vm.page);
+      handleSizeChange(val) {
+        this.getLogLists(val);
       },
-      //下一页
-      nextPage: function () {
-        let vm = this;
-        vm.page = vm.page+1;
-        vm.getLogLists(vm.page);
-      }
+      handleCurrentChange(val) {
+        this.getLogLists(val);
+      },
     }
   }
 </script>
@@ -136,37 +121,21 @@
               }
             }
           }
+          .warn{
+            color: #FF7F00;
+          }
+          .error{
+            color: red;
+          }
         }
       }
     }
     .console_box{
       min-width: 987px;
       height: 30px;
-      .console{
-        width: 212px;
-        margin: 0 auto;
-        margin-top: 30px;
-        .console{
-          width: 82px;
-          height: 30px;
-          text-align: center;
-          line-height: 30px;
-        }
-        .c1{
-          float: left;
-        }
-        .c2{
-          float: right;
-        }
-        .console1{
-          border: solid 1px #999999;
-          background-color: transparent;
-        }
-        .console2{
-          background-color: #169bd8;
-          color: #ffffff;
-        }
-      }
+      text-align: center;
+      margin-top: 40px;
+      margin-bottom: 100px;
     }
   }
 </style>

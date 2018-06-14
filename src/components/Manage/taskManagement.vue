@@ -1,28 +1,57 @@
 <template>
   <div id="taskManagement">
     <p class="position"><i class='iconfont'>&#xe8e6;</i>您现在的位置 : 爬虫管理 > 任务管理</p>
-    <p class="crawlerName">{{Base.name_ch | Hname()}}</p>
-    <p class="connect"><i>爬虫名称</i>:<span>{{Base.name}}</span></p>
-    <p class="connect"><i>程序名</i>:<span>{{Base.app_name}}</span></p>
-    <p class="connect"><i>目标网址</i>:<span>{{Base.target_url}}</span></p>
-    <p class="connect"><i>机器名</i>:<span>{{Base.machine_name}}</span></p>
-    <p class="connect"><i>机器ID</i>:<span>{{Base.machine_ip}}</span></p>
-    <p class="connect"><i>运行状态</i>:<span>{{Run.status | statusInfo()}}</span></p>
-    <p class="connect"><i>操作命令</i>:<span v-if=ifdata><button type='button' @click="orders('start')">启动</button><button type='button' @click="orders('pause')">暂停</button><button type='button' @click="orders('resume')">恢复运行</button><button type='button' @click="orders('stop')">停止</button></span></p>
-    <!--<p class="connect">上次运行时间&nbsp;:<span>{{Run.end_time}}</span></p>-->
-    <!--<p class="running">运行状态&nbsp;:<span>运行中</span></p>-->
-    <!--<p class='time'>启动时间&nbsp;:<span class='start_time'>2018-03-04 00:00:00</span><button type='button' class='btn_set'>设置</button></p>-->
-    <!--<p class='time'>启动时间&nbsp;:-->
-      <!--<el-date-picker v-model="startTime" type="datetime" placeholder="选择日期时间">-->
-      <!--</el-date-picker>-->
-      <!--<button type='button' class='btn_set' @click='setTime()'>设置</button>-->
-    <!--</p>-->
+    <div class="t_box">
+      <table class="title_box">
+        <thead>
+        <tr>
+          <th colspan='4'>{{Base.name_ch | Hname()}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td class='t_name'>爬虫名称</td>
+          <td>{{Base.name}}</td>
+          <td class='t_name'>程序名</td>
+          <td>{{Base.app_name}}</td>
+        </tr>
+        <tr>
+          <td class='t_name'>机器名</td>
+          <td>{{Base.machine_name}}</td>
+          <td class='t_name'>目标网址</td>
+          <td>{{Base.target_url}}</td>
+        </tr>
+        <tr>
+          <td class='t_name'>运行状态</td>
+          <td>{{Run.status | statusInfo()}}</td>
+          <td class='t_name'>机器IP</td>
+          <td>{{Base.machine_ip}}</td>
+        </tr>
+        <tr>
+          <td class='t_name'>启动时间</td>
+          <td>{{Run.start_time | tohsm}}</td>
+          <td class='t_name'>结束时间</td>
+          <td>{{Run.end_time | tohsm}}</td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="status_control_box" v-if="ifdata">
+        <button @click="orders('start')">启动</button>
+        <button @click="orders('pause')">暂停</button>
+        <button @click="orders('resume')">恢复运行</button>
+        <button @click="orders('stop')">停止</button>
+      </div>
+    </div>
     <div class="log_box">
-      <p class="log">运行日志</p>:
       <div class="t_box">
-        <table class="tbox">
+        <table class="tbox" v-loading="loading">
           <thead>
-          <tr>
+          <tr class='t_name1'>
+            <th colspan='4'>
+              <p>爬虫日志<button type='button' @click='refresh()'>刷新</button></p>
+            </th>
+          </tr>
+          <tr class='t_name2'>
             <th>日期</th>
             <th>系统名</th>
             <th>进程名</th>
@@ -30,25 +59,28 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(list,index) in loginfo" :key="index">
-            <td>{{list.T | formatDate1()}}</td>
-            <td>{{list.ProcessName}}</td>
-            <td>{{list.SystemName}}</td>
-            <td class="ov"><p class="ov1">{{list.Log}}</p></td>
-          </tr>
+            <tr v-for="(list,index) in loginfo" :key="index" :class="{warn:list.Level== 1 ? true:false,error:list.Level == 2?true:false}">
+              <td>{{list.T | formatDate1()}}</td>
+              <td>{{list.ProcessName}}</td>
+              <td>{{list.SystemName}}</td>
+              <td class="ov"><p class="ov1">{{list.Log}}</p></td>
+            </tr>
           </tbody>
         </table>
       </div>
       <div class="console_box">
-        <div class="console">
-          <button :class="['console','c1',isA?'console1':'console2']" @click="lastPage()" :disabled="bt1">上一页</button>
-          <button :class="['console','c2',isB?'console1':'console2']" @click="nextPage()" :disabled="bt2">下一页</button>
-        </div>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="page"
+          :page-size="count"
+          layout="prev, pager, next, jumper"
+          :total="total">
+        </el-pagination>
       </div>
     </div>
   </div>
 </template>
-
 <script type="text/ecmascript-6">
   // import Bus from '../../assets/js/bus.js'
   export default {
@@ -66,11 +98,23 @@
         isB:false,
         testcrawler:'',
         ifdata:false,
+        count:20,
+        total:0,
+        loading:true,
       }
     },
     filters:{
       Hname: function (chname) {
         return chname != ''? chname : this.Base.name;
+      },
+      tohsm: function (nb) {
+        if (nb == 0 || !nb) {
+          return 0;
+        } else {
+          let newnb = (nb + '').split('');
+          newnb.length == 5 ? newnb.unshift('0') : newnb;
+          return newnb[0] + newnb[1] + '时' + newnb[2] + newnb[3] + '分' + newnb[4] + newnb[5] + '秒';
+        }
       },
     },
     mounted: function () {
@@ -111,29 +155,17 @@
           url:window.$g_url.ApiUrl+'/log?name='+testcrawler,
         })
           .then(function(res){
+            vm.loading = false;
             if(res.data.code == 0){
               if(res.data.result){
-                vm.loginfo = res.data.result;
+                vm.loginfo = res.data.result.datas;
+                vm.total = res.data.result.total;
               }
             }
           })
           .catch(function(err){
             console.log(err);
           });
-      },
-      //上一页
-      lastPage: function () {
-        let vm = this;
-        vm.bt2 = false;
-        vm.isB = false;
-        vm.page = vm.page-1;
-        vm.getLogLists(vm.page);
-      },
-      //下一页
-      nextPage: function () {
-        let vm = this;
-        vm.page = vm.page+1;
-        vm.getLogLists(vm.page);
       },
       //获取日志列表
       getLogLists: function (page) {
@@ -146,22 +178,9 @@
           .then(function(res){
             vm.loading = false;
             let resData = res.data;
-            if(resData.code == 0){
               if(resData.result){
-                vm.loginfo = resData.result;
-              }else {
-                if(page>1){
-                  vm.isB = true;
-                  vm.bt2 = true;
-                }
-              }
-              if(page>1){
-                vm.bt1 = false;
-                vm.isA = false;
-              }else if(page == 1){
-                vm.bt1 = true;
-                vm.isA = true;
-              }
+                vm.loginfo = resData.result.datas;
+                vm.total = resData.result.total;
             }else {
               vm.$message.error(resData.message);
             }
@@ -169,6 +188,12 @@
           .catch(function(err){
             console.log(err);
           });
+      },
+      handleSizeChange(val) {
+        this.getLogLists(val);
+      },
+      handleCurrentChange(val) {
+        this.getLogLists(val);
       },
       //操作命令
       orders: function (order) {
@@ -184,6 +209,14 @@
              }
            })
            .catch(function(err){});
+      },
+      //刷新
+      refresh: function () {
+        let vm = this;
+        vm.loading = true;
+        setTimeout(function () {
+          vm.getLogLists(1);
+        },500)
       }
     }
   }
@@ -191,62 +224,91 @@
 
 <style lang="scss" type="text/scss" scoped>
   #taskManagement{
-    p.connect{
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: start;
-      i{
-        display: inline-block;
-        width: 80px;
-        font-size: 16px;
-        color: #545454;
+    table,thead,tbody,tr,th,td{
+      border: 1px solid #dedede;
+    }
+    table{
+      border-collapse: collapse;
+    }
+    .t_box{
+      min-width: 610px;
+      .title_box{
+        width: 100%;
+        thead{
+          tr{
+            th{
+              color: #169bd8;
+              font-size: 18px;
+              font-weight: 600;
+              text-align: left;
+              height: 33px;
+              line-height: 32px;
+              padding:0px 10px;
+            }
+          }
+        }
+        tbody{
+          tr{
+            td{
+              height: 32px;
+              line-height: 32px;
+              padding-left: 6px;
+              color: #545454;
+              padding:0px 10px;
+            }
+            .t_name{
+              width: 100px;
+              color: #000000;
+              background-color: #eef6ff;
+            }
+          }
+        }
       }
-      span{
-        font-size: 14px;
-        margin-left: 10px;
+      .status_control_box{
+        margin-top: 30px;
+        width: 100%;
         display: flex;
-        justify-content: start;
+        justify-content: flex-start;
         button{
-          height: 20px;
-          line-height: 20px;
-          font-size: 14px;
-          padding: 0px 6px;
-          background-color: #169bd8;
+          height: 32px;
+          font-size: 18px;
           color: #ffffff;
-          margin-right: 8px;
+          background-color: #169bd8;
+          padding: 0px 15px;
+          margin-right: 20px;
         }
       }
     }
-    .crawlerName{
-      color: #169bd8;
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 16px;
-    }
     .log_box{
-      .log{
-        float: left;
-        width: 80px;
-        font-size: 16px;
-        color: #545454;
-        margin-bottom: 10px;
-      }
-      table,thead,tbody,tr,th,td{
-        border: 1px solid #dedede;
-      }
+      margin-top: 50px;
       .t_box{
-        min-height: 700px;
+        min-height: 750px;
         .tbox{
           min-width: 987px;
-          border-collapse: collapse;
           color: #454545;
           line-height: 32px;
           text-align: center;
           thead{
-            tr{
+            .t_name1,.t_name2{
               height: 32px;
-              background-color: #eef6ff;
               font-size: 16px;
+            }
+            .t_name1{
+              background-color: #ffffff;
+              th{
+                font-size: 18px;
+                button{
+                  margin-left: 15px;
+                  height: 22px;
+                  width: 40px;
+                  background-color: #169bd8;
+                  color: #ffffff;
+                  font-size: 16px;
+                }
+              }
+            }
+            .t_name2{
+              background-color: #eef6ff;
             }
           }
           tbody{
@@ -264,53 +326,22 @@
                 }
               }
             }
+            .warn{
+              color: #FF7F00;
+            }
+            .error{
+              color: red;
+            }
           }
         }
       }
       .console_box{
         min-width: 987px;
         height: 30px;
-        .console{
-          width: 212px;
-          margin: 0 auto;
-          margin-top: 30px;
-          .console{
-            width: 82px;
-            height: 30px;
-            text-align: center;
-            line-height: 30px;
-          }
-          .c1{
-            float: left;
-          }
-          .c2{
-            float: right;
-          }
-          .console1{
-            border: solid 1px #999999;
-            background-color: transparent;
-          }
-          .console2{
-            background-color: #169bd8;
-            color: #ffffff;
-          }
-        }
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 100px;
       }
-    }
-    .btn_set{
-      font-size: 16px;
-      color: #169bd8;
-      background-color: transparent;
-      margin-left: 10px;
-    }
-    .start_time{
-      display: inline-block;
-      width: 184px;
-      height: 22px;
-      border: solid 1px #53b1dc;
-      font-size: 14px;
-      color: #454545;
-      text-align: center;
     }
   }
 </style>

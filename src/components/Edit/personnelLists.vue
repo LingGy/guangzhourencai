@@ -8,7 +8,6 @@
       </div>
       <div class="top_right">
         <input type="text" class='name' placeholder='请输入搜索人姓名' v-model="name">
-        <!--<button type='button' class='btn_search' @click="search()">搜索</button>-->
         <el-button icon="el-icon-search" class='btnsearch' @click="search()" circle></el-button>
       </div>
     </div>
@@ -17,31 +16,19 @@
         <thead>
         <tr>
           <th>姓名</th>
-          <!--<th>英文名</th>-->
           <th>邮箱</th>
           <th>学校</th>
           <th>学历</th>
-          <!--<th>注册时间</th>-->
-          <!--<th>人才等级</th>-->
           <th>专业</th>
-          <!--<th>详情</th>-->
         </tr>
         </thead>
         <tbody>
         <tr v-for="(result,index) in results" :key="index">
-          <!--<th>{{result.ChineseName | ifName}}</th>-->
-          <!--<th>{{result.EnglishName | ifName}}</th>-->
           <td class='bl' @click="btnToInfo(result.UserId)">{{result.Name}}</td>
           <td>{{result.Email}}</td>
           <td>{{result.GraduateSchool}}</td>
           <td>{{result.HighestDegree}}</td>
           <td>{{result.Major}}</td>
-          <!--<th>{{result.RegisterDate | formatDate()}}</th>-->
-          <!--<th>{{result.Level | getLevel}}</th>-->
-          <!--<th>{{result.Type | getType}}</th>-->
-          <!--<th>-->
-            <!--<button type='button' class='toInfo' @click="btnToInfo(result.UserId)">详情</button>-->
-          <!--</th>-->
         </tr>
         </tbody>
       </table>
@@ -55,10 +42,6 @@
         layout="prev, pager, next, jumper"
         :total="total">
       </el-pagination>
-      <!--<div class="console">-->
-        <!--<button :class="['console','c1',isA?'console1':'console2']" @click="lastPage()" :disabled="bt1">上一页</button>-->
-        <!--<button :class="['console','c2',isB?'console1':'console2']" @click="nextPage()" :disabled="bt2">下一页</button>-->
-      <!--</div>-->
     </div>
   </div>
 </template>
@@ -73,7 +56,7 @@
         count: 20,
         results: [],
         loading:true,
-        total:''
+        total:0
       }
     },
     created: function () {//获取人才列表
@@ -122,20 +105,6 @@
       handleCurrentChange(val) {
         this.getNewLists(this.name,val);
       },
-      //上一页
-      lastPage: function () {
-        let vm = this;
-        vm.bt2 = false;
-        vm.isB = false;
-        vm.page = vm.page-1;
-        vm.getNewLists(vm.page);
-      },
-      //下一页
-      nextPage: function () {
-        let vm = this;
-        vm.page = vm.page+1;
-        vm.getNewLists(vm.page);
-      }
     }
   }
 </script>
@@ -199,6 +168,8 @@
         min-width: 948px;
         border-collapse: collapse;
         margin-top: 14px;
+        word-break:keep-all;/* 不换行 */
+        white-space:nowrap;/* 不换行 */
         thead {
           width: 100%;
           background-color: #f1f8ff;
@@ -210,6 +181,9 @@
             background-color: #f1f8ff;
             letter-spacing: 1px;
             text-align: center;
+            th{
+              padding: 0px 10px;
+            }
           }
         }
         tbody {
@@ -226,6 +200,9 @@
             .bl{
               color: #6ecffa;
               text-decoration: underline;
+              &:hover{
+                cursor:pointer;
+              }
             }
             .toInfo {
               width: 45px;
@@ -245,6 +222,7 @@
       min-width: 948px;
       margin-top: 20px;
       text-align: center;
+      margin-bottom: 100px;
     }
   }
 
