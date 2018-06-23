@@ -1,3 +1,4 @@
+@charset "UTF-8";
 * {
   margin: 0;
   padding: 0;
@@ -125,6 +126,16 @@ ul, li {
 
 i {
   font-style: normal; }
+
+table, thead, tbody, tr, th, td {
+  border: 1px solid #dedede;
+  word-break: keep-all;
+  /* 不换行 */
+  white-space: nowrap;
+  /* 不换行 */ }
+
+input {
+  outline: none; }
 
 @font-face {
   font-family: 'iconfont';
@@ -492,5 +503,145 @@ button {
     width: 50px;
     border: solid 1px #999999;
     background-color: transparent; }
+
+#vague .search_options_box, #accurate .search_options_box {
+  min-width: 1010px;
+  height: 150px;
+  background-color: #f1f2f6;
+  padding-top: 28px; }
+  #vague .search_options_box .search_main_left, #accurate .search_options_box .search_main_left {
+    float: left; }
+    #vague .search_options_box .search_main_left .options_box, #accurate .search_options_box .search_main_left .options_box {
+      height: 22px; }
+      #vague .search_options_box .search_main_left .options_box .opstions, #accurate .search_options_box .search_main_left .options_box .opstions {
+        margin-left: 20px;
+        float: left; }
+        #vague .search_options_box .search_main_left .options_box .opstions .op_name, #accurate .search_options_box .search_main_left .options_box .opstions .op_name {
+          float: left;
+          color: #454545;
+          font-size: 16px; }
+        #vague .search_options_box .search_main_left .options_box .opstions .select_box, #accurate .search_options_box .search_main_left .options_box .opstions .select_box {
+          width: 148px;
+          height: 22px;
+          float: left;
+          color: #29a9f5;
+          font-size: 14px;
+          margin-left: 10px;
+          background-color: #f1f2f6; }
+          #vague .search_options_box .search_main_left .options_box .opstions .select_box .el-input__inner, #accurate .search_options_box .search_main_left .options_box .opstions .select_box .el-input__inner {
+            width: 148px;
+            height: 22px;
+            border: solid 1px #53b1dc;
+            border-radius: 0px; }
+    #vague .search_options_box .search_main_left .mg_top, #accurate .search_options_box .search_main_left .mg_top {
+      margin-top: 28px; }
+  #vague .search_options_box .search_btn, #accurate .search_options_box .search_btn {
+    float: left;
+    width: 62px;
+    height: 26px;
+    background-color: #169bd8;
+    line-height: 26px;
+    font-size: 16px;
+    color: #ffffff;
+    text-align: center;
+    margin-left: 170px; }
+#vague .proLists_title, #accurate .proLists_title {
+  height: 28px;
+  margin-top: 20px;
+  margin-bottom: 20px; }
+  #vague .proLists_title .shu, #accurate .proLists_title .shu {
+    width: 4px;
+    height: 100%;
+    background-color: #169bd8;
+    float: left; }
+  #vague .proLists_title .text, #accurate .proLists_title .text {
+    font-size: 18px;
+    color: #454545;
+    line-height: 28px;
+    float: left;
+    margin-left: 4px; }
+#vague .search_box, #accurate .search_box {
+  width: 100%;
+  height: 26px;
+  text-align: right;
+  margin-bottom: 10px; }
+  #vague .search_box .sbox, #accurate .search_box .sbox {
+    width: 140px;
+    float: right;
+    display: flex;
+    justify-content: flex-start;
+    border: 1px solid #cccccc; }
+    #vague .search_box .sbox .search, #accurate .search_box .sbox .search {
+      width: 116px;
+      height: 24px;
+      border: none;
+      padding: 0px 6px;
+      outline: none; }
+    #vague .search_box .sbox i, #accurate .search_box .sbox i {
+      font-size: 24px;
+      color: #6ecffa; }
+#vague .lists_table_box, #accurate .lists_table_box {
+  min-width: 1010px;
+  color: #454545;
+  border-collapse: collapse; }
+  #vague .lists_table_box thead, #accurate .lists_table_box thead {
+    width: 100%;
+    background-color: #f1f8ff; }
+    #vague .lists_table_box thead tr, #accurate .lists_table_box thead tr {
+      height: 30px;
+      line-height: 30px;
+      font-size: 16px;
+      color: #454545;
+      background-color: #f1f8ff;
+      letter-spacing: 1px;
+      text-align: center; }
+      #vague .lists_table_box thead tr th, #accurate .lists_table_box thead tr th {
+        padding: 0px 10px; }
+  #vague .lists_table_box tbody tr, #accurate .lists_table_box tbody tr {
+    height: 38px;
+    line-height: 38px;
+    color: #666666;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-align: left; }
+    #vague .lists_table_box tbody tr td, #accurate .lists_table_box tbody tr td {
+      padding: 0px 10px; }
+    #vague .lists_table_box tbody tr .bl, #accurate .lists_table_box tbody tr .bl {
+      color: #6ecffa;
+      text-decoration: underline; }
+      #vague .lists_table_box tbody tr .bl:hover, #accurate .lists_table_box tbody tr .bl:hover {
+        cursor: pointer; }
+#vague .end_box, #accurate .end_box {
+  width: 1010px; }
+  #vague .end_box .end, #accurate .end_box .end {
+    width: 266px;
+    margin: 0 auto;
+    margin-top: 42px; }
+    #vague .end_box .end .name_box, #accurate .end_box .end .name_box {
+      float: left; }
+      #vague .end_box .end .name_box .name, #accurate .end_box .end .name_box .name {
+        height: 22px;
+        line-height: 22px;
+        font-size: 16px;
+        color: #454545;
+        float: left;
+        margin-bottom: 60px; }
+      #vague .end_box .end .name_box .int_name, #accurate .end_box .end .name_box .int_name {
+        width: 118px;
+        height: 22px;
+        border: solid 1px #53b1dc;
+        line-height: 20px;
+        padding-left: 6px; }
+    #vague .end_box .end .saveTeamName, #accurate .end_box .end .saveTeamName {
+      display: block;
+      float: left;
+      width: 50px;
+      height: 24px;
+      background-color: #169bd8;
+      text-align: center;
+      line-height: 24px;
+      font-size: 16px;
+      color: #ffffff;
+      margin-left: 34px; }
 
 /*# sourceMappingURL=common.css.map */

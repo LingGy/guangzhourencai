@@ -9,6 +9,7 @@
             <el-select
               v-model="nationality"
               filterable
+              allow-create
               class="select_box">
               <el-option
                 v-for="(option,index) in countrys"
@@ -18,31 +19,12 @@
               </el-option>
             </el-select>
           </div>
-          <div class="opstions">
-            <p class="op_name">行业&nbsp;:</p>
-            <el-select
-              v-model="major"
-              filterable
-              class="select_box">
-              <el-option
-                v-for="(option,index) in majors"
-                :key="index"
-                :label="option"
-                :value="option">
-              </el-option>
-            </el-select>
-          </div>
-          <!--<div class="opstions">-->
-          <!--<p class="op_name">人才等级&nbsp;:</p>-->
-          <!--<select class="select_box" v-model="level">-->
-          <!--<option v-for="(list,index) in levelLists" :value="list.value" :key="index">{{list.text}}</option>-->
-          <!--</select>-->
-          <!--</div>-->
           <div class="opstions">
             <p class="op_name">留学国家&nbsp;:</p>
             <el-select
               v-model="studyregion"
               filterable
+              allow-create
               class="select_box">
               <el-option
                 v-for="(option,index) in countrys"
@@ -52,13 +34,12 @@
               </el-option>
             </el-select>
           </div>
-        </div>
-        <div class="options_box mg_top">
           <div class="opstions">
             <p class="op_name">学校&nbsp;:</p>
             <el-select
               v-model="college"
               filterable
+              allow-create
               class="select_box">
               <el-option
                 v-for="(option,index) in colleges"
@@ -68,17 +49,20 @@
               </el-option>
             </el-select>
           </div>
+        </div>
+        <div class="options_box mg_top">
           <div class="opstions">
             <p class="op_name">学历&nbsp;:</p>
             <el-select
               v-model="degree"
               filterable
+              allow-create
               class="select_box">
               <el-option
-                v-for="(option,index) in degreeList"
+                v-for="(option,index) in degrees"
                 :key="index"
-                :label="option.value"
-                :value="option.value">
+                :label="option"
+                :value="option">
               </el-option>
             </el-select>
           </div>
@@ -90,19 +74,22 @@
       <p class="shu"></p>
       <p class="text">人才列表</p>
     </div>
+    <div class="search_box">
+      <div class="sbox">
+        <input type="text" class="search" placeholder="搜索人才" v-model='personnel'>
+        <i class="el-icon-search" @click='search()'></i>
+      </div>
+    </div>
     <el-checkbox-group v-model="checkedUserId" @change="handleCheckedCitiesChange" class='checkbox_box'>
       <table class="lists_table_box" v-loading="loading">
         <thead>
         <tr>
-          <td>序号</td>
-          <td>中文名</td>
-          <td>英文名</td>
-          <td>邮箱</td>
-          <td>性别</td>
-          <!--<td>人才等级</td>-->
-          <td>最高学历</td>
-          <td>现工作单位</td>
-          <td>操作</td>
+          <th>序号</th>
+          <th>姓名</th>
+          <th>邮箱</th>
+          <th>性别</th>
+          <th>最高学历</th>
+          <th>现工作单位</th>
         </tr>
         </thead>
         <tbody>
@@ -110,16 +97,11 @@
           <td class="tac">
             <el-checkbox :label="list.UserId">{{index+1}}</el-checkbox>
           </td>
-          <td>{{list.ChineseName}}</td>
-          <td>{{list.EnglishName}}</td>
+          <td class='bl' @click="toInfo(list.UserId)">{{list.ChineseName}}</td>
           <td>{{list.Email}}</td>
           <td>{{list.IsMale | getSex()}}</td>
-          <!--<td>{{list.Level | getLevel()}}</td>-->
           <td>{{list.HighestDegree}}</td>
           <td>{{list.WorkUnit}}</td>
-          <td>
-            <button class="info" @click="toInfo(list.UserId)">详情</button>
-          </td>
         </tr>
         </tbody>
       </table>
@@ -138,6 +120,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import commonApi from '../../assets/js/common'
   export default {
     name:"accurate",
     data: function () {
@@ -145,18 +128,7 @@
         countrys:[],
         colleges:[],
         majors:[],
-        degreeList:[
-          {value:""},
-          {value:"博士"},
-          {value:"硕士"},
-          {value:"学士"},
-          {value:"其它"},
-        ],
-        levelLists:[
-          {value:'',text:""},
-          {value:'1',text:"高级"},
-          {value:'2',text:"基本"}
-        ],
+        degrees:[],
         checkAll: false,
         isIndeterminate: true,
         checkedUserId: [],
@@ -165,63 +137,20 @@
         nationality: '',
         studyregion: '',
         college: '',
-        major: '',
         degree: '',
-        // level: '',
         teamName:'',
         loading:false,
+        personnel:null
       }
     },
     created: function () {
       if(this.$route.path == "/application/vague"){
         this.$parent.fg1 = true;
       }
-      let _this = this;
-      _this.$axios({
-        method:'get',
-        url:window.$g_url.ApiUrl+'/college',
-      })
-        .then(function(res){
-          let resDatas = res.data;
-          if(resDatas.code == 0){
-            _this.colleges = resDatas.result;
-          }else {
-            console.log(resDatas.message);
-          }
-        })
-        .catch(function(err){
-          console.log(err);
-        });
-      _this.$axios({
-        method:'get',
-        url:window.$g_url.ApiUrl+'/major',
-      })
-        .then(function(res){
-          let resDatas = res.data;
-          if(resDatas.code == 0){
-            _this.majors = resDatas.result;
-          }else {
-            console.log(resDatas.message);
-          }
-        })
-        .catch(function(err){
-          console.log(err);
-        });
-      _this.$axios({
-        method:'get',
-        url:window.$g_url.ApiUrl+'/country',
-      })
-        .then(function(res){
-          let resDatas = res.data;
-          if(resDatas.code == 0){
-            _this.countrys = resDatas.result;
-          }else {
-            console.log(resDatas.message);
-          }
-        })
-        .catch(function(err){
-          console.log(err);
-        });
+      commonApi.getAuxiliarydata(this,'college');
+      commonApi.getAuxiliarydata(this,'major');
+      commonApi.getAuxiliarydata(this,'degree');
+      commonApi.getAuxiliarydata(this,'country');
     },
     methods:{
       //搜索发送请求获取结果
@@ -234,7 +163,6 @@
           data:"nationality="+vm.nationality
           + "&studyregion="+vm.studyregion
           + "&college="+vm.college
-          + "&major="+vm.major
           + "&degree="+vm.degree
         })
           .then(function(res){
@@ -252,9 +180,13 @@
                 vm.dataLists = [];
                 vm.$message.warning('未搜索到满足条件人才');
               }
+            }else {
+              vm.$message.warning(resDatas.message);
             }
           })
-          .catch(function(err){});
+          .catch(function(err){
+            console.log(err);
+          });
       },
       //全选
       handleCheckAllChange(val) {
@@ -300,146 +232,24 @@
       toInfo: function (id) {
         sessionStorage.setItem("userId",id);
         this.$router.push("/Edit/personnelInfo");
+      },
+      //搜索
+      search: function () {
+        let vm = this;
+        let i = 0;
+        if(!vm.personnel){vm.$message.warning('人才姓名不能为空!'); return false;}
+        vm.dataLists = vm.dataLists.filter(function (key) {
+          if(key.ChineseName == vm.personnel){
+            return (key.ChineseName == vm.personnel);
+          }
+          vm.$message.warning('未找到该人才!');
+          return vm.dataLists;
+        })
       }
     }
   }
 </script>
 
-<style lang="scss" type="text/scss" scoped>
-#vague{
-  .search_options_box{
-    min-width: 1010px;
-    height: 150px;
-    background-color: #f1f2f6;
-    padding-top: 28px;
-    .search_main_left{
-      float: left;
-      .options_box{
-        height: 22px;
-        .opstions{
-          margin-left: 20px;
-          float: left;
-          .op_name{
-            float: left;
-            color: #454545;
-            font-size: 16px;
-          }
-          .select_box{
-            width: 148px;
-            height: 22px;
-            float: left;
-            color: #29a9f5;
-            font-size: 14px;
-            margin-left: 10px;
-            background-color: #f1f2f6;
-            .el-input__inner{
-              width: 148px;
-              height: 22px;
-              border: solid 1px #53b1dc;
-              border-radius:0px;
-            }
-          }
-        }
-      }
-      .mg_top{
-        margin-top: 28px;
-      }
-    }
-    .search_btn{
-      float: left;
-      width: 62px;
-      height: 26px;
-      background-color: #169bd8;
-      line-height: 26px;
-      font-size: 16px;
-      color: #ffffff;
-      text-align: center;
-      margin-left: 170px;
-    }
-  }
-  .proLists_title{
-    height: 28px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    .shu{
-      width: 4px;
-      height: 100%;
-      background-color: #169bd8;
-      float: left;
-    }
-    .text{
-      font-size: 18px;
-      color: #454545;
-      line-height: 28px;
-      float: left;
-      margin-left: 4px;
-    }
-  }
-  .lists_table_box{
-    text-align: center;
-    width: 1010px;
-    color: #454545;
-    border-collapse: collapse;
-    thead{
-      height: 30px;
-      line-height: 30px;
-      font-size: 16px;
-      background-color: #f1f8ff;
-    }
-    tbody{
-      tr{
-        height: 30px;
-        line-height: 30px;
-        font-size: 14px;
-        .info{
-          width: 45px;
-          height: 24px;
-          background-color: #6ecffa;
-          color: #ffff;
-          margin-top: 3px;
-          line-height: 24px;
-          text-align: center;
-        }
-      }
-    }
-  }
-  .end_box{
-    width: 1010px;
-    .end{
-      width: 266px;
-      margin: 0 auto;
-      margin-top: 42px;
-      .name_box{
-        float: left;
-        .name{
-          height: 22px;
-          line-height: 22px;
-          font-size: 16px;
-          color: #454545;
-          float: left;
-        }
-        .int_name{
-          width: 118px;
-          height: 22px;
-          border: solid 1px #53b1dc;
-          line-height: 20px;
-          padding-left: 6px;
-        }
-      }
-      .saveTeamName{
-        display: block;
-        float: left;
-        width: 50px;
-        height: 24px;
-        background-color: #169bd8;
-        text-align: center;
-        line-height: 24px;
-        font-size: 16px;
-        color: #ffffff;
-        margin-left: 34px;
-      }
-    }
-  }
-}
+<style lang="scss" type="text/scss">
 </style>
 

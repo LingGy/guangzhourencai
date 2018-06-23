@@ -2,6 +2,16 @@
   <div id="systemLog">
     <p class="position"><i class='iconfont'>&#xe8e6;</i>您现在的位置 : 系统维护 > 系统日志</p>
     <div class="t_box">
+      <div class="top">
+        <div class="top_left">
+          <div class="bule"></div>
+          <p>系统日志</p>
+        </div>
+        <div class="top_right">
+          <input type="text" class='name' placeholder='系统名称' v-model="name">
+          <el-button icon="el-icon-search" class='btnsearch' @click="search()" circle></el-button>
+        </div>
+      </div>
       <table class="tbox" v-loading="loading">
         <thead>
         <tr>
@@ -48,19 +58,20 @@
         isB:false,
         count:20,
         total:0,
+        name:'',
       }
     },
     mounted: function () {
-      this.getLogLists(this.page);
+      this.getLogLists(this.name,this.page);
     },
     methods:{
       //获取日志列表
-      getLogLists: function (page) {
+      getLogLists: function (name,page) {
         let vm = this;
         vm.$axios({
             method:'post',
             url:window.$g_url.ApiUrl+'/log',
-            data:'name=' + '' + '&page=' + page + '&count=20'
+            data:'name=' + name + '&page=' + page + '&count=20'
         })
            .then(function(res){
              vm.loading = false;
@@ -77,11 +88,16 @@
            });
       },
       handleSizeChange(val) {
-        this.getLogLists(val);
+        this.getLogLists(this.name,val);
       },
       handleCurrentChange(val) {
-        this.getLogLists(val);
+        this.getLogLists(this.name,val);
       },
+      //搜索
+      search: function () {
+        this.page = 1;
+        this.getLogLists(this.name,this.page)
+      }
     }
   }
 </script>
@@ -93,6 +109,55 @@
     }
     .t_box{
       min-height: 700px;
+      .top {
+        width: 100%;
+        height: 28px;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 14px;
+        .top_left {
+          width: 82px;
+          height: 100%;
+          display: flex;
+          justify-content: space-between;
+          .bule {
+            width: 4px;
+            height: 100%;
+            background-color: #169bd8;
+          }
+          p {
+            font-size: 18px;
+            color: #454545;
+            margin-left: 5px;
+            line-height: 28px;
+          }
+        }
+        .top_right {
+          .name {
+            float: left;
+            width: 134px;
+            height: 28px;
+            font-size: 12px;
+            color: #999999;
+            padding-left: 4px;
+            margin-right: 14px;
+          }
+          .btn_search {
+            float: right;
+            width: 90px;
+            height: 28px;
+            background-color: #169bd8;
+            border: none;
+            font-size: 18px;
+            line-height: 28px;
+            text-align: center;
+            color: #ffffff;
+          }
+          .btnsearch{
+            padding: 8px;
+          }
+        }
+      }
       .tbox{
         min-width: 987px;
         border-collapse: collapse;

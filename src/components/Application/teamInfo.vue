@@ -4,6 +4,7 @@
     <div class="proLists_title">
       <p class="shu"></p>
       <p class="text">分组详情</p>
+      <button class="back" @click="goBack()">返回分组</button>
     </div>
     <table class="box" v-loading="loading">
       <thead>
@@ -15,24 +16,20 @@
         <!--<th>人才等级</th>-->
         <th>最高学历</th>
         <th>现工作单位</th>
-        <th>操作</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="(result,index) in resDatas" :key="index">
-        <th>{{result.ChineseName}}</th>
-        <th>{{result.EnglishName}}</th>
-        <th>{{result.Email}}</th>
-        <th>{{result.IsMale | getSex()}}</th>
-        <!--<th>{{result.Level | getLevel}}</th>-->
-        <th>{{result.HighestDegree}}</th>
-        <th>{{result.WorkUnit}}</th>
-        <th>
-          <button type='button' class='toInfo' @click="toInfo(result.UserId)">详情</button>
-        </th>
+        <td class='bl' @click="toInfo(result.UserId)">{{result.ChineseName}}</td>
+        <td>{{result.EnglishName}}</td>
+        <td>{{result.Email}}</td>
+        <td>{{result.IsMale | getSex()}}</td>
+        <td>{{result.HighestDegree}}</td>
+        <td>{{result.WorkUnit}}</td>
       </tr>
       </tbody>
     </table>
+    <button class="sendemail" @click='btnToEmail()'>发送社团邮件</button>
   </div>
 </template>
 
@@ -41,16 +38,20 @@
     name:"teamInfo",
     data: function () {
       return {
+        teamId:null,
+        teamName:null,
         resDatas:[],
         loading:true
       }
     },
     created: function () {
       let vm = this;
-      let teamId = sessionStorage.getItem("teamId");
+      let teamInfo = JSON.parse(sessionStorage.getItem("teamInfo"));
+      vm.teamId =teamInfo.teamId;
+      vm.teamName =teamInfo.teamName;
       vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/group?id=' + teamId,
+          url:window.$g_url.ApiUrl + '/group?id=' + vm.teamId,
       })
          .then(function(res){
            vm.loading = false;
@@ -70,13 +71,26 @@
       toInfo: function (id) {
         sessionStorage.setItem("userId",id);
         this.$router.push("/Edit/personnelInfo");
-      }
+      },
+      //返回分组
+      goBack: function () {
+        this.$router.go(-1)
+      },
+      //跳转发送邮件功能
+      btnToEmail: function (userid,name) {
+        let EmailId = JSON.stringify({userid:userid,name:name,type:1})
+        sessionStorage.setItem("EmailId",EmailId);
+        this.$router.push('/application/email');
+      },
     }
   }
 </script>
 
 <style lang="scss" type="text/scss" scoped>
 #teamInfo{
+  table,thead,tbody,tr,th,td{
+    border: 1px solid #dedede;
+  }
   .proLists_title {
     height: 28px;
     margin-top: 20px;
@@ -94,6 +108,13 @@
       float: left;
       margin-left: 4px;
     }
+    .back{
+      height: 28px;
+      padding: 0px 10px;
+      float: right;
+      background-color: #169bd8;
+      color: #ffffff;
+    }
   }
   .box {
     min-width: 1010px;
@@ -110,6 +131,9 @@
         background-color: #f1f8ff;
         letter-spacing: 1px;
         text-align: center;
+        th{
+          padding: 0px 10px;
+        }
       }
     }
     tbody {
@@ -119,19 +143,28 @@
         color: #666666;
         font-size: 14px;
         letter-spacing: 1px;
-        text-align: center;
-        .toInfo {
-          width: 45px;
-          height: 24px;
-          line-height: 24px;
-          background-color: #6ecffa;
-          font-size: 14px;
-          color: #fff;
-          border: none;
-          text-align: center;
+        text-align: left;
+        td{
+          padding: 0px 10px;
+        }
+      }
+      .bl{
+        color: #6ecffa;
+        text-decoration: underline;
+        &:hover{
+          cursor:pointer;
         }
       }
     }
+  }
+  .sendemail{
+    display: block;
+    background-color: #169bd8;
+    height: 28px;
+    padding: 0px 10px;
+    color: #ffffff;
+    margin: 0 auto;
+    margin-top: 20px;
   }
 }
 </style>

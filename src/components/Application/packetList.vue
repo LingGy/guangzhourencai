@@ -7,7 +7,7 @@
           <td class="teamName">{{value.Name}}</td>
           <td class="number">{{value.Count}}条人才信息</td>
           <td>
-            <button class="teamInof" @click="toTeamInfo(value.Id)">详情</button>
+            <button class="teamInof" @click="toTeamInfo(value.Id,value.Name)">详情</button>
           </td>
         </tr>
       </table>
@@ -48,8 +48,9 @@
     },
     methods:{
       //跳转分组详情
-      toTeamInfo: function (id) {
-        sessionStorage.setItem("teamId",id)
+      toTeamInfo: function (id,name) {
+        let teamInfo = JSON.stringify({teamId:id,teamName:name})
+        sessionStorage.setItem("teamInfo",teamInfo)
         this.$router.push('/application/packetList/teamInfo');
       }
     }

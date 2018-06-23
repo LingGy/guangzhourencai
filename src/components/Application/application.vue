@@ -28,6 +28,11 @@
             <i class='iconfont'>&#xe706;</i>关系分析<i class='el-icon-arrow-right'></i>
           </p>
         </router-link>
+        <router-link tag="li" class='sub_nav_li' to="/application/email" active-class="active1">
+          <p>
+            <i class='el-icon-message'></i>邮件管理<i class='el-icon-arrow-right'></i>
+          </p>
+        </router-link>
       </ul>
     </div>
     <div class="content">

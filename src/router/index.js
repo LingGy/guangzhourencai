@@ -30,6 +30,7 @@ import packetList from '@/components/Application/packetList';
 import relation from '@/components/Application/relation';
 import relationpic from '@/components/Application/relationpic';
 import relationInfo from '@/components/Application/relationInfo';
+import email from '@/components/Application/email';
 import teamInfo from '@/components/Application/teamInfo';
 import systemLog from '@/components/Maintain/systemLog';
 import category from '@/components/Maintain/category';
@@ -161,11 +162,15 @@ export default new Router({
           component: accurate
         },
         {
+          path: '/application/email',
+          name: 'email',
+          component: email
+        },
+        {
           path: '/application/vague',
           name: 'vague',
           component: vague
         },
-
         {
           path: '/application/packetList',
           name: 'packetList',

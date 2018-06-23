@@ -25,7 +25,7 @@
         <tbody>
         <tr v-for="(result,index) in results" :key="index">
           <td class='bl' @click="btnToInfo(result.UserId)">{{result.Name}}</td>
-          <td>{{result.Email}}</td>
+          <td class='bl' @click="btnToEmail(result.UserId,result.Name)">{{result.Email}}</td>
           <td>{{result.GraduateSchool}}</td>
           <td>{{result.HighestDegree}}</td>
           <td>{{result.Major}}</td>
@@ -47,6 +47,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import Bus from '../../assets/js/bus';
   export default {
     name: 'personnelLists',
     data: function () {
@@ -56,7 +57,8 @@
         count: 20,
         results: [],
         loading:true,
-        total:0
+        total:0,
+        UserId:null
       }
     },
     created: function () {//获取人才列表
@@ -65,6 +67,15 @@
         this.$parent.fg3 = false;
       }
       this.getNewLists(this.name,this.page);
+    },
+    beforeDestory () {
+      // Bus.$emit("UserId",this.UserId);
+      // eventBus.$emit('eventBusName', this.UserId);
+      // console.log("销毁前");
+    },
+    destroyed(){
+      // Bus.$emit("UserId",this.UserId);
+      // console.log("销毁后");
     },
     methods: {
       //获取列表
@@ -93,7 +104,17 @@
       //获取详情
       btnToInfo: function (userid) {//获取点击对应人才的userid并传值给中间件
         sessionStorage.setItem("userId", userid);
+        // this.$nextTick()
+        //   .then(function () {
+        //     Bus.$emit("UserId",userid);
+        //   })
         this.$router.push('/Edit/personnelInfo');
+      },
+      //跳转发送邮件功能
+      btnToEmail: function (userid,name) {
+        let EmailId = JSON.stringify({userid:userid,name:name,type:1})
+        sessionStorage.setItem("EmailId",EmailId);
+        this.$router.push('/application/email');
       },
       //搜索
       search: function () {
@@ -203,16 +224,6 @@
               &:hover{
                 cursor:pointer;
               }
-            }
-            .toInfo {
-              width: 45px;
-              height: 24px;
-              line-height: 24px;
-              background-color: #6ecffa;
-              font-size: 14px;
-              color: #fff;
-              border: none;
-              text-align: center;
             }
           }
         }

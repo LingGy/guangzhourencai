@@ -11,7 +11,6 @@
           </el-radio-group>
         </div>
       </div>
-
       <div class="op">
         <p class="name">出生日期:</p>
           <el-date-picker
@@ -21,7 +20,6 @@
             value-format='timestamp'>
           </el-date-picker>
       </div>
-
       <div class="op">
         <p class="name">国籍:</p>
         <div class="val">
@@ -40,35 +38,9 @@
           </el-select>
         </div>
       </div>
-
       <div class="op">
         <p class="name">出生地:</p>
         <div class="val">
-          <!--<el-select-->
-            <!--v-model="Birthplace1"-->
-            <!--filterable-->
-            <!--allow-create-->
-            <!--@change="handleItemChange"-->
-            <!--class="s2">-->
-            <!--<el-option-->
-              <!--v-for="(option,index ) in options2"-->
-              <!--:key="index"-->
-              <!--:label="option"-->
-              <!--:value="option">-->
-            <!--</el-option>-->
-          <!--</el-select>-->
-          <!--<el-select-->
-            <!--v-model="Birthplace2"-->
-            <!--filterable-->
-            <!--allow-create-->
-            <!--class="s3">-->
-            <!--<el-option-->
-              <!--v-for="(option,index ) in options3"-->
-              <!--:key="index"-->
-              <!--:label="option"-->
-              <!--:value="option">-->
-            <!--</el-option>-->
-          <!--</el-select>-->
           <input type="text" placeholder="请输入出生地" v-model='allData.Birthplace' maxlength='20'>
         </div>
       </div>
@@ -125,10 +97,10 @@
             allow-create
             class="s1">
             <el-option
-              v-for="(option,index ) in options5"
+              v-for="(option,index ) in degrees"
               :key="index"
-              :label="option.value"
-              :value="option.value">
+              :label="option"
+              :value="option">
             </el-option>
           </el-select>
         </div>
@@ -283,23 +255,15 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import province from '../../../static/city'
+  import commonApi from '../../assets/js/common'
   export default {
     name: 'Resume',
     data: function () {
       return {
         countrys:[],
-        majors:[],
         colleges: [],
-        options2: province.arr1,
+        degrees: [],
         options3: [],
-        options5:[
-          {value:''},
-          {value:'博士'},
-          {value:'硕士'},
-          {value:'学士'},
-          {value:'其他'},
-        ],
         options6: [
           {value: '刚毕业'},
           {value: '在海外工作1-5年(不含求学阶段)'},
@@ -323,8 +287,6 @@
             name:"只能上传jpg/png文件"
           }
         ],
-        Birthplace1:'',
-        Birthplace2:'',
         allData:{
           IsMale: '',
           Birthday:'',
@@ -347,16 +309,15 @@
       }
     },
     created: function () {
-      let _this = this;
-      if(_this.$route.path == "/Edit/resume"){
-        _this.$parent.fg1 = true;
-        _this.$parent.fg2 = true;
-        _this.$parent.fg3 = false;
+      if(this.$route.path == "/Edit/resume"){
+        this.$parent.fg1 = true;
+        this.$parent.fg2 = true;
+        this.$parent.fg3 = false;
       }
-      _this.getAssistData('/country');
-      _this.getAssistData('/major');
-      _this.getAssistData('/college');
-      _this.getNewData();
+      commonApi.getAuxiliarydata(this,'country');
+      commonApi.getAuxiliarydata(this,'college');
+      commonApi.getAuxiliarydata(this,'degree');
+      this.getNewData();
     },
     //方法
     methods: {
@@ -376,9 +337,6 @@
                 if (!resDatas.result) return false;
                 vm.allData = resDatas.result;
                 vm.allData.Birthday = vm.allData.Birthday * 1000;
-                let bpl = vm.allData.Birthplace.split("省")
-                vm.Birthplace1 = bpl[0].toString()+"省";
-                vm.Birthplace2 = bpl[1].toString();
               }else {
                 vm.$message.error(res.message)
               }
@@ -433,7 +391,6 @@
         let userid = sessionStorage.getItem("userId");
         if(userid && userid != 0) {
           let data = JSON.parse(JSON.stringify(vm.allData));
-          // data.Birthplace = vm.Birthplace1 + vm.Birthplace2;
           data.Birthday = data.Birthday/1000;
           data.UserId = userid;
           vm.$axios({
@@ -465,31 +422,6 @@
         if(i != -1){
           vm.options3 = province.arr2[i];
         }
-      },
-      //获取国籍选项数据
-      getAssistData: function (api) {
-        let vm = this;
-        vm.$axios({
-          method:'post',
-          url:window.$g_url.ApiUrl+api,
-        })
-          .then(function(res){
-            let resData = res.data;
-            if(resData.code == 0){
-              if(api == '/country'){
-                vm.countrys = resData.result;
-              }else if(api == '/major'){
-                vm.majors = resData.result;
-              }else if(api == '/college'){
-                vm.colleges = resData.result;
-              }
-            }else {
-              vm.$message.error(resData.message);
-            }
-          })
-          .catch(function(err){
-            console.log(err);
-          });
       },
     }
   }

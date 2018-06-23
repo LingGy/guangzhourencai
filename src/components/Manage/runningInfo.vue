@@ -5,26 +5,20 @@
       <table  v-loading="loading">
         <thead>
           <tr>
-            <th>ip地址</th>
             <th>爬虫名称</th>
             <th>目标网址</th>
             <th>连接状态</th>
             <th>运行状态</th>
             <th>上次活动时间</th>
-            <th>操作</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(list,index) in lists" :key="index">
-            <td>{{list.machine_ip}}</td>
-            <td>{{list.name_ch}}</td>
+            <td class="p_name" @click="getName(list.name)">{{list.name_ch}}</td>
             <td>{{list.target_url}}</td>
             <td>已连接</td>
             <td>{{list.status | statusInfo()}}</td>
             <td>{{list.end_time | formatDate()}}</td>
-            <td>
-              <button type='button' @click="getName(list.name)">详情</button>
-            </td>
           </tr>
         </tbody>
       </table>
@@ -33,7 +27,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import Bus from '../../assets/js/bus.js';
   export default {
     name:'runningInfo',
     data:function () {
@@ -91,12 +84,12 @@ table,table tr th, table tr td {
   table{
     width: 100%;
     border-collapse:collapse;
-    text-align: center;
     thead{
       tr{
         height: 32px;
         line-height: 32px;
         background-color: #f1f8ff;
+        text-align: center;
       }
     }
     tbody{
@@ -105,15 +98,18 @@ table,table tr th, table tr td {
       tr{
         height: 42px;
         line-height: 42px;
-        button{
-          width: 67px;
-          height: 26px;
-          background-color: #4ac0f6;
-          text-align: center;
-          color: #fefefe;
-          line-height: 26px;
+        td{
+          padding-left: 10px;
+        }
+        .p_name{
+          color: #6ecffa;
+          text-decoration: underline;
+          &:hover{
+            cursor:pointer;
+          }
         }
       }
+
     }
   }
 }

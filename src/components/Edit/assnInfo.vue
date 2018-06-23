@@ -65,6 +65,7 @@
     </div>
     <div class="console_box">
       <div class="c_box">
+        <button class="save" @click="btnToEmail(Data.Id,Data.ChineseName)">发送邮件</button>
         <button class="save" @click="saveAssn()">保存</button>
         <button class="save" @click="addAssn()">新增</button>
         <!--<button class="toCh"></button>-->
@@ -74,6 +75,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import commonApi from '../../assets/js/common'
   export default{
     name:'assnInfo',
     data: function () {
@@ -103,8 +105,8 @@
         vm.$parent.fg3 = true;
         vm.$parent.isA = false;
       }
-      vm.getAssistData('/country');
-      vm.getAssistData('/major');
+      commonApi.getAuxiliarydata(vm,'major');
+      commonApi.getAuxiliarydata(vm,'country');
       vm.assnId = sessionStorage.getItem('assnId')
       if(vm.assnId){
         vm.$axios({
@@ -124,29 +126,6 @@
       }
     },
     methods:{
-      //获取国籍选项数据
-      getAssistData: function (api) {
-        let vm = this;
-        vm.$axios({
-            method:'post',
-            url:window.$g_url.ApiUrl+api,
-        })
-           .then(function(res){
-             let resData = res.data;
-             if(resData.code == 0){
-               if(api == '/country'){
-                 vm.countrys = resData.result;
-               }else if(api == '/major'){
-                 vm.majors = resData.result;
-               }
-             }else {
-               vm.$message.error(resData.message);
-             }
-           })
-           .catch(function(err){
-             console.log(err);
-           });
-      },
       //设置社团信息
       setInfo: function (operate) {
         let vm = this;
@@ -193,7 +172,23 @@
       //新增社团
       addAssn: function () {
         this.setInfo(1);
-      }
+      },
+      //跳转发送邮件功能
+      btnToEmail: function (userid,name) {
+        let vm = this;
+        if(!userid){
+          vm.$notify({
+            title: '提示信息',
+            message: '未检测到社团联系人ID',
+            position: 'top-left',
+            type: 'warning'
+          });
+          return false;
+        }
+        let EmailId = JSON.stringify({userid:userid,name:name,type:1})
+        sessionStorage.setItem("EmailId",EmailId);
+        this.$router.push('/application/email');
+      },
     }
   }
 </script>
@@ -242,21 +237,22 @@
     }
   }
   .console_box{
-    width: 510px;
     height: 24px;
     .c_box{
-      width: 140px;
+      width: 510px;
       height: 100%;
       display: flex;
       justify-content: space-between;
-      margin: 0 auto;
       margin-top: 30px;
+      padding: 0px 100px;
       .save{
-        width: 50px;
         height: 24px;
         background-color: #169bd8;
         font-size: 16px;
         color: #ffffff;
+        padding: 0px 10px;
+        line-height: 24px;
+        text-align: center;
       }
       .toCh{
         width: 66px;

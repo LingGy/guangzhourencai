@@ -28,14 +28,16 @@
         <!--</div>-->
       <!--</div>-->
       <p class='btnBox'>
+        <button class="btn_save1" type='button' @click="toEmail(result.Id,result.ChineseName)">发送邮件</button>
         <button class="btn_save1" type='button' @click="subData()">保存</button>
-        <button class="btn_save2" type='button' @click="addSave()">新增并保存</button>
+        <button class="btn_save1" type='button' @click="addSave()">新增并保存</button>
       </p>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import Bus from '../../assets/js/bus';
   export default {
     name:"personnelInfo",
     data: function () {
@@ -46,18 +48,31 @@
           { text: '高级', value: '1' },
           { text: '基本', value: '2' },
         ],
-        editId:''
+        editId:null
       }
     },
-    mounted: function () {
+    created: function () {
       let vm = this;
-      vm.editId = sessionStorage.getItem('userId')
       if(vm.$route.path == "/Edit/personnelInfo"){
         vm.$parent.fg1 = true;
         vm.$parent.fg2 = true;
         vm.$parent.fg3 = false;
       }
-      vm.getNewData(vm.editId);
+      // Bus.$on('UserId', function (val) {
+      //   vm.editId = val;
+      //   if(!vm.editId){
+      //     return false;
+      //   }
+      //   vm.getNewData(vm.editId);
+      // })
+      vm.editId = sessionStorage.getItem('userId');
+        if(!vm.editId){
+          return false;
+        }
+        vm.getNewData(vm.editId);
+    },
+    beforeDestroy (){
+      // Bus.$off('UserId');
     },
     methods:{
       //获取初始化数据
@@ -134,7 +149,6 @@
         let vm = this;
         let userid = 0;
         let data = JSON.parse(JSON.stringify(vm.result));
-        data.RegisterDate = data.RegisterDate /1000;
         vm.$axios({
           method:'post',
           url:window.$g_url.ApiUrl + "/setbaseinfo?operate=1&userid="+userid,
@@ -154,6 +168,22 @@
           .catch(function (err) {
             vm.$message.error(err);
           })
+      },
+      //发送邮件
+      toEmail: function (userid,name) {
+        let vm = this;
+        if(!userid){
+          vm.$notify({
+            title: '提示信息',
+            message: '未检测到人才ID',
+            position: 'top-left',
+            type: 'warning'
+          });
+          return false;
+        }
+        let EmailId = JSON.stringify({userid:userid,name:name,type:1})
+        sessionStorage.setItem("EmailId",EmailId);
+        this.$router.push('/application/email');
       }
     },
   }
@@ -238,20 +268,18 @@
     p.btnBox{
       width: 400px;
       margin-top: 30px;
-      padding-left: 150px;
-      .btn_save1,.btn_save2{
+      padding: 0px 60px;
+      display: flex;
+      justify-content: space-between;
+      .btn_save1{
         display: inline-block;
-        width: 50px;
         height: 22px;
         line-height: 22px;
         background-color: #169bd8;
         font-size: 16px;
         text-align: center;
+        padding: 0px 10px;
         color: #ffffff;
-      }
-      .btn_save2{
-        margin-left: 15px;
-        width: 100px;
       }
     }
 

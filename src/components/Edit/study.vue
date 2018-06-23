@@ -79,10 +79,10 @@
             filterable
             class="st_faculty">
             <el-option
-              v-for="(option,index) in options2"
+              v-for="(option,index) in degrees"
               :key="index"
-              :label="option.value"
-              :value="option.value">
+              :label="option"
+              :value="option">
             </el-option>
           </el-select>
         </div>
@@ -97,6 +97,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import commonApi from '../../assets/js/common'
   export default {
     name:"Study",
     data:function () {
@@ -104,13 +105,7 @@
         userid:'',
         infoid:'',
         majors:[],
-        options2:[
-          {value:""},
-          {value:"博士"},
-          {value:"硕士"},
-          {value:"学士"},
-          {value:"其他"},
-        ],
+        degrees:[],
         time:[],
         DataLists:[],
         viewData:{
@@ -131,7 +126,8 @@
         this.$parent.fg2 = true;
         this.$parent.fg3 = false;
       }
-      this.getAssistData('/major');
+      commonApi.getAuxiliarydata(this,'major');
+      commonApi.getAuxiliarydata(this,'degree');
       this.getNewData(this.userid);
     },
     methods:{
@@ -239,31 +235,6 @@
               vm.getNewData(vm.userid);
             }else {
               vm.$message.error(resDatas.message);
-            }
-          })
-          .catch(function(err){
-            console.log(err);
-          });
-      },
-      //获取国籍选项数据
-      getAssistData: function (api) {
-        let vm = this;
-        vm.$axios({
-          method:'post',
-          url:window.$g_url.ApiUrl+api,
-        })
-          .then(function(res){
-            let resData = res.data;
-            if(resData.code == 0){
-              if(api == '/country'){
-                vm.countrys = resData.result;
-              }else if(api == '/major'){
-                vm.majors = resData.result;
-              }else if(api == '/college'){
-                vm.colleges = resData.result;
-              }
-            }else {
-              vm.$message.error(resData.message);
             }
           })
           .catch(function(err){
