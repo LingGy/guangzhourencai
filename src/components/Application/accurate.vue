@@ -82,7 +82,7 @@
       <thead>
       <tr>
         <th>序号</th>
-        <th>中文名</th>
+        <th>姓名</th>
         <th>邮箱</th>
         <th>性别</th>
         <th>最高学历</th>

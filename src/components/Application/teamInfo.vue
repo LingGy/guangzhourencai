@@ -29,7 +29,7 @@
       </tr>
       </tbody>
     </table>
-    <button class="sendemail" @click='btnToEmail()'>发送社团邮件</button>
+    <button class="sendemail" @click='btnToEmail(teamId,teamName,2)'>发送群组邮件</button>
   </div>
 </template>
 
@@ -77,8 +77,8 @@
         this.$router.go(-1)
       },
       //跳转发送邮件功能
-      btnToEmail: function (userid,name) {
-        let EmailId = JSON.stringify({userid:userid,name:name,type:1})
+      btnToEmail: function (userid,name,type) {
+        let EmailId = JSON.stringify({userid:userid,name:name,type:type});
         sessionStorage.setItem("EmailId",EmailId);
         this.$router.push('/application/email');
       },

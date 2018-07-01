@@ -303,7 +303,7 @@
           Phone:'',
           AbroadWorkExp:'',
           WorkHomeStat:'',
-          EverStarupAbroad:'',
+          EverStarupAbroad:0,
           Advantage:'',
         },
       }

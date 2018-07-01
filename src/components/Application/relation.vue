@@ -5,6 +5,12 @@
       <p class="shu"></p>
       <p class="text">人才列表</p>
     </div>
+    <div class="search_box">
+      <div class="sbox">
+        <input type="text" class="search" placeholder="搜索人才" v-model='name'>
+        <i class="el-icon-search" @click='search()'></i>
+      </div>
+    </div>
     <div class="t_box">
       <table class="box" v-loading="loading">
         <thead>
@@ -64,6 +70,7 @@
       this.getNewLists(this.page);
     },
     methods:{
+      //获取初始数据
       getNewLists: function (page) {
         let vm = this;
         vm.$axios({
@@ -80,6 +87,10 @@
           .catch(function (err) {
             console.log(err);
           })
+      },
+      //搜索人才姓名
+      search: function () {
+        this.getNewLists(1);
       },
       toRelationPic: function (userid,username) {
         sessionStorage.setItem("relationUserId",userid);
@@ -117,6 +128,30 @@
       line-height: 28px;
       float: left;
       margin-left: 4px;
+    }
+  }
+  .search_box{
+    width: 100%;
+    height: 26px;
+    text-align: right;
+    margin-bottom: 10px;
+    .sbox{
+      width: 140px;
+      float: right;
+      display: flex;
+      justify-content: flex-start;
+      border: 1px solid #cccccc;
+      .search{
+        width: 116px;
+        height: 24px;
+        border:none;
+        padding: 0px 6px;
+        outline:none;
+      }
+      i{
+        font-size: 24px;
+        color: #6ecffa;
+      }
     }
   }
   .t_box{
