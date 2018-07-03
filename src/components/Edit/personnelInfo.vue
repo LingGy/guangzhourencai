@@ -51,28 +51,16 @@
         editId:null
       }
     },
-    created: function () {
+    mounted: function () {
       let vm = this;
       if(vm.$route.path == "/Edit/personnelInfo"){
         vm.$parent.fg1 = true;
         vm.$parent.fg2 = true;
         vm.$parent.fg3 = false;
       }
-      // Bus.$on('UserId', function (val) {
-      //   vm.editId = val;
-      //   if(!vm.editId){
-      //     return false;
-      //   }
-      //   vm.getNewData(vm.editId);
-      // })
       vm.editId = sessionStorage.getItem('userId');
-        if(!vm.editId){
-          return false;
-        }
-        vm.getNewData(vm.editId);
-    },
-    beforeDestroy (){
-      // Bus.$off('UserId');
+      if(!vm.editId) return false;
+      vm.getNewData(vm.editId);
     },
     methods:{
       //获取初始化数据

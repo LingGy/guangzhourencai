@@ -104,10 +104,6 @@
       //获取详情
       btnToInfo: function (userid) {//获取点击对应人才的userid并传值给中间件
         sessionStorage.setItem("userId", userid);
-        // this.$nextTick()
-        //   .then(function () {
-        //     Bus.$emit("UserId",userid);
-        //   })
         this.$router.push('/Edit/personnelInfo');
       },
       //跳转发送邮件功能
