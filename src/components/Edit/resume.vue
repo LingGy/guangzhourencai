@@ -13,12 +13,12 @@
       </div>
       <div class="op">
         <p class="name">出生日期:</p>
-          <el-date-picker
-            type="date"
-            v-model='allData.Birthday'
-            class="time_box"
-            value-format='timestamp'>
-          </el-date-picker>
+        <el-date-picker
+          type="date"
+          v-model='allData.Birthday'
+          class="time_box"
+          value-format='timestamp'>
+        </el-date-picker>
       </div>
       <div class="op">
         <p class="name">国籍:</p>
@@ -145,7 +145,9 @@
         <p class="name">海外工作经验:</p>
         <div class="val">
           <el-radio-group v-model="allData.AbroadWorkExp" class='ex1'>
-            <el-radio v-for="(option,index) in options6" :label="option.value" class='mb' :key='index'>{{option.value}}</el-radio>
+            <el-radio v-for="(option,index) in options6" :label="option.value" class='mb' :key='index'>
+              {{option.value}}
+            </el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -154,7 +156,9 @@
         <p class="name">是否已经回国工作:</p>
         <div class="val">
           <el-radio-group v-model="allData.WorkHomeStat" class='ex1'>
-            <el-radio v-for="(option,index) in options7" :label="option.value" class='mb' :key='index'>{{option.value}}</el-radio>
+            <el-radio v-for="(option,index) in options7" :label="option.value" class='mb' :key='index'>
+              {{option.value}}
+            </el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -171,83 +175,83 @@
       <div class="op ex">
         <p class="name">专长优势:</p>
         <div class="val ex">
-          <textarea type="text" placeholder='请输入专长优势' class='good'  v-model='allData.Advantage'></textarea>
+          <textarea type="text" placeholder='请输入专长优势' class='good' v-model='allData.Advantage'></textarea>
         </div>
       </div>
       <!--<div class="op te">-->
-        <!--<p class="name">学位证书:</p>-->
-        <!--<div class="val">-->
-          <!--<p class="file_box">-->
-            <!--<span class="choice_box">-->
-              <!--<el-upload-->
-                <!--class="upload-demo"-->
-                <!--action="https://jsonplaceholder.typicode.com/posts/"-->
-                <!--:on-remove="handleRemove"-->
-                <!--:multiple="upFile.fg"-->
-                <!--:limit="1"-->
-                <!--:on-exceed="handleExceed"-->
-                <!--:on-change="getfilename1"-->
-                <!--:before-upload="beforeAvatarUpload"-->
-                <!--:auto-upload="upFile.fg">-->
-                <!--<el-button size="small" type="primary" class="btn_choice">选择上传文件</el-button>-->
-              <!--</el-upload>-->
-            <!--</span>-->
-            <!--<span slot="tip" class="el-upload__tip file_name">-->
-              <!--{{fileName[0].name}}-->
-            <!--</span>-->
-          <!--</p>-->
-        <!--</div>-->
+      <!--<p class="name">学位证书:</p>-->
+      <!--<div class="val">-->
+      <!--<p class="file_box">-->
+      <!--<span class="choice_box">-->
+      <!--<el-upload-->
+      <!--class="upload-demo"-->
+      <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+      <!--:on-remove="handleRemove"-->
+      <!--:multiple="upFile.fg"-->
+      <!--:limit="1"-->
+      <!--:on-exceed="handleExceed"-->
+      <!--:on-change="getfilename1"-->
+      <!--:before-upload="beforeAvatarUpload"-->
+      <!--:auto-upload="upFile.fg">-->
+      <!--<el-button size="small" type="primary" class="btn_choice">选择上传文件</el-button>-->
+      <!--</el-upload>-->
+      <!--</span>-->
+      <!--<span slot="tip" class="el-upload__tip file_name">-->
+      <!--{{fileName[0].name}}-->
+      <!--</span>-->
+      <!--</p>-->
+      <!--</div>-->
       <!--</div>-->
       <!--<div class="op te">-->
-        <!--<p class="name">个人近照:</p>-->
-        <!--<div class="val">-->
-          <!--<p class="file_box">-->
-            <!--<span class="choice_box">-->
-              <!--<el-upload-->
-                <!--class="upload-demo"-->
-                <!--action="https://jsonplaceholder.typicode.com/posts/"-->
-                <!--:on-remove="handleRemove"-->
-                <!--:multiple="upFile.fg"-->
-                <!--:limit="1"-->
-                <!--:on-exceed="handleExceed"-->
-                <!--:on-change="getfilename2"-->
-                <!--:auto-upload="upFile.fg">-->
-                <!--<el-button size="small" type="primary" class="btn_choice">选择上传文件</el-button>-->
-              <!--</el-upload>-->
-            <!--</span>-->
-            <!--<span slot="tip" class="el-upload__tip file_name">-->
-              <!--{{fileName[1].name}}-->
-            <!--</span>-->
-          <!--</p>-->
-        <!--</div>-->
+      <!--<p class="name">个人近照:</p>-->
+      <!--<div class="val">-->
+      <!--<p class="file_box">-->
+      <!--<span class="choice_box">-->
+      <!--<el-upload-->
+      <!--class="upload-demo"-->
+      <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+      <!--:on-remove="handleRemove"-->
+      <!--:multiple="upFile.fg"-->
+      <!--:limit="1"-->
+      <!--:on-exceed="handleExceed"-->
+      <!--:on-change="getfilename2"-->
+      <!--:auto-upload="upFile.fg">-->
+      <!--<el-button size="small" type="primary" class="btn_choice">选择上传文件</el-button>-->
+      <!--</el-upload>-->
+      <!--</span>-->
+      <!--<span slot="tip" class="el-upload__tip file_name">-->
+      <!--{{fileName[1].name}}-->
+      <!--</span>-->
+      <!--</p>-->
+      <!--</div>-->
       <!--</div>-->
       <!--<div class="op te">-->
-        <!--<p class="name">小一寸照:</p>-->
-        <!--<div class="val">-->
-          <!--<p class="file_box">-->
-            <!--<span class="choice_box">-->
-              <!--<el-upload-->
-                <!--class="upload-demo"-->
-                <!--action="https://jsonplaceholder.typicode.com/posts/"-->
-                <!--:on-remove="handleRemove"-->
-                <!--:multiple="upFile.fg"-->
-                <!--:limit="1"-->
-                <!--:on-exceed="handleExceed"-->
-                <!--:on-change="getfilename3"-->
-                <!--:auto-upload="upFile.fg">-->
-                <!--<el-button size="small" type="primary" class="btn_choice">选择上传文件</el-button>-->
-              <!--</el-upload>-->
-            <!--</span>-->
-            <!--<span slot="tip" class="el-upload__tip file_name">-->
-              <!--{{fileName[2].name}}-->
-            <!--</span>-->
-          <!--</p>-->
-        <!--</div>-->
+      <!--<p class="name">小一寸照:</p>-->
+      <!--<div class="val">-->
+      <!--<p class="file_box">-->
+      <!--<span class="choice_box">-->
+      <!--<el-upload-->
+      <!--class="upload-demo"-->
+      <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+      <!--:on-remove="handleRemove"-->
+      <!--:multiple="upFile.fg"-->
+      <!--:limit="1"-->
+      <!--:on-exceed="handleExceed"-->
+      <!--:on-change="getfilename3"-->
+      <!--:auto-upload="upFile.fg">-->
+      <!--<el-button size="small" type="primary" class="btn_choice">选择上传文件</el-button>-->
+      <!--</el-upload>-->
+      <!--</span>-->
+      <!--<span slot="tip" class="el-upload__tip file_name">-->
+      <!--{{fileName[2].name}}-->
+      <!--</span>-->
+      <!--</p>-->
+      <!--</div>-->
       <!--</div>-->
 
       <div class="submit_box">
         <button class="btn_save" @click="subData()">保存</button>
-        <button class="toEn">英译中</button>
+        <button class="toEn" @click="toCh()">英译中</button>
       </div>
 
     </div>
@@ -260,7 +264,7 @@
     name: 'Resume',
     data: function () {
       return {
-        countrys:[],
+        countrys: [],
         colleges: [],
         degrees: [],
         options3: [],
@@ -275,48 +279,53 @@
           {value: '长期在中国'},
         ],
         value: '',
-        upFile:{
-          fg:false,
+        upFile: {
+          fg: false,
         },
-        fileName:[
+        fileName: [
           {
-            name:"只能上传jpg/png文件"
+            name: "只能上传jpg/png文件"
           }, {
-            name:"只能上传jpg/png文件"
+            name: "只能上传jpg/png文件"
           }, {
-            name:"只能上传jpg/png文件"
+            name: "只能上传jpg/png文件"
           }
         ],
-        allData:{
-          IsMale: '',
-          Birthday:'',
-          Nationality:'',
-          Birthplace: '',
-          Residence:'',
-          StudyRegion:'',
-          GraduateSchool:'',
-          HighestDegree:'',
-          WorkUnit:'',
-          Position:'',
-          Address:'',
-          Postcode:'',
-          Phone:'',
-          AbroadWorkExp:'',
-          WorkHomeStat:'',
-          EverStarupAbroad:0,
-          Advantage:'',
+        allData: {
+          AbroadWorkExp: 0,
+          Address: null,
+          Advantage: null,
+          Birthday: null,
+          Birthplace: null,
+          EverStarupAbroad: 0,
+          GraduateSchool: null,
+          HighestDegree: null,
+          Img_HighestDegree:null,
+          Img_OneInche:null,
+          Img_Photo:null,
+          IsMale: 1,
+          Major:null,
+          Nationality: null,
+          Phone: null,
+          Position: null,
+          Postcode: null,
+          Residence: null,
+          StudyRegion: null,
+          UserId:null,
+          WorkHomeStat: null,
+          WorkUnit: null,
         },
       }
     },
     created: function () {
-      if(this.$route.path == "/Edit/resume"){
+      if (this.$route.path == "/Edit/resume") {
         this.$parent.fg1 = true;
         this.$parent.fg2 = true;
         this.$parent.fg3 = false;
       }
-      commonApi.getAuxiliarydata(this,'country');
-      commonApi.getAuxiliarydata(this,'college');
-      commonApi.getAuxiliarydata(this,'degree');
+      commonApi.getAuxiliarydata(this, 'country');
+      commonApi.getAuxiliarydata(this, 'college');
+      commonApi.getAuxiliarydata(this, 'degree');
       this.getNewData();
     },
     //方法
@@ -325,40 +334,45 @@
       getNewData: function () {
         let vm = this;
         let userid = sessionStorage.getItem('userId');
-        if(userid && userid != 0) {
+        if (userid && userid != 0) {
           vm.$axios({
-            method:'post',
-            url:window.$g_url.ApiUrl + "/resume",
-            data:"userid="+userid
+            method: 'post',
+            url: window.$g_url.ApiUrl + "/resume",
+            data: "userid=" + userid
           })
             .then(function (res) {
               let resDatas = res.data
-              if(resDatas.code == 0){
+              if (resDatas.code == 0) {
                 if (!resDatas.result) return false;
                 vm.allData = resDatas.result;
-                vm.allData.Birthday = vm.allData.Birthday * 1000;
-              }else {
+                if(vm.allData.Birthday){
+                  vm.allData.Birthday = vm.allData.Birthday * 1000;
+                }else {
+                  vm.allData.Birthday = null
+                }
+              } else {
                 vm.$message.error(res.message)
               }
             })
             .catch(function (err) {
               console.log(err);
             })
-        };
+        }
+        ;
 
       },
       beforeAvatarUpload: function (file) {
-        let testmsg=file.name.substring(file.name.lastIndexOf('.')+1)
+        let testmsg = file.name.substring(file.name.lastIndexOf('.') + 1)
         const extension = testmsg === 'xls'
         const extension2 = testmsg === 'xlsx'
         const isLt2M = file.size / 1024 / 1024 < 2
-        if(!extension && !extension2) {
+        if (!extension && !extension2) {
           this.$message({
             message: '上传文件只能是 xls、xlsx格式!',
             type: 'warning'
           });
         }
-        if(!isLt2M) {
+        if (!isLt2M) {
           this.$message({
             message: '上传文件大小不能超过 2MB!',
             type: 'warning'
@@ -366,50 +380,50 @@
         }
         return extension || extension2 && isLt2M
       },//限制上传文件类型
-      handleRemove:function (file, fileList) {//限制上传类型
-        this.fileName[0].name =  "只能上传jpg/png文件";
+      handleRemove: function (file, fileList) {//限制上传类型
+        this.fileName[0].name = "只能上传jpg/png文件";
       },
-      handleExceed:function (files, fileList) {
+      handleExceed: function (files, fileList) {
         this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       },//限制上传文件数
-      getfilename1: function (file,fileList,) {
-        if(file.raw.type != "image/jpeg"){
+      getfilename1: function (file, fileList,) {
+        if (file.raw.type != "image/jpeg") {
           this.$message.warning("只能上传jpg/png文件")
           return false
         }
-        this.fileName[0].name =  file.name;
+        this.fileName[0].name = file.name;
       },//获取上传文件名称
-      getfilename2: function (file,fileList,) {
-        this.fileName[1].name =  file.name;
+      getfilename2: function (file, fileList,) {
+        this.fileName[1].name = file.name;
       },//获取上传文件名称
-      getfilename3: function (file,fileList,) {
-        this.fileName[2].name =  file.name;
+      getfilename3: function (file, fileList,) {
+        this.fileName[2].name = file.name;
       },
       //保存上传简历数据
       subData: function () {
         let vm = this;
         let userid = sessionStorage.getItem("userId");
-        if(userid && userid != 0) {
+        if (userid && userid != 0) {
           let data = JSON.parse(JSON.stringify(vm.allData));
-          data.Birthday = data.Birthday/1000;
+          data.Birthday = data.Birthday / 1000;
           data.UserId = userid;
           vm.$axios({
-            method:'post',
-            url:window.$g_url.ApiUrl + "/setresume?userid=" + userid,
-            data:JSON.stringify(data)
+            method: 'post',
+            url: window.$g_url.ApiUrl + "/setresume?userid=" + userid,
+            data: JSON.stringify(data)
           })
             .then(function (res) {
               let resDatas = res.data;
-              if(resDatas.code == 0){
+              if (resDatas.code == 0) {
                 vm.$message.success('保存成功!');
-              }else {
+              } else {
                 vm.$message.error(resDatas.message);
               }
             })
             .catch(function (err) {
               console.log(err);
             })
-        }else {
+        } else {
           vm.$message.warning("请先填写人才信息并保存或到人才列表选择单个人才查看!");
         }
       },
@@ -418,11 +432,16 @@
         let vm = this;
         let val = vm.Birthplace1;
         let i = vm.options2.indexOf(val);
-        vm.Birthplace2='';
-        if(i != -1){
+        vm.Birthplace2 = '';
+        if (i != -1) {
           vm.options3 = province.arr2[i];
         }
       },
+      //英译中
+      toCh: function () {
+        let vm = this;
+        commonApi.toZh(vm,vm.allData);
+      }
     }
   }
 </script>
@@ -430,9 +449,9 @@
 <style lang="scss" type="text/scss">
   .resumeInfo_box {
     width: 582px;
-    .el-input__inner{
+    .el-input__inner {
       height: 22px;
-      border-radius:0px;
+      border-radius: 0px;
       line-height: 20px;
       border: solid 1px #53b1dc;
       color: #29a9f5;
@@ -465,7 +484,7 @@
           height: 22px;
           line-height: 20px;
         }
-        .ex1{
+        .ex1 {
           height: 80px !important;
           display: flex;
           flex-direction: column;
@@ -473,29 +492,29 @@
         }
         .s1 {
           width: 148px;
-          .el-input__inner{
+          .el-input__inner {
             width: 148px;
           }
         }
-        .s2,.s3 {
+        .s2, .s3 {
           width: 100px;
           float: left;
-          .el-input__inner{
+          .el-input__inner {
             width: 100px;
           }
         }
-        .s2{
+        .s2 {
           margin-right: 15px;
         }
-        .myel1{
+        .myel1 {
           overflow: hidden;
-          .el-input__inner{
+          .el-input__inner {
             width: 240px;
           }
         }
-        .country{
+        .country {
           width: 148px;
-          .el-input__inner{
+          .el-input__inner {
             width: 148px;
           }
         }
@@ -507,25 +526,25 @@
         }
       }
     }
-    .time_box{
+    .time_box {
       height: 22px;
       width: 148px;
-      .el-input__inner{
+      .el-input__inner {
         height: 22px;
         width: 148px;
         line-height: 20px;
         border: 1px solid #53b1dc;
         border-radius: 0px;
       }
-      span{
-        i.el-input__icon{
+      span {
+        i.el-input__icon {
           line-height: 20px !important;
         }
       }
     }
   }
 
-  .ex{
+  .ex {
     height: 80px !important;
   }
 
@@ -534,9 +553,11 @@
     margin-left: 0px !important;
     margin-bottom: 8px;
   }
-  .te{
+
+  .te {
     margin-bottom: 40px !important;
   }
+
   .good {
     display: block;
     width: 378px;
@@ -552,17 +573,17 @@
     height: 22px;
     border: solid 1px #53b1dc;
     padding: 0;
-    .choice_box{
+    .choice_box {
       display: block;
       width: 100px;
       height: 20px;
       float: left;
-      .btn_choice{
+      .btn_choice {
         display: block;
         width: 100px;
         height: 20px;
         border: none;
-        border-radius:0px;
+        border-radius: 0px;
         padding: 0;
         color: #53b1dc;
         background-color: #f1f2f6;
@@ -570,24 +591,25 @@
         line-height: 22px;
       }
     }
-    .file_name{
+    .file_name {
       display: block;
       width: 174px;
       height: 20px;
       float: right;
       margin: 0px;
       overflow: hidden;
-      white-space:nowrap;
-      text-overflow:ellipsis;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
-  .submit_box{
+
+  .submit_box {
     width: 140px;
     height: 24px;
     margin: 0 auto;
     margin-top: 50px;
     margin-bottom: 60px;
-    .btn_save{
+    .btn_save {
       width: 50px;
       height: 24px;
       background-color: #169bd8;
@@ -597,7 +619,7 @@
       color: #fff;
       float: left;
     }
-    .toEn{
+    .toEn {
       width: 66px;
       height: 24px;
       border: solid 1px #999999;

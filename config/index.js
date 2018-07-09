@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://frp.ttyuecai.com:10011',
+        target: 'http://fanyi-api.baidu.com/api/trans/vip/translate',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'

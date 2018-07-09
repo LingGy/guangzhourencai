@@ -86,12 +86,13 @@
     <div class="wk_save_box">
       <button type=button class='save_1' @click='addNewWork()'>保存并新增个人成就</button>
       <button type=button class='save_2' @click='saveWork()'>保存</button>
-      <button type=button class='btn_toEN'>英译中</button>
+      <button type=button class='btn_toEN' @click='toCh()'>英译中</button>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import commonApi from '../../assets/js/common'
   export default {
     name:"Work",
     data:function () {
@@ -234,6 +235,11 @@
           .catch(function(err){
             alert(err);
           });
+      },
+      //英译中
+      toCh: function () {
+        let vm = this;
+        commonApi.toZh(vm,vm.viewData);
       }
     }
   }

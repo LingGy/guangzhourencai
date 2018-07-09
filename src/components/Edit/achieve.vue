@@ -57,13 +57,15 @@
     <div class="ac_save_box">
       <button type=button class='save_1' @click='addDate()'>保存并新增个人成就</button>
       <button type=button class='save_2' @click="saveDate()">保存</button>
-      <button type=button class='btn_toEN'>英译中</button>
+      <button type=button class='btn_toEN' @click='toCh()'>英译中</button>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import {formatDate} from '../../assets/js/date.js';
+  import commonApi from '../../assets/js/common'
+
   export default {
     name:"Achieve",
     data: function () {
@@ -91,9 +93,28 @@
         this.$parent.fg2 = true;
         this.$parent.fg3 = false;
       }
-        this.getNewData(vm.userid);
+      this.getNewData(vm.userid);
     },
     methods:{
+      //获取数据
+      getNewData: function (userid) {
+        let vm = this;
+        if(userid && userid != 0) {
+          vm.$axios({
+            method:'post',
+            url:window.$g_url.ApiUrl + "/achievements?userid=" + userid,
+          })
+            .then(function (res) {
+              let resDatas = res.data;
+              if(resDatas.code ==0){
+                vm.resDataLists = resDatas.result;
+              }
+            })
+            .catch(function (err) {
+              console.log(err);
+            })
+        };
+      },
       //新增或保存
       fun: function (type) {
         let vm = this;
@@ -181,24 +202,10 @@
              console.log(err);
            });
       },
-      //获取数据
-      getNewData: function (userid) {
+      //英译中
+      toCh: function () {
         let vm = this;
-        if(userid == true && userid != 0) {
-          vm.$axios({
-            method:'post',
-            url:window.$g_url.ApiUrl + "/achievements?userid=" + userid,
-          })
-            .then(function (res) {
-              let resDatas = res.data;
-              if(resDatas.code ==0){
-                vm.resDataLists = resDatas.result;
-              }
-            })
-            .catch(function (err) {
-              console.log(err);
-            })
-        };
+        commonApi.toZh(vm,vm.resData);
       }
     }
   }

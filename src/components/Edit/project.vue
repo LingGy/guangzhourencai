@@ -30,7 +30,8 @@
         <p class="name">项目类型&nbsp;:</p>
         <div class="main">
           <el-radio-group v-model="viewData.Type">
-            <el-radio v-for="(list,index) in options1" :label="list.value" :key="index">{{list.text}}</el-radio>
+            <el-radio :label="1">创业项目</el-radio>
+            <el-radio :label="0">合作项目</el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -60,7 +61,9 @@
         <p class="name">是否取得专利&nbsp;:</p>
         <div class="main">
           <el-radio-group v-model="viewData.PatentStatus">
-            <el-radio v-for="(list,index) in options2" :label="list.value" :key="index">{{list.value}}</el-radio>
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="2">否</el-radio>
+            <el-radio :label="3">正在申请</el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -99,26 +102,19 @@
     <div class="submit_box">
       <button class="btn_add" @click="addNewProject()">保存并新增个人项目</button>
       <button class="btn_save" @click="saveProject()">保存</button>
-      <button class="toEn">英译中</button>
+      <button class="toEn" @click='toCh()'>英译中</button>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import commonApi from '../../assets/js/common'
+
   export default {
     name:"Project",
     data:function() {
       return {
         options:[],
-        options1:[
-          {value:"1",text:"创业项目"},
-          {value:"2",text:"合作项目"},
-        ],
-        options2:[
-          {value:"是"},
-          {value:"否"},
-          {value:"正在申请"},
-        ],
         DataLists:[],
         viewData:{
           UserId:'',
@@ -236,6 +232,14 @@
           .then(function(res){
             let resdata = res.data;
             if(resdata.code == 0){
+              switch (resdata.result.PatentStatus) {
+                case '是':resdata.result.PatentStatus=1;
+                  break;
+                case '否':resdata.result.PatentStatus=2;
+                  break;
+                case '正在申请':resdata.result.PatentStatus=3;
+                  break;
+              }
               vm.viewData = resdata.result;
             }else {
               vm.$message.error(resdata.message);
@@ -264,6 +268,11 @@
           .catch(function(err){
             console.log(err);
           });
+      },
+      //英译中
+      toCh: function () {
+        let vm = this;
+        commonApi.toZh(vm,vm.viewData);
       }
     }
   }

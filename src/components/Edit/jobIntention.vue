@@ -5,31 +5,6 @@
       <div class="job_main">
         <p class="name">落户城市&nbsp;:</p>
         <div class="job_main_r_box">
-          <!--<el-select-->
-          <!--v-model="sheng"-->
-          <!--filterable-->
-          <!--allow-create-->
-          <!--@change="handleItemChange"-->
-          <!--class="s2">-->
-          <!--<el-option-->
-          <!--v-for="(option,index ) in options1"-->
-          <!--:key="index"-->
-          <!--:label="option"-->
-          <!--:value="option">-->
-          <!--</el-option>-->
-          <!--</el-select>-->
-          <!--<el-select-->
-          <!--v-model="shi"-->
-          <!--filterable-->
-          <!--allow-create-->
-          <!--class="s3">-->
-          <!--<el-option-->
-          <!--v-for="(option,index) in options2"-->
-          <!--:key="index"-->
-          <!--:label="option"-->
-          <!--:value="option">-->
-          <!--</el-option>-->
-          <!--</el-select>-->
           <input type="text" placeholder="请输入落户城市" class="jobTo" v-model="Datas.IntentArea">
         </div>
       </div>
@@ -102,13 +77,14 @@
     <div class="submit_box">
       <button class="btn_save" @click="saveJobInfo()">保存</button>
       <button class="del" @click="delJobInfo()">删除</button>
-      <button class="toEn">英译中</button>
+      <button class="toEn" @click='toCh()'>英译中</button>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import province from '../../../static/city'
+  import commonApi from '../../assets/js/common'
 
   export default {
     name: "JobIntention",
@@ -279,6 +255,11 @@
           vm.options2 = province.arr2[i];
         }
       },
+      //英译中
+      toCh: function () {
+        let vm = this;
+        commonApi.toZh(vm,vm.Datas);
+      }
     }
   }
 </script>

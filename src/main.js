@@ -15,9 +15,13 @@ import VueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
+import md5 from 'js-md5'
+import qs from 'qs'
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$echarts = echarts;
+Vue.prototype.$md5 = md5;
+Vue.prototype.$qs = qs;
 
 
 
