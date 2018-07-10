@@ -1,3 +1,4 @@
+const API_PROXY = 'https://bird.ioliu.cn/v1/?url=';//目录
 export default {
   getAuxiliarydata: (vm, apiName) => {
     vm.$axios({
@@ -40,7 +41,7 @@ export default {
         let sign = vm.$md5('20180706000183194' + data + salt + 'B8CBABcPj2yScVITdXs9')
         vm.$axios({
           method: 'post',
-          url: '/api',
+          url: API_PROXY+'http://fanyi-api.baidu.com/api/trans/vip/translate',
           data: 'q=' + data + '&from=en&to=zh&appid=20180706000183194&salt=' + salt + '&sign=' + sign
         })
           .then(function (res) {
