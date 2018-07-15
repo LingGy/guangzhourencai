@@ -57,6 +57,7 @@
           {'text': '工作经历', 'path': '/Edit/work'},
           {'text': '求职意向', 'path': '/Edit/jobIntention'},
           {'text': '个人项目', 'path': '/Edit/project'},
+          {'text': '学术论文', 'path': '/Edit/thesis'},
         ],
         navList1: [
           {"path": "/Edit/personnelLists"},
