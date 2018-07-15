@@ -22,6 +22,7 @@ import rg_Study from '@/components/Edit/rg_Study';
 import rg_Work from '@/components/Edit/rg_Work';
 import assn from '@/components/Edit/assn';
 import assnInfo from '@/components/Edit/assnInfo';
+import thesis from '@/components/Edit/thesis';
 import runningInfo from '@/components/Manage/runningInfo';
 import taskManagement from '@/components/Manage/taskManagement';
 import accurate from '@/components/Application/accurate';
@@ -35,7 +36,6 @@ import teamInfo from '@/components/Application/teamInfo';
 import systemLog from '@/components/Maintain/systemLog';
 import category from '@/components/Maintain/category';
 import scoreSet from '@/components/Maintain/scoreSet';
-
 Vue.use(Router)
 
 export default new Router({
@@ -144,6 +144,11 @@ export default new Router({
           path: '/Edit/assnInfo',
           name: 'assnInfo',
           component: assnInfo
+        },
+        {
+          path: '/Edit/thesis',
+          name: 'thesis',
+          component: thesis
         },
       ]
     },

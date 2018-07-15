@@ -15,7 +15,7 @@ module.exports = {
         target: 'http://fanyi-api.baidu.com',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': ''
+          '^/api': '/'
         }
       }
     },
