@@ -62,7 +62,7 @@ export default {
       let sign = vm.$md5('20180706000183194' + val + salt + 'B8CBABcPj2yScVITdXs9')
       vm.$axios({
         method: 'post',
-        url: '/api/api/trans/vip/translate',
+        url: 'https://bird.ioliu.cn/v1/?url=https://fanyi-api.baidu.com/api/trans/vip/translate',
         data: 'q=' + q + '&from=en&to=zh&appid=20180706000183194&salt=' + salt + '&sign=' + sign
       })
         .then(function (res) {
