@@ -43,9 +43,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import router from '../../router/index';
   export default {
-    router,
     name: 'Edit',
     data: function () {
       return {

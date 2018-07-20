@@ -1,55 +1,18 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Edit from '@/components/Edit/Edit';
-import application from '@/components/Application/application';
-import Manage from '@/components/Manage/Manage';
-import Maintain from '@/components/Maintain/Maintain';
-import personnelLists from '@/components/Edit/personnelLists';
-import personnelInfo from '@/components/Edit/personnelInfo';
-import resume from '@/components/Edit/resume';
-import achieve from '@/components/Edit/achieve';
-import study from '@/components/Edit/study';
-import work from '@/components/Edit/work';
-import jobIntention from '@/components/Edit/jobIntention';
-import project from '@/components/Edit/project';
-import reorganize from '@/components/Edit/reorganize';
-import rg_Info from '@/components/Edit/rg_Info';
-import rg_Resume from '@/components/Edit/rg_Resume';
-import rg_Achieve from '@/components/Edit/rg_Achieve';
-import rg_Job from '@/components/Edit/rg_Job';
-import rg_Project from '@/components/Edit/rg_Project';
-import rg_Study from '@/components/Edit/rg_Study';
-import rg_Work from '@/components/Edit/rg_Work';
-import assn from '@/components/Edit/assn';
-import assnInfo from '@/components/Edit/assnInfo';
-import thesis from '@/components/Edit/thesis';
-import runningInfo from '@/components/Manage/runningInfo';
-import taskManagement from '@/components/Manage/taskManagement';
-import accurate from '@/components/Application/accurate';
-import vague from '@/components/Application/vague';
-import packetList from '@/components/Application/packetList';
-import relation from '@/components/Application/relation';
-import relationpic from '@/components/Application/relationpic';
-import relationInfo from '@/components/Application/relationInfo';
-import email from '@/components/Application/email';
-import teamInfo from '@/components/Application/teamInfo';
-import systemLog from '@/components/Maintain/systemLog';
-import category from '@/components/Maintain/category';
-import scoreSet from '@/components/Maintain/scoreSet';
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  // base:'/orverseas/',
   routes: [
     {
       path: '/',
-      redirect:'/Edit/personnelLists'
+      redirect:'/Edit'
     },
     {
       path: '/Edit',
       name: 'Edit',
-      component: Edit,
+      component: resolve => require(['@/components/Edit/Edit'],resolve),
       children:[
         {
           path: '/Edit',
@@ -58,104 +21,104 @@ export default new Router({
         {
           path: '/Edit/personnelLists',
           name: 'personnelLists',
-          component: personnelLists
+          component: resolve => require(['@/components/Edit/personnelLists'],resolve)
         },
         {
           path: '/Edit/personnelInfo',
           name: 'personnelInfo',
-          component: personnelInfo
+          component: resolve => require(['@/components/Edit/personnelInfo'],resolve)
         },
         {
           path: '/Edit/resume',
           name: 'resume',
-          component: resume
+          component: resolve => require(['@/components/Edit/resume'],resolve)
         },
         {
           path: '/Edit/achieve',
           name: 'achieve',
-          component: achieve
+          component: resolve => require(['@/components/Edit/achieve'],resolve)
         },
         {
           path: '/Edit/study',
           name: 'study',
-          component: study
+          component: resolve => require(['@/components/Edit/study'],resolve)
         },
         {
           path: '/Edit/work',
           name: 'work',
-          component: work
+          component: resolve => require(['@/components/Edit/work'],resolve)
         },
         {
           path: '/Edit/jobIntention',
           name: 'jobIntention',
-          component: jobIntention
+          component: resolve => require(['@/components/Edit/jobIntention'],resolve)
         },
         {
           path: '/Edit/project',
           name: 'project',
-          component: project
+          component: resolve => require(['@/components/Edit/project'],resolve)
         },
         {
           path: '/Edit/reorganize',
           name: 'reorganize',
-          component: reorganize
+          component: resolve => require(['@/components/Edit/reorganize'],resolve)
         },
         {
           path: '/Edit/reorganize/rg_Info',
           name: 'rg_Info',
-          component: rg_Info
+          component: resolve => require(['@/components/Edit/rg_Info'],resolve)
         },
         {
           path: '/Edit/reorganize/rg_Achieve',
           name: 'rg_Achieve',
-          component: rg_Achieve
+          component: resolve => require(['@/components/Edit/rg_Achieve'],resolve)
         },
         {
           path: '/Edit/reorganize/rg_Job',
           name: 'rg_Job',
-          component: rg_Job
+          component: resolve => require(['@/components/Edit/rg_Job'],resolve)
         },
         {
           path: '/Edit/reorganize/rg_Project',
           name: 'rg_Project',
-          component: rg_Project
+          component: resolve => require(['@/components/Edit/rg_Project'],resolve)
         },
         {
           path: '/Edit/reorganize/rg_Resume',
           name: 'rg_Resume',
-          component: rg_Resume
+          component: resolve => require(['@/components/Edit/rg_Resume'],resolve)
         },
         {
           path: '/Edit/reorganize/rg_Study',
           name: 'rg_Study',
-          component: rg_Study
+          component: resolve => require(['@/components/Edit/rg_Study'],resolve)
         },
         {
           path: '/Edit/reorganize/rg_Work',
           name: 'rg_Work',
-          component: rg_Work
+          component: resolve => require(['@/components/Edit/rg_Work'],resolve)
         },
         {
           path: '/Edit/assn',
           name: 'assn',
-          component: assn
+          component: resolve => require(['@/components/Edit/assn'],resolve)
         },
         {
           path: '/Edit/assnInfo',
           name: 'assnInfo',
-          component: assnInfo
+          component: resolve => require(['@/components/Edit/assnInfo'],resolve)
         },
         {
           path: '/Edit/thesis',
           name: 'thesis',
-          component: thesis
+          component: resolve => require(['@/components/Edit/thesis'],resolve)
         },
       ]
     },
     {
       path: '/application',
       name: 'application',
-      component: application,
+      component: resolve => require(['@/components/Application/application'],resolve),
       children:[
         {
           path: '/application',
@@ -164,49 +127,49 @@ export default new Router({
         {
           path: '/application/accurate',
           name: 'accurate',
-          component: accurate
+          component: resolve => require(['@/components/Application/accurate'],resolve)
         },
         {
           path: '/application/email',
           name: 'email',
-          component: email
+          component: resolve => require(['@/components/Application/email'],resolve)
         },
         {
           path: '/application/vague',
           name: 'vague',
-          component: vague
+          component: resolve => require(['@/components/Application/vague'],resolve)
         },
         {
           path: '/application/packetList',
           name: 'packetList',
-          component: packetList
+          component: resolve => require(['@/components/Application/packetList'],resolve)
         },
         {
           path: '/application/packetList/teamInfo',
           name: 'teamInfo',
-          component: teamInfo
+          component: resolve => require(['@/components/Application/teamInfo'],resolve)
         },
         {
           path: '/application/relation',
           name: 'relation',
-          component: relation
+          component: resolve => require(['@/components/Application/relation'],resolve)
         },
         {
           path: '/application/relationpic',
           name: 'relationpic',
-          component: relationpic
+          component: resolve => require(['@/components/Application/relationpic'],resolve)
         },
         {
           path:'/application/relationInfo',
           name:'relationInfo',
-          component:relationInfo
+          component:resolve => require(['@/components/Application/relationInfo'],resolve)
         }
       ]
     },
     {
       path: '/Manage',
       name: 'Manage',
-      component: Manage,
+      component: resolve => require(['@/components/Manage/Manage'],resolve),
       children:[
         {
           path: '/Manage',
@@ -215,19 +178,19 @@ export default new Router({
         {
           path:'/Manage/runningInfo',
           name:'runningInfo',
-          component:runningInfo
+          component:resolve => require(['@/components/Manage/runningInfo'],resolve)
         },
         {
           path:'/Manage/taskManagement',
           name:'taskManagement',
-          component:taskManagement
+          component:resolve => require(['@/components/Manage/taskManagement'],resolve)
         }
       ]
     },
     {
       path: '/Maintain',
       name: 'Maintain',
-      component: Maintain,
+      component: resolve => require(['@/components/Maintain/Maintain'],resolve),
       children:[
         {
           path: '/Maintain',
@@ -236,17 +199,17 @@ export default new Router({
         {
           path:'/Maintain/systemLog',
           name:'systemLog',
-          component:systemLog
+          component:resolve => require(['@/components/Maintain/systemLog'],resolve)
         },
         {
           path:'/Maintain/category',
           name:'category',
-          component:category
+          component:resolve => require(['@/components/Maintain/category'],resolve)
         },
         {
           path:'/Maintain/scoreSet',
           name:'scoreSet',
-          component:scoreSet
+          component:resolve => require(['@/components/Maintain/scoreSet'],resolve)
         },
       ]
     },

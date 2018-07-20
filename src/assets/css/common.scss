@@ -1,3 +1,4 @@
+@charset "utf-8";
 * {
   margin: 0;
   padding: 0;
@@ -165,11 +166,11 @@ input{
 }
 @font-face {
   font-family: 'iconfont';
-  src: url('../../src/assets/font/iconfont.eot');
-  src: url('../../src/assets/font/iconfont.eot?#iefix') format('embedded-opentype'),
-  url('../../src/assets/font/iconfont.woff') format('woff'),
-  url('../../src/assets/font/iconfont.ttf') format('truetype'),
-  url('../../src/assets/font/iconfont.svg#iconfont') format('svg');
+  src: url('../font/iconfont.eot');
+  src: url('../font/iconfont.eot?#iefix') format('embedded-opentype'),
+  url('../font/iconfont.woff') format('woff'),
+  url('../font/iconfont.ttf') format('truetype'),
+  url('../font/iconfont.svg#iconfont') format('svg');
 }
 input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
   color:#666666;
@@ -195,8 +196,8 @@ input:-ms-input-placeholder,textarea:-ms-input-placeholder{
   .b-header-box{
     min-width: 1300px;
     height: 87px;
-    background:url("../img/header.png") no-repeat 100%;
-    background:url("../img/header.png") repeat-x;
+    background:url("../../../static/img/header.png") no-repeat 100%;
+    background:url("../../../static/img/header.png") repeat-x;
     margin: 0 auto;
     .header-text{
       width: 224px;
@@ -344,7 +345,7 @@ button {
         height: 0px;
       }
       .active1 {
-        background: url("../img/flag.png") no-repeat center/ 100%;
+        background: url("../../../static/img/flag.png") no-repeat center/ 100%;
         color: #ffffff !important;
       }
       &:hover {
@@ -390,8 +391,8 @@ button {
     top: 0;
     float: left;
     border-left: 30px solid #f2f3f7;
-    background-color: #fff;
-    padding: 45px 0px 0px 90px;
+    background-color: #ffffff;
+    padding: 45px 0px 50px 90px;
   }
 }
 .console_box{

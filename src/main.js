@@ -3,12 +3,13 @@
 
 import Vue from 'vue';
 import App from './App';
+import router from './router'   //引入路由配置文件
 import promise from 'es6-promise';
 promise.polyfill();
 import axios from 'axios';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import '../static/css/common.css';
+import './assets/css/common.css';
 import vfilters from './assets/js/vfilters';
 import echarts from 'echarts';
 import VueQuillEditor from 'vue-quill-editor'
@@ -34,12 +35,9 @@ Vue.config.productionTip = false;
 for(let key in vfilters){
   Vue.filter(key,vfilters[key]);
 }
-window.eventBus = new Vue();
 new Vue({
   el: '#app',
-  data:{
-    Bus:new Vue()
-  },
+  router,
   components: { App },
   template: '<App/>'
 })

@@ -42,9 +42,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import router from '../../router/index'
   export default {
-    router,
     name: 'application',
     data: function () {
       return {
