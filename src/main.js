@@ -11,7 +11,7 @@ import {Select,Radio,Option,Button,Pagination,Loading,RadioGroup,DatePicker,Mess
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/common.css';
 import vfilters from './assets/js/vfilters';
-import echarts from 'echarts';
+// import echarts from 'echarts';
 import VueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
@@ -20,7 +20,7 @@ import md5 from 'js-md5'
 import qs from 'qs'
 
 Vue.prototype.$axios = axios;
-Vue.prototype.$echarts = echarts;
+// Vue.prototype.$echarts = echarts;
 Vue.prototype.$md5 = md5;
 Vue.prototype.$qs = qs;
 Vue.use(Radio);

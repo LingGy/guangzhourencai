@@ -3,7 +3,7 @@
     <p class="position"><i class='iconfont'>&#xe8e6;</i>您现在的位置 : 数据加工 > 编辑数据 > 学术论文</p>
     <div class="th_box" v-for='(list,index) in resultData' :key='index'>
       <div class="th_content">
-        <h4 class='h1h'>{{list.Title}}</h4>
+        <a :href="list.Url" class='h1h' target="_blank">{{list.Title}}</a>
         <p class='h2h'>{{list.TitleCH}}</p>
         <p class="original">{{list.Abstract}}</p>
         <p class="result">{{list.AbstractCH}}</p>
@@ -86,6 +86,9 @@ export default {
       .h1h{
         color: #40aff5;
         text-decoration: underline;
+        &:hover{
+          cursor: pointer;
+        }
       }
       .h2h{
         color: #666666;

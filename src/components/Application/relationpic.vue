@@ -10,6 +10,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import echarts from 'echarts';
 export default {
   name:"relationpic",
   data: function () {
@@ -69,7 +70,7 @@ export default {
                }
                vm.datas.children = resDatas.result;
                // 基于准备好的dom，初始化echarts实例
-               let myChart = vm.$echarts.init(document.getElementById('myChart'));
+               let myChart = echarts.init(document.getElementById('myChart'));
                myChart.setOption({
                  tooltip: {
                    trigger: 'item',
