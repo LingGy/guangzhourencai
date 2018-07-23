@@ -7,7 +7,7 @@ import router from './router'   //引入路由配置文件
 import promise from 'es6-promise';
 promise.polyfill();
 import axios from 'axios';
-import ElementUI from 'element-ui';
+import {Select,Radio,Option,Button,Pagination,Loading,RadioGroup,DatePicker,Message,Checkbox,CheckboxGroup} from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/common.css';
 import vfilters from './assets/js/vfilters';
@@ -23,10 +23,17 @@ Vue.prototype.$axios = axios;
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$md5 = md5;
 Vue.prototype.$qs = qs;
-
-
-
-Vue.use(ElementUI);
+Vue.use(Radio);
+Vue.use(Select);
+Vue.use(Option);
+Vue.use(Button);
+Vue.use(Pagination);
+Vue.use(Loading);
+Vue.use(RadioGroup);
+Vue.use(DatePicker);
+Vue.use(Checkbox);
+Vue.use(CheckboxGroup);
+Vue.prototype.$message = Message;
 Vue.use(VueQuillEditor);
 
 Vue.config.productionTip = false;

@@ -68,7 +68,6 @@
         return false;
       }
       let data = JSON.parse(ifdata);
-      console.log(data);
       if(data.type == 1){
         vm.type = vm.options1[0];
       }else if(data.type == 2){

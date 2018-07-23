@@ -173,6 +173,7 @@
         data.BeginDate = vm.time[0]/1000;
         data.EndDate = vm.time[1]/1000;
         data.UserId = vm.userid;
+        delete data.Id;
         vm.$axios({
           method:'post',
           url:window.$g_url.ApiUrl + '/seteducation?operate='+type+'&id='+infoid,

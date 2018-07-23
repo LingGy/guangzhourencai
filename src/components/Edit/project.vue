@@ -12,7 +12,7 @@
       <tbody>
       <tr v-for="(list,index) in DataLists" :key="index" @click="getInfo(list.Id)">
         <td>{{list.Name}}</td>
-        <td>{{list.PatentStatus}}</td>
+        <td>{{list.PatentStatus | yes}}</td>
         <td>
           <button type=button @click.stop="delProject(list.Id)">删除</button>
         </td>
@@ -61,9 +61,9 @@
         <p class="name">是否取得专利&nbsp;:</p>
         <div class="main">
           <el-radio-group v-model="viewData.PatentStatus">
-            <el-radio :label="1">是</el-radio>
-            <el-radio :label="2">否</el-radio>
-            <el-radio :label="3">正在申请</el-radio>
+            <el-radio :label="'1'">是</el-radio>
+            <el-radio :label="'2'">否</el-radio>
+            <el-radio :label="'3'">正在申请</el-radio>
           </el-radio-group>
         </div>
       </div>
@@ -122,7 +122,7 @@
           Type:'',
           Industry:'',
           Holder:'',
-          PatentStatus:'',
+          PatentStatus:null,
           PatentSituation:'',
           Info:'',
           Keyword:'',
@@ -150,6 +150,20 @@
          })
          .catch(function(err){});
       vm.getNewData(vm.userid);
+    },
+    filters:{
+      yes: function (val) {
+        let value;
+        switch (val){
+          case '1':value='是';
+          break;
+          case '2':value='否';
+          break;
+          case '3':value='正在申请';
+          break;
+        };
+        return value;
+      }
     },
     methods:{
       //获取数据列表
