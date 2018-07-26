@@ -65,7 +65,6 @@
 <script type="text/ecmascript-6">
   import {formatDate} from '../../assets/js/date.js';
   import commonApi from '../../assets/js/common'
-
   export default {
     name:"Achieve",
     data: function () {

@@ -83,14 +83,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import province from '../../../static/city'
   import commonApi from '../../assets/js/common'
-
   export default {
     name: "JobIntention",
     data: function () {
       return {
-        options1: province.arr1,
         options2: [],
         options4: [
           {value: "全职回国"},
@@ -244,16 +241,6 @@
           .catch(function (err) {
             console.log(err);
           });
-      },
-      //二级联动
-      handleItemChange: function () {
-        let vm = this;
-        let val = vm.sheng;
-        let i = vm.options1.indexOf(val);
-        vm.shi = '';
-        if (i != -1) {
-          vm.options2 = province.arr2[i];
-        }
       },
       //英译中
       toCh: function () {

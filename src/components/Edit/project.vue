@@ -109,7 +109,6 @@
 
 <script type="text/ecmascript-6">
   import commonApi from '../../assets/js/common'
-
   export default {
     name:"Project",
     data:function() {

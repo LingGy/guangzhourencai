@@ -206,11 +206,6 @@ export default new Router({
           name:'category',
           component:resolve => require(['@/components/Maintain/category'],resolve)
         },
-        {
-          path:'/Maintain/scoreSet',
-          name:'scoreSet',
-          component:resolve => require(['@/components/Maintain/scoreSet'],resolve)
-        },
       ]
     },
   ]

@@ -47,7 +47,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Bus from '../../assets/js/bus';
   export default {
     name: 'personnelLists',
     data: function () {
@@ -67,15 +66,6 @@
         this.$parent.fg3 = false;
       }
       this.getNewLists(this.name,this.page);
-    },
-    beforeDestory () {
-      // Bus.$emit("UserId",this.UserId);
-      // eventBus.$emit('eventBusName', this.UserId);
-      // console.log("销毁前");
-    },
-    destroyed(){
-      // Bus.$emit("UserId",this.UserId);
-      // console.log("销毁后");
     },
     methods: {
       //获取列表

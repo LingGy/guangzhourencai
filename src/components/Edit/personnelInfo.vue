@@ -37,7 +37,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Bus from '../../assets/js/bus';
   export default {
     name:"personnelInfo",
     data: function () {

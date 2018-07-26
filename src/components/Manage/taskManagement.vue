@@ -82,7 +82,6 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  // import Bus from '../../assets/js/bus.js'
   export default {
     name:'taskManagement',
     data: function () {

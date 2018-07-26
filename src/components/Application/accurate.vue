@@ -234,15 +234,16 @@
       //搜索
       search: function () {
         let vm = this;
-        let i = 0;
-        if(!vm.personnel){vm.$message.warning('人才姓名不能为空!'); return false;}
-        vm.dataLists = vm.dataLists.filter(function (key) {
+        if(!vm.personnel){
+          vm.$message.warning('人才姓名不能为空!');
+          return false;
+        }
+        const newArr = vm.dataLists.filter(function (key) {
           if(key.ChineseName == vm.personnel){
             return (key.ChineseName == vm.personnel);
           }
-          vm.$message.warning('未找到该人才!');
-          return vm.dataLists;
         })
+        newArr.length >=1 ? vm.dataLists = newArr : vm.$message.warning('未找到该人才!');
       }
     }
   }
