@@ -18,7 +18,7 @@
             <td>{{list.target_url}}</td>
             <td>已连接</td>
             <td>{{list.status | statusInfo()}}</td>
-            <td>{{list.end_time | formatDate()}}</td>
+            <td>{{list.start_time | tohsm()}}</td>
           </tr>
         </tbody>
       </table>

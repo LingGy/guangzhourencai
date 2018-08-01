@@ -34,7 +34,7 @@ const vfilter = {
   statusInfo: function (info) {
     let st ='';
     switch (info){
-      case 0: st='正在运行';
+      case 0: st='未运行';
         break;
       case 1: st='正在运行';
         break;
@@ -48,6 +48,15 @@ const vfilter = {
   },
   ifName: function (name) {
     return name?name:"无";
+  },
+  tohsm: function (nb) {
+    if (nb == 0 || !nb) {
+      return 0;
+    } else {
+      let newnb = (nb + '').split('');
+      newnb.length == 5 ? newnb.unshift('0') : newnb;
+      return newnb[0] + newnb[1] + '时' + newnb[2] + newnb[3] + '分' + newnb[4] + newnb[5] + '秒';
+    }
   },
 };
 export default vfilter;
