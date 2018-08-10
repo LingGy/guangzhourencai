@@ -137,6 +137,25 @@ table, thead, tbody, tr, th, td {
 input {
   outline: none; }
 
+input::-webkit-input-placeholder {
+  font-size: 12px;
+  color: #cccccc !important; }
+
+input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  font-size: 12px;
+  color: #cccccc !important; }
+
+input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  font-size: 12px;
+  color: #cccccc !important; }
+
+input:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  font-size: 12px;
+  color: #cccccc !important; }
+
 @font-face {
   font-family: 'iconfont';
   src: url("../font/iconfont.eot");

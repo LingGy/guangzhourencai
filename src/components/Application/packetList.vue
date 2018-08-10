@@ -24,7 +24,7 @@
         loading:true
       }
     },
-    created: function () {
+    mounted: function () {
       if(this.$route.path == "/application/packetList"){
         this.$parent.fg1 = true;
       }
