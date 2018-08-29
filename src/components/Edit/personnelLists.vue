@@ -65,12 +65,15 @@
         this.$parent.fg1 = false;
         this.$parent.fg3 = false;
       }
+    },
+    mounted: function () {
       this.getNewLists(this.name,this.page);
     },
     methods: {
       //获取列表
       getNewLists: function (name,page) {
         let vm = this;
+
         vm.$axios({
           method: 'post',
           url: window.$g_url.ApiUrl + "/talents",

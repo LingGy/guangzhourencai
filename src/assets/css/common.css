@@ -179,7 +179,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   padding: 0;
   border: none; }
   #app .b-header-box {
-    min-width: 1300px;
+    min-width: 1000px;
     height: 87px;
     background: url("../../../static/img/header.png") no-repeat 100%;
     background: url("../../../static/img/header.png") repeat-x;
