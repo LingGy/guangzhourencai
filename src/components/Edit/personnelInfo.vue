@@ -28,7 +28,7 @@
         <!--</div>-->
       <!--</div>-->
       <p class='btnBox'>
-        <button class="btn_save1" type='button' @click="toEmail(result.Id,result.ChineseName)">发送邮件</button>
+        <button class="btn_save1" type='button' @click="toEmail()">发送邮件</button>
         <button class="btn_save1" type='button' @click="subData()">保存</button>
         <button class="btn_save1" type='button' @click="addSave()">新增并保存</button>
       </p>
@@ -41,13 +41,10 @@
     name:"personnelInfo",
     data: function () {
       return {
-        imageUrl: '',
         result:{},
-        options: [
-          { text: '高级', value: '1' },
-          { text: '基本', value: '2' },
-        ],
-        editId:null
+        editId:null,
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     mounted: function () {
@@ -70,7 +67,7 @@
         };
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + "/baseinfo",
+          url:window.$g_url.ApiUrl + "/baseinfo?"+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:"userid="+userid
         })
           .then(function (res) {
@@ -89,19 +86,6 @@
       handleAvatarSuccess(res, file) {
         this.imageUrl = URL.createObjectURL(file.raw);
       },
-      //上传头像图片设置
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg' || 'image/png';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
-      },
       //保存基本信息修改
       subData: function () {
         let vm = this;
@@ -111,7 +95,7 @@
           // data.RegisterDate = data.RegisterDate/1000;
           vm.$axios({
             method:"post",
-            url:window.$g_url.ApiUrl + "/setbaseinfo?operate=2&userid="+vm.editId,
+            url:window.$g_url.ApiUrl + "/setbaseinfo?operate=2&userid="+vm.editId+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
             data:JSON.stringify(data)
           })
             .then(function (res) {
@@ -138,7 +122,7 @@
         let data = JSON.parse(JSON.stringify(vm.result));
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + "/setbaseinfo?operate=1&userid="+userid,
+          url:window.$g_url.ApiUrl + "/setbaseinfo?operate=1&userid="+userid+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:JSON.stringify(data)
         })
           .then(function (res) {
@@ -157,9 +141,9 @@
           })
       },
       //发送邮件
-      toEmail: function (userid,name) {
+      toEmail: function () {
         let vm = this;
-        if(!userid){
+        if(!vm.editId){
           vm.$notify({
             title: '提示信息',
             message: '未检测到人才ID',
@@ -168,7 +152,7 @@
           });
           return false;
         }
-        let EmailId = JSON.stringify({userid:userid,name:name,type:1})
+        let EmailId = JSON.stringify({userid:vm.editId,name:vm.result.ChineseName,type:1})
         sessionStorage.setItem("EmailId",EmailId);
         this.$router.push('/application/email');
       }

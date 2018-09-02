@@ -85,6 +85,8 @@
         original:{},
         duplicate:[],
         date:'',
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     mounted: function () {
@@ -96,7 +98,7 @@
         let vm = this;
         vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl+'/baseinfodup',
+            url:window.$g_url.ApiUrl+'/baseinfodup?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
             data:'userid='+rgId
         })
            .then(function(res){
@@ -126,7 +128,7 @@
         data.RegisterDate = data.RegisterDate/1000;
         vm.$axios({
             method:"post",
-            url:window.$g_url.ApiUrl + "/setbaseinfo?operate=2&userid="+id,
+            url:window.$g_url.ApiUrl + "/setbaseinfo?operate=2&userid="+id+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
             data:JSON.stringify(data)
           })
           .then(function (res) {
@@ -147,7 +149,7 @@
         let vm = this;
         vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl + '/deletebaseinfodup',
+            url:window.$g_url.ApiUrl + '/deletebaseinfodup?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
             data:'userid='+id
         })
            .then(function(res){

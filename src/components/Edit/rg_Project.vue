@@ -154,6 +154,8 @@
         options:[],
         originallist:{},
         duplicate:[],
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     mounted: function () {
@@ -165,7 +167,7 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl+'/projectdup',
+          url:window.$g_url.ApiUrl+'/projectdup?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:'userid='+rgId
         })
           .then(function(res){
@@ -206,7 +208,7 @@
         }
         vm.$axios({
           method:"post",
-          url:window.$g_url.ApiUrl + "/setproject?operate="+type+"&id="+id,
+          url:window.$g_url.ApiUrl + "/setproject?operate="+type+"&id="+id+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:JSON.stringify(reqdata)
         })
           .then(function (res) {
@@ -235,7 +237,8 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/deleteprojectdup?userid='+userid,
+          url:window.$g_url.ApiUrl + '/deleteprojectdup?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+          data:'userid='+userid
         })
           .then(function(res){
             if(res.data.code == 0){

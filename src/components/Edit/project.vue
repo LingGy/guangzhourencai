@@ -129,7 +129,9 @@
           Demand:'',
         },
         userid:'',
-        infoid:''
+        infoid:'',
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     created: function () {
@@ -142,7 +144,7 @@
       }
       vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/major',
+          url:window.$g_url.ApiUrl + '/major'+ "?outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
       })
          .then(function(res){
             vm.options = res.data.result;
@@ -171,7 +173,8 @@
         if(userid && userid != 0) {
           vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl + '/projects?userid=' + userid,
+            url:window.$g_url.ApiUrl + '/projects?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+            data:'userid='+userid
           })
             .then(function(res){
               let data = res.data;
@@ -209,7 +212,7 @@
         data.UserId = vm.userid;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/setproject?operate='+type+'&id='+infoid,
+          url:window.$g_url.ApiUrl + '/setproject?operate='+type+'&id='+infoid+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:JSON.stringify(data)
         })
           .then(function(res){
@@ -240,7 +243,8 @@
         vm.infoid = id
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/project?id=' + vm.infoid,
+          url:window.$g_url.ApiUrl + '/project?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+          data:'id='+vm.infoid
         })
           .then(function(res){
             let resdata = res.data;
@@ -267,7 +271,8 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl+'/deleteproject?id='+id,
+          url:window.$g_url.ApiUrl+'/deleteproject?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+          data:'id='+id
         })
           .then(function(res){
             let resdata = res.data;

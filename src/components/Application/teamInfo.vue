@@ -41,7 +41,9 @@
         teamId:null,
         teamName:null,
         resDatas:[],
-        loading:true
+        loading:true,
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     created: function () {
@@ -51,7 +53,8 @@
       vm.teamName =teamInfo.teamName;
       vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/group?id=' + vm.teamId,
+          url:window.$g_url.ApiUrl + '/group?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+          data:'id='+ vm.teamId
       })
          .then(function(res){
            vm.loading = false;

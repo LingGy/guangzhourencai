@@ -114,7 +114,9 @@
           // ExpectedSalary:100000,
           // ExpectedWelfare:'',
           // Info:'',
-        }
+        },
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       };
     },
     mounted: function () {
@@ -134,7 +136,8 @@
         if (userid && userid != 0) {
           vm.$axios({
             method: 'post',
-            url: window.$g_url.ApiUrl + '/jobapply?userid=' + userid,
+            url: window.$g_url.ApiUrl + '/jobapply?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+            data:'userid='+userid
           })
             .then(function (res) {
               let resDates = res.data;
@@ -172,7 +175,7 @@
           data.UserId = userid;
           vm.$axios({
             method: 'post',
-            url: window.$g_url.ApiUrl + '/setjobapply?userid=' + userid,
+            url: window.$g_url.ApiUrl + '/setjobapply?userid=' + userid+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
             data: JSON.stringify(data)
           })
             .then(function (res) {
@@ -198,7 +201,8 @@
         if (userid && userid != 0) {
           vm.$axios({
             method: 'post',
-            url: window.$g_url.ApiUrl + '/deletejobapply?userid=' + userid,
+            url: window.$g_url.ApiUrl + '/deletejobapply?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+            data:'userid='+userid
           })
             .then(function (res) {
               let resDates = res.data;
@@ -222,7 +226,7 @@
         let vm = this;
         vm.$axios({
           method: 'post',
-          url: window.$g_url.ApiUrl + api,
+          url: window.$g_url.ApiUrl + api+ "?outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
         })
           .then(function (res) {
             let resData = res.data;

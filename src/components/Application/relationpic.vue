@@ -17,8 +17,10 @@ export default {
     return {
       datas:{
         name:'',
-        children:[]
-      }
+        children:[],
+      },
+      outerid:sessionStorage.getItem('loginOuterid'),
+      accesstoken:sessionStorage.getItem('loginAccesstoken'),
     }
   },
   mounted: function () {
@@ -31,7 +33,8 @@ export default {
       let userid = sessionStorage.getItem("relationUserId");
       vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl +'/relation?userid='+userid,
+          url:window.$g_url.ApiUrl +'/relation?'+"outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+          data:'userid='+userid
       })
          .then(function(res){
            let resDatas = res.data;

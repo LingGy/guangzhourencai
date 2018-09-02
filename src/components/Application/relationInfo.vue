@@ -158,6 +158,8 @@
         teamName:null,
         checkAll: false,
         isIndeterminate: true,
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     created: function () {
@@ -174,7 +176,8 @@
         let userid = sessionStorage.getItem("relationUserId");
         vm.$axios({
           method: 'post',
-          url: window.$g_url.ApiUrl + '/relationdetail?userid=' + userid + '&type=' + relation,
+          url: window.$g_url.ApiUrl + '/relationdetail?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+          data:"userid="+userid+"&type="+relation
         })
           .then(function (res) {
             let resdatas = res.data;
@@ -267,7 +270,7 @@
         }
         vm.$axios({
           method: 'post',
-          url: window.$g_url.ApiUrl + '/setgroupname?name=' + teamName,
+          url: window.$g_url.ApiUrl + '/setgroupname?name=' + teamName+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data: JSON.stringify(arr)
         })
           .then(function (res) {

@@ -21,7 +21,9 @@
     data: function () {
       return {
         teams:[],
-        loading:true
+        loading:true,
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     mounted: function () {
@@ -31,7 +33,7 @@
       let vm = this;
       vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl +'/groups',
+          url:window.$g_url.ApiUrl +'/groups?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
       })
          .then(function(res){
            vm.loading = false;

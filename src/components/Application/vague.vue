@@ -140,7 +140,9 @@
         degree: '',
         teamName:'',
         loading:false,
-        personnel:null
+        personnel:null,
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     created: function () {
@@ -159,7 +161,7 @@
         vm.loading = true;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/fuzzysearch?',
+          url:window.$g_url.ApiUrl + '/fuzzysearch?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:"nationality="+vm.nationality
           + "&studyregion="+vm.studyregion
           + "&college="+vm.college
@@ -213,7 +215,7 @@
         }
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/setgroupname?name=' + vm.teamName,
+          url:window.$g_url.ApiUrl + '/setgroupname?name=' + vm.teamName+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:JSON.stringify(vm.checkedUserId)
         })
           .then(function(res){

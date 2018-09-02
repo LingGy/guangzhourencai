@@ -62,6 +62,8 @@
         countryId:'',
         collegeId:'',
         majorId:'',
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     mounted: function () {
@@ -75,7 +77,7 @@
         let vm = this;
         vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl+api,
+            url:window.$g_url.ApiUrl+api+ "?outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
         })
            .then(function(res){
              if(res.data.code == 0 ){
@@ -120,7 +122,7 @@
         }
         vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl + api+'?operate=' + operate + '&id=' + id + '&name=' + name,
+            url:window.$g_url.ApiUrl + api+ '?operate='+operate+'&id='+id+'&name='+name+"&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
         })
            .then(function(res){
              if(res.data.code == 0){
@@ -162,7 +164,8 @@
         }
         vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl+ api + '?id=' + id,
+            url:window.$g_url.ApiUrl+ api + "?outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+            data:'id='+id
         })
            .then(function(res){
              if(res.data.code == 0){

@@ -16,16 +16,18 @@
 </template>
 
 <script type="text/ecmascript-6">
-export default {
+  import commonApi from '../../assets/js/common'
+  export default {
   name:'thesis',
   data: function () {
     return {
       resultData:[],
-      userId:null,
+      userId:sessionStorage.getItem("userId"),
+      outerid:sessionStorage.getItem('loginOuterid'),
+      accesstoken:sessionStorage.getItem('loginAccesstoken'),
     }
   },
   mounted: function () {
-    this.userId = sessionStorage.getItem("userId");
     if(this.$route.path == "/Edit/thesis"){
       this.$parent.fg1 = true;
       this.$parent.fg2 = true;
@@ -39,7 +41,8 @@ export default {
       if(userId){
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl+'/papers?userid='+userId,
+          url:window.$g_url.ApiUrl+'/papers?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+          data:'userid='+userId
         })
           .then(function(res){
             let resDatas = res.data;

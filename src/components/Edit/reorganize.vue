@@ -56,6 +56,8 @@ export default {
       bt2:false,
       isA:true,
       isB:false,
+      outerid:sessionStorage.getItem('loginOuterid'),
+      accesstoken:sessionStorage.getItem('loginAccesstoken'),
     }
   },
   created: function () {
@@ -71,7 +73,7 @@ export default {
       let vm = this;
       vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl+'/duplicates',
+          url:window.$g_url.ApiUrl+'/duplicates?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:'page='+vm.page+'&count=20'
       })
          .then(function(res){
@@ -137,7 +139,7 @@ export default {
       let vm = this;
       vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl+'/deleteduplicate',
+          url:window.$g_url.ApiUrl+'/deleteduplicate?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:'userid='+rgId
       })
          .then(function(res){

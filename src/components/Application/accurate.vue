@@ -137,8 +137,9 @@
         degree: '',
         teamName:'',
         loading:false,
-        personnel:null
-
+        personnel:null,
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     created: function () {
@@ -157,7 +158,7 @@
         vm.loading = true;
         vm.$axios({
           method: 'post',
-          url: window.$g_url.ApiUrl + '/search?',
+          url: window.$g_url.ApiUrl + '/search?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data: "nationality=" + vm.nationality
           + "&studyregion=" + vm.studyregion
           + "&college=" + vm.college
@@ -209,9 +210,10 @@
           vm.$message.warning("请选择一项或多项添加到组");
           return false;
         }
+        console.log(JSON.stringify(vm.checkedUserId));
         vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl + '/setgroupname?name=' + vm.teamName,
+            url:window.$g_url.ApiUrl + '/setgroupname?name=' + vm.teamName+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
             data:JSON.stringify(vm.checkedUserId)
         })
            .then(function(res){

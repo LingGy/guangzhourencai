@@ -7,7 +7,7 @@ import router from './router'   //引入路由配置文件
 import promise from 'es6-promise';
 promise.polyfill();
 import axios from 'axios';
-import {Select,Radio,Option,Button,Pagination,Loading,RadioGroup,DatePicker,Message,Checkbox,CheckboxGroup} from 'element-ui';
+import {Select,Radio,Option,Button,Pagination,Loading,RadioGroup,DatePicker,Message,Checkbox,CheckboxGroup,Notification} from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/common.css';
 import vfilters from './assets/js/vfilters';
@@ -31,6 +31,7 @@ Vue.use(DatePicker);
 Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.prototype.$message = Message;
+Vue.prototype.$notify = Notification;
 Vue.use(VueQuillEditor);
 
 Vue.config.productionTip = false;
@@ -54,6 +55,7 @@ new Vue({
         if (res.data.code == 0) {
           sessionStorage.setItem('loginInfo', res.data.result);
           sessionStorage.setItem('loginAccesstoken', res.data.result.accesstoken);
+          sessionStorage.setItem('loginOuterid', res.data.result.outerid);
         } else {
           vm.$router.push('/error');
         }

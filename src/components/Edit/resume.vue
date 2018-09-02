@@ -315,6 +315,8 @@
           WorkHomeStat: null,
           WorkUnit: null,
         },
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     created: function () {
@@ -337,7 +339,7 @@
         if (userid && userid != 0) {
           vm.$axios({
             method: 'post',
-            url: window.$g_url.ApiUrl + "/resume",
+            url: window.$g_url.ApiUrl + "/resume?"+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
             data: "userid=" + userid
           })
             .then(function (res) {
@@ -357,47 +359,7 @@
             .catch(function (err) {
               console.log(err);
             })
-        }
-        ;
-
-      },
-      beforeAvatarUpload: function (file) {
-        let testmsg = file.name.substring(file.name.lastIndexOf('.') + 1)
-        const extension = testmsg === 'xls'
-        const extension2 = testmsg === 'xlsx'
-        const isLt2M = file.size / 1024 / 1024 < 2
-        if (!extension && !extension2) {
-          this.$message({
-            message: '上传文件只能是 xls、xlsx格式!',
-            type: 'warning'
-          });
-        }
-        if (!isLt2M) {
-          this.$message({
-            message: '上传文件大小不能超过 2MB!',
-            type: 'warning'
-          });
-        }
-        return extension || extension2 && isLt2M
-      },//限制上传文件类型
-      handleRemove: function (file, fileList) {//限制上传类型
-        this.fileName[0].name = "只能上传jpg/png文件";
-      },
-      handleExceed: function (files, fileList) {
-        this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },//限制上传文件数
-      getfilename1: function (file, fileList,) {
-        if (file.raw.type != "image/jpeg") {
-          this.$message.warning("只能上传jpg/png文件")
-          return false
-        }
-        this.fileName[0].name = file.name;
-      },//获取上传文件名称
-      getfilename2: function (file, fileList,) {
-        this.fileName[1].name = file.name;
-      },//获取上传文件名称
-      getfilename3: function (file, fileList,) {
-        this.fileName[2].name = file.name;
+        };
       },
       //保存上传简历数据
       subData: function () {
@@ -409,7 +371,7 @@
           data.UserId = userid;
           vm.$axios({
             method: 'post',
-            url: window.$g_url.ApiUrl + "/setresume?userid=" + userid,
+            url: window.$g_url.ApiUrl + "/setresume?userid=" + userid+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
             data: JSON.stringify(data)
           })
             .then(function (res) {

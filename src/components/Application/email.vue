@@ -59,6 +59,8 @@
         sendType:null,
         tp:false,
         subject:null,
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     mounted: function () {
@@ -96,7 +98,8 @@
         vm.$axios({
             method:'post',
             url:window.$g_url.ApiUrl+'/sendmail',
-            data:'mailtype=2'+'&content='+vm.content+'&targettype='+vm.sendType+'&targetid='+vm.targetId+'&subject='+vm.subject
+            data:'mailtype=2'+'&content='+vm.content+'&targettype='+vm.sendType+'&targetid='+vm.targetId+'&subject='+vm.subject+ "&outerid=" + vm.outerid
+              + "&accesstoken=" + vm.accesstoken
         })
            .then(function(res){
              if(res.data.code == 0){

@@ -59,6 +59,8 @@
         count:20,
         total:0,
         name:'',
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     mounted: function () {
@@ -70,7 +72,7 @@
         let vm = this;
         vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl+'/log',
+            url:window.$g_url.ApiUrl+'/log?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
             data:'name=' + name + '&page=' + page + '&count=20'
         })
            .then(function(res){

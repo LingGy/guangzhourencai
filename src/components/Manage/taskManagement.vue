@@ -100,6 +100,8 @@
         count:20,
         total:0,
         loading:true,
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     filters:{
@@ -120,7 +122,7 @@
         if(testcrawler){
           vm.$axios({
             method:'get',
-            url:window.$g_url.ApiUrl_1+"/crawler?name=" + testcrawler,
+            url:window.$g_url.ApiUrl_1+"/crawler?name=" + testcrawler+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           })
             .then(function(res){
               let resDatas = res.data;
@@ -142,7 +144,7 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl+'/log?name='+testcrawler,
+          url:window.$g_url.ApiUrl+'/log?name='+testcrawler+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
         })
           .then(function(res){
             vm.loading = false;
@@ -162,7 +164,7 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl+'/log',
+          url:window.$g_url.ApiUrl+'/log?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:'name=' + vm.testcrawler + '&page=' + page + '&count=20'
         })
           .then(function(res){
@@ -190,7 +192,7 @@
         let vm = this;
         vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl_1+'/controller?name='+vm.testcrawler+'&command='+order,
+            url:window.$g_url.ApiUrl_1+'/controller?name='+vm.testcrawler+'&command='+order+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
         })
            .then(function(res){
              if(res.data.code == 0){

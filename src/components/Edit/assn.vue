@@ -58,6 +58,8 @@
         isA:true,
         isB:false,
         count:20,
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     created: function () {
@@ -73,7 +75,7 @@
         let vm = this;
         vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl+'/organizations',
+            url:window.$g_url.ApiUrl+'/organizations?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
             data:'page='+page+'&count=20'
         })
            .then(function(res){

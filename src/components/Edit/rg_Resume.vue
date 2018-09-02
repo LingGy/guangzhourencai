@@ -257,6 +257,8 @@
         original:{},
         duplicate:[],
         date:'',
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     mounted: function () {
@@ -268,7 +270,7 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl+'/resumeup',
+          url:window.$g_url.ApiUrl+'/resumeup?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:'userid='+rgId
         })
           .then(function(res){
@@ -306,7 +308,7 @@
         console.log(JSON.stringify(data));
         vm.$axios({
           method:"post",
-          url:window.$g_url.ApiUrl + "/setresume?userid="+id,
+          url:window.$g_url.ApiUrl + "/setresume?userid="+id+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:JSON.stringify(data)
         })
           .then(function (res) {
@@ -327,7 +329,7 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/deleteresumedup',
+          url:window.$g_url.ApiUrl + '/deleteresumedup?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:'userid='+id
         })
           .then(function(res){

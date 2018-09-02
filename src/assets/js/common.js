@@ -3,7 +3,7 @@ export default {
   getAuxiliarydata: (vm, apiName) => {
     vm.$axios({
       method: 'get',
-      url: window.$g_url.ApiUrl + '/' + apiName,
+      url: window.$g_url.ApiUrl + '/' + apiName+'?outerid='+sessionStorage.getItem('loginOuterid')+'&accesstoken='+sessionStorage.getItem('loginAccesstoken'),
     })
       .then(function (res) {
         let resDatas = res.data;

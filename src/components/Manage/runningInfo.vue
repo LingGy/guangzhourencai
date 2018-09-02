@@ -34,6 +34,8 @@
         lists:[],
         page:1,
         loading:true,
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     filters:{
@@ -50,7 +52,7 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl_1 + '/crawlerlist',
+          url:window.$g_url.ApiUrl_1 + '/crawlerlist?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
         })
           .then(function (res) {
             vm.loading = false;

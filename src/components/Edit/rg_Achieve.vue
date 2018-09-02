@@ -75,6 +75,8 @@ export default {
       originallist:{},
       duplicate:[],
       date:'',
+      outerid:sessionStorage.getItem('loginOuterid'),
+      accesstoken:sessionStorage.getItem('loginAccesstoken'),
     }
   },
   mounted: function () {
@@ -86,7 +88,7 @@ export default {
       let vm = this;
       vm.$axios({
         method:'post',
-        url:window.$g_url.ApiUrl+'/achievementdup',
+        url:window.$g_url.ApiUrl+'/achievementdup?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
         data:'userid='+rgId
       })
         .then(function(res){
@@ -127,7 +129,7 @@ export default {
       reqdata.Date = reqdata.Date/1000;
       vm.$axios({
         method:"post",
-        url:window.$g_url.ApiUrl + "/setachievement?operate="+type+"&id="+id,
+        url:window.$g_url.ApiUrl + "/setachievement?operate="+type+"&id="+id+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
         data:JSON.stringify(reqdata)
       })
         .then(function (res) {
@@ -156,7 +158,8 @@ export default {
       let vm = this;
       vm.$axios({
         method:'post',
-        url:window.$g_url.ApiUrl + '/deleteachievementdup?userid='+userid,
+        url:window.$g_url.ApiUrl + '/deleteachievementdup?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+        data:'userid='+userid
       })
         .then(function(res){
           if(res.data.code == 0){

@@ -57,7 +57,9 @@
         results: [],
         loading:true,
         total:0,
-        UserId:null
+        UserId:null,
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     created: function () {//获取人才列表
@@ -76,7 +78,7 @@
 
         vm.$axios({
           method: 'post',
-          url: window.$g_url.ApiUrl + "/talents",
+          url: window.$g_url.ApiUrl + "/talents?"+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data: "name=" + name + "&page=" + page + "&count=" + vm.count
         })
           .then(function (response) {

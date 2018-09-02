@@ -125,6 +125,8 @@
         originallist:{},
         duplicate:[],
         alldate:[],
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     mounted: function () {
@@ -136,7 +138,7 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl+'/workexperiencedup',
+          url:window.$g_url.ApiUrl+'/workexperiencedup?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:'userid='+rgId
         })
           .then(function(res){
@@ -183,7 +185,7 @@
         reqdata.EndDate = vm.alldate[1]/1000;
         vm.$axios({
           method:"post",
-          url:window.$g_url.ApiUrl + "/setworkexprience?operate="+type+"&id="+id,
+          url:window.$g_url.ApiUrl + "/setworkexprience?operate="+type+"&id="+id+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:JSON.stringify(reqdata)
         })
           .then(function (res) {
@@ -212,7 +214,8 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/deleteworkexpriencedup?userid='+userid,
+          url:window.$g_url.ApiUrl + '/deleteworkexpriencedup?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+          data:'userid='+userid
         })
           .then(function(res){
             if(res.data.code == 0){

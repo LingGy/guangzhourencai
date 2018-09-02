@@ -106,6 +106,8 @@
       return {
         originallist:{},
         duplicate:[],
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     mounted: function () {
@@ -117,7 +119,7 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl+'/jobapplydup',
+          url:window.$g_url.ApiUrl+'/jobapplydup?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:'userid='+rgId
         })
           .then(function(res){
@@ -145,7 +147,7 @@
         reqdata.IsHome = reqdata.IsHome == '国内'?1:0;
         vm.$axios({
           method:"post",
-          url:window.$g_url.ApiUrl + "/setjobapply?userid="+id,
+          url:window.$g_url.ApiUrl + "/setjobapply?userid="+id+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:JSON.stringify(reqdata)
         })
           .then(function (res) {
@@ -166,7 +168,8 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/deletejobapplydup?userid='+userid,
+          url:window.$g_url.ApiUrl + '/deletejobapplydup?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+          data:'userid='+userid
         })
           .then(function(res){
             if(res.data.code == 0){

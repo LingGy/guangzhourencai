@@ -95,7 +95,9 @@
           Info:'',
           Status:0
         },
-        assnId:''
+        assnId:'',
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       }
     },
     created: function () {
@@ -111,7 +113,8 @@
       if(vm.assnId){
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl+'/organization?id='+vm.assnId,
+          url:window.$g_url.ApiUrl+'/organization?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+          data:'id='+vm.assnId,
         })
           .then(function(res){
             if(res.data.code == 0){
@@ -148,7 +151,7 @@
         delete req.Id;
         vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl+'/setorganization?operate='+operate+'&id='+id,
+            url:window.$g_url.ApiUrl+'/setorganization?operate='+operate+'&id='+id+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
             data:JSON.stringify(req)
         })
            .then(function(res){

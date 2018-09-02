@@ -112,6 +112,8 @@
         },
         userid:'',
         infoid:'',
+        outerid:sessionStorage.getItem('loginOuterid'),
+        accesstoken:sessionStorage.getItem('loginAccesstoken'),
       };
     },
     created: function () {
@@ -130,7 +132,8 @@
         if(userid && userid != 0){
           vm.$axios({
             method:'post',
-            url:window.$g_url.ApiUrl + '/workexperiences?userid=' + userid,
+            url:window.$g_url.ApiUrl + '/workexperiences?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+            data:'userid='+userid
           })
             .then(function(res){
               let data = res.data;
@@ -170,7 +173,7 @@
         data.UserId = vm.userid;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/setworkexprience?operate='+type+'&id='+infoid,
+          url:window.$g_url.ApiUrl + '/setworkexprience?operate='+type+'&id='+infoid+ "&outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
           data:JSON.stringify(data)
         })
           .then(function(res){
@@ -201,7 +204,8 @@
         vm.infoid = id
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl + '/workexperience?id=' + vm.infoid,
+          url:window.$g_url.ApiUrl + '/workexperience?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+          data:'id='+vm.infoid
         })
           .then(function(res){
             let resdata = res.data;
@@ -221,7 +225,8 @@
         let vm = this;
         vm.$axios({
           method:'post',
-          url:window.$g_url.ApiUrl+'/deleteworkexprience?id='+id,
+          url:window.$g_url.ApiUrl+'/deleteworkexprience?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
+          data:'id='+id
         })
           .then(function(res){
             let data = res.data;
