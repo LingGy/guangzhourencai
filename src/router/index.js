@@ -10,8 +10,13 @@ export default new Router({
       redirect:'/Edit/personnelLists',
     },
     {
+      path:'/login',
+      name:'login',
+      component: resolve => require(['@/components/login'],resolve),
+    },
+    {
       path: '/myheader',
-      name:'/myheader',
+      name:'myheader',
       component: resolve => require(['@/components/Header/myheader'],resolve),
       children:[
         {
