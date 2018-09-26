@@ -15,7 +15,11 @@
       <!--</div>-->
       <div class=perBox><span class='name'>中文名<i>:</i></span><input type="text" class='ipt' v-model="result.ChineseName"></div>
       <div class=perBox><span class='name'>英文名<i>:</i></span><input type="text" class='ipt' v-model="result.EnglishName"></div>
+      <!--<div class=perBox><span class='name'>爬虫名<i>:</i></span><input type="text" class='ipt' v-model="result.Crawler" disabled></div>-->
+      <!--<div class=perBox><span class='name'>纪录来源网址<i>:</i></span><input type="text" class='ipt' v-model="result.Url" disabled></div>-->
       <div class=perBox><span class='name'>邮箱<i>:</i></span><input type="text" class='ipt' v-model="result.Email"></div>
+      <p style='color: #999999; font-size: 14px;' v-show='result.Crawler'>{{'爬虫名:'+result.Crawler}}</p>
+      <p style='color: #999999; font-size: 14px;' v-show='result.Url'>{{'记录来源网址'+result.Url }}</p>
       <!--<div class="perBox datebox">-->
         <!--<span class='name'>注册时间<i>:</i></span>-->
         <!--<div class="dateInfo">-->
@@ -162,7 +166,6 @@
 
 <style lang="scss" type="text/scss" scoped>
     .info_box {
-      width: 400px;
       input {
         padding-left: 6px;
       }
@@ -174,8 +177,6 @@
       border: 1px dashed #d9d9d9;
       margin-bottom: 26px;
       .avatar-uploader .el-upload {
-        width: 100%;
-        height: 100%;
         cursor: pointer;
         position: relative;
         overflow: hidden;
@@ -204,7 +205,7 @@
       font-size: 16px;
       .name{
         display: block;
-        width: 95px;
+        width: 120px;
         color: #454545;
         float: left;
         i{
@@ -237,7 +238,6 @@
       }
     }
     p.btnBox{
-      width: 400px;
       margin-top: 30px;
       padding: 0px 60px;
       display: flex;
@@ -253,6 +253,5 @@
         color: #ffffff;
       }
     }
-
 </style>
 
