@@ -29,6 +29,7 @@
           <el-select
             v-model="resData.Type"
             filterable
+            allow-create
             class="main_name">
             <el-option
               v-for="(option,index) in options"

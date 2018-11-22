@@ -9,6 +9,8 @@
       <div class="top_right">
         <input type="text" class='name' placeholder='请输入搜索人姓名' v-model="name">
         <el-button icon="el-icon-search" class='btnsearch' @click="search()" circle></el-button>
+        <!--<button class='allE' @click='allemail'>导出所有邮箱</button>-->
+        <a :href="api" class="allE">导出所有邮箱</a>
       </div>
     </div>
     <div class="t_box">
@@ -60,6 +62,7 @@
         UserId:null,
         outerid:sessionStorage.getItem('loginOuterid'),
         accesstoken:sessionStorage.getItem('loginAccesstoken'),
+        api:window.$g_url.ApiUrl + '/exportmail?outerid='+sessionStorage.getItem('loginOuterid')+'&accesstoken='+sessionStorage.getItem('loginAccesstoken'),
       }
     },
     created: function () {//获取人才列表
@@ -117,6 +120,16 @@
       handleCurrentChange(val) {
         this.getNewLists(this.name,val);
       },
+      //导出邮箱
+      allemail: function () {
+        let vm = this;
+        vm.$axios({
+            method:'post',
+            url:window.$g_url.ApiUrl + '/exportmail?accesstoken='+vm.accesstoken+'&outerid='+vm.outerid,
+        })
+           .then(function(res){})
+           .catch(function(err){});
+      }
     }
   }
 </script>
@@ -125,7 +138,6 @@
   #personnelLists{
     .top {
       min-width: 948px;
-      height: 28px;
       display: flex;
       justify-content: space-between;
       .top_left {
@@ -169,15 +181,26 @@
         .btnsearch{
           padding: 8px;
         }
+        .allE{
+          display: inline-block;
+          height: 28px;
+          line-height: 28px;
+          border-radius:5px;
+          padding: 0 6px;
+          background-color: #169bd8;
+          color: #ffffff;
+          margin-left: 40px;
+        }
       }
     }
     .t_box{
       min-height: 800px;
+      max-width: 1200px;
+      overflow-x: auto;
       table,thead,tbody,tr,th,td{
         border: 1px solid #dedede;
       }
       .box {
-        min-width: 948px;
         border-collapse: collapse;
         margin-top: 14px;
         word-break:keep-all;/* 不换行 */

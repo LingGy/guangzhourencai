@@ -61,6 +61,7 @@
           <el-select
             v-model="viewData.Major"
             filterable
+            allow-create
             class="st_faculty">
             <el-option
               v-for="(option,index) in majors"
@@ -77,6 +78,7 @@
           <el-select
             v-model="viewData.Degree"
             filterable
+            allow-create
             class="st_faculty">
             <el-option
               v-for="(option,index) in degrees"

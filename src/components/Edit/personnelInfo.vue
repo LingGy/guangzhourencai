@@ -18,8 +18,9 @@
       <!--<div class=perBox><span class='name'>爬虫名<i>:</i></span><input type="text" class='ipt' v-model="result.Crawler" disabled></div>-->
       <!--<div class=perBox><span class='name'>纪录来源网址<i>:</i></span><input type="text" class='ipt' v-model="result.Url" disabled></div>-->
       <div class=perBox><span class='name'>邮箱<i>:</i></span><input type="text" class='ipt' v-model="result.Email"></div>
-      <p style='color: #999999; font-size: 14px;' v-show='result.Crawler'>{{'爬虫名:'+result.Crawler}}</p>
-      <p style='color: #999999; font-size: 14px;' v-show='result.Url'>{{'记录来源网址'+result.Url }}</p>
+      <p class="line_b"></p>
+      <p class='tip_box' v-show='result.Crawler'><span>爬虫名<i>:</i></span>{{result.Crawler}}</p>
+      <p class='tip_box' v-show='result.Url'><span>数据来源<i>:</i></span>{{result.Url }}</p>
       <!--<div class="perBox datebox">-->
         <!--<span class='name'>注册时间<i>:</i></span>-->
         <!--<div class="dateInfo">-->
@@ -251,6 +252,25 @@
         text-align: center;
         padding: 0px 10px;
         color: #ffffff;
+      }
+    }
+    p.line_b{
+      width: 550px;
+      border-top: 1px solid #000000;
+      margin-top: 20px;
+      margin-bottom: 15px;
+    }
+    p.tip_box{
+      display: flex;
+      color: #999999;
+      justify-content: flex-start;
+      span{
+        width: 100px;
+        display: inline-block;
+        margin-right: 15px;
+        i{
+          float:right;
+        }
       }
     }
 </style>

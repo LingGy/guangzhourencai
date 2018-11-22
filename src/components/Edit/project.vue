@@ -41,6 +41,7 @@
           <el-select
             v-model="viewData.Industry"
             filterable
+            allow-create
             class="choice_box">
             <el-option
               v-for="(option,index) in options"

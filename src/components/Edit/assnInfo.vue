@@ -15,6 +15,7 @@
         <el-select
           v-model="Data.Area"
           allow-create
+          filterable
           class='select_box'>
           <el-option
             v-for="(item,index) in countrys"
@@ -41,6 +42,7 @@
         <el-select
           v-model="Data.Major"
           allow-create
+          filterable
           class='select_box'>
           <el-option
             v-for="(item,index) in majors"
@@ -50,10 +52,10 @@
           </el-option>
         </el-select>
       </div>
-      <div class="list">
-        <span class="title">社团会员人数:</span>
-        <input type="text" placeholder="请输入社团会员人数" v-model="Data.MemberCount">
-      </div>
+      <!--<div class="list">-->
+        <!--<span class="title">社团会员人数:</span>-->
+        <!--<input type="text" placeholder="请输入社团会员人数" v-model="Data.MemberCount">-->
+      <!--</div>-->
       <div class="list">
         <span class="title">网站:</span>
         <input type="text" placeholder="请输入网站" v-model="Data.WebSite">
@@ -90,7 +92,7 @@
           Chief:'',
           ChiefContact:'',
           Major:'',
-          MemberCount:0,
+          // MemberCount:0,
           WebSite:'',
           Info:'',
           Status:0
@@ -146,7 +148,7 @@
           }
         }
         let req = JSON.parse(JSON.stringify(vm.Data))
-        req.MemberCount=req.MemberCount?req.MemberCount:0;
+        // req.MemberCount=req.MemberCount?req.MemberCount:0;
         req.Status=req.Status?req.Status:0;
         delete req.Id;
         vm.$axios({

@@ -12,7 +12,13 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <el-select v-model="targetName" filterable placeholder="选择联系人" class="e_target" :disabled='tp' >
+        <el-select
+          v-model="targetName"
+          filterable
+          allow-create
+           placeholder="选择联系人"
+          class="e_target"
+          :disabled='tp' >
           <el-option
             v-for="item in options2"
             :key="item.value"

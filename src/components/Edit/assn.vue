@@ -14,7 +14,7 @@
             <th>国家</th>
             <th>负责人</th>
             <th>负责人联系方式</th>
-            <th>人数</th>
+            <!--<th>人数</th>-->
             <!--<th>详情</th>-->
           </tr>
         </thead>
@@ -25,7 +25,7 @@
             <td>{{list.Area}}</td>
             <td>{{list.Chief}}</td>
             <td>{{list.ChiefContact}}</td>
-            <td>{{list.MemberCount}}</td>
+            <!--<td>{{list.MemberCount}}</td>-->
             <!--<td><button type='button' class='toInfo' @click="toInfo(list.Id)">详情</button></td>-->
           </tr>
         </tbody>
@@ -76,7 +76,7 @@
         vm.$axios({
             method:'post',
             url:window.$g_url.ApiUrl+'/organizations?'+ "outerid=" + vm.outerid + "&accesstoken=" + vm.accesstoken,
-            data:'page='+page+'&count=20'
+            data:'page='+(page-1)+'&count=20'
         })
            .then(function(res){
              vm.loading = false;

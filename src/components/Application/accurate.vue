@@ -9,6 +9,7 @@
             <el-select
               v-model="nationality"
               filterable
+              allow-create
               class="select_box">
               <el-option
                 v-for="(option,index) in countrys"
@@ -23,6 +24,7 @@
             <el-select
               v-model="studyregion"
               filterable
+              allow-create
               class="select_box">
               <el-option
                 v-for="(option,index) in countrys"
@@ -37,6 +39,7 @@
             <el-select
               v-model="college"
               filterable
+              allow-create
               class="select_box">
               <el-option
                 v-for="(option,index) in colleges"
@@ -54,6 +57,7 @@
             <el-select
               v-model="degree"
               filterable
+              allow-create
               class="select_box">
               <el-option
                 v-for="(option,index) in degrees"
